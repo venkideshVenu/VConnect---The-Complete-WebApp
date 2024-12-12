@@ -1,0 +1,31 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django secret key and settings
+.env
+*.env
+
+# Django migrations
+**/migrations/
+
+
+
+
+# Local development files
+*.local
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.zip
+*.exe
+*.dll
+*.node
+# Virtual environment
+venv/
+env/
+ENV/
