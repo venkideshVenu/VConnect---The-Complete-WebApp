@@ -25,6 +25,7 @@ __pycache__/
 *.exe
 *.dll
 *.node
+
 # Virtual environment
 venv/
 env/
