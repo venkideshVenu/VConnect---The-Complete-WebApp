@@ -7,10 +7,10 @@
 .env
 *.env
 
-# Django migrations
-**/migrations/
-
-
+.env
+__pycache__/
+*/migrations/*
+!*/migrations/__init__.py
 
 
 # Local development files
