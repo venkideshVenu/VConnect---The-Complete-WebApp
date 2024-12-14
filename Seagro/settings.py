@@ -144,4 +144,3 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-SECRET_KEY = os.getenv('SECRET_KEY')

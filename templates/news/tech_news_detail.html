@@ -1,5 +1,65 @@
+{% extends 'news/base.html' %}
+{% load static %}
+
+
+{% block body_block %}
+
+{% comment "" %}
+ 
+
 <h1>{{ article.title }}</h1>
 <p>By {{ article.author }} on {{ article.published_at }}</p>
 <img src="{{ article.image_url }}" alt="{{ article.title }}">
 <p>{{ article.description }}</p>
 <a href="{{ article.url }}" target="_blank">Read Full Article</a>
+
+
+
+{% endcomment %}
+
+
+
+
+
+
+
+<!-- Header Start -->
+<div class="container-fluid bg-breadcrumb">
+    <div class="container text-center py-5" style="max-width: 900px;">
+        <h4 class="text-white display-4 mb-4 wow fadeInDown" data-wow-delay="0.1s">Contact Us</h4>
+        <ol class="breadcrumb d-flex justify-content-center mb-0 wow fadeInDown" data-wow-delay="0.3s">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Pages</a></li>
+            <li class="breadcrumb-item active text-primary">News</li>
+        </ol>    
+    </div>
+</div>
+<!-- Header End -->
+
+
+<!-- Contact Start -->
+<div class="container-fluid contact bg-light py-5">
+    <div class="container py-5">
+
+        <div class="row g-5">
+            <div class="col-xl-6 wow fadeInLeft" data-wow-delay="0.2s">
+                <div class="contact-img d-flex justify-content-center" >
+                    <div class="contact-img-inner">
+                        <img src="{{ article.image_url }}" alt="{{ article.title }}" class="img-fluid w-100" >
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 wow fadeInRight" data-wow-delay="0.4s">
+                <div>
+                    <h4 class="text-primary">{{ article.title }}</h4>
+                    <p class="mb-4">The contact form is currently inactive. Get a functional and working contact form with Ajax & PHP in a few minutes. Just copy and paste the files, add a little code and you're done. <a class="text-primary fw-bold" href="https://htmlcodex.com/contact-form">Download Now</a>.</p>
+                    {{ article.full_content }}
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<!-- Contact End -->
+
+{% endblock %}
