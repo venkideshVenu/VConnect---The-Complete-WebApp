@@ -38,14 +38,14 @@ class NewsAPIService:
 
             for article_data in news_data.get('articles', [])[:max_articles]:
                 # Extract required fields
-                title = article_data.get('title', '').strip()
-                description = article_data.get('description', '').strip()
-                url = article_data.get('url', '').strip()
-                content = article_data.get('content', '').strip()
-                image_url = article_data.get('urlToImage', '').strip()
-                author = article_data.get('author', '').strip()
+                title = article_data.get('title', '')
+                description = article_data.get('description', '')
+                url = article_data.get('url', '')
+                content = article_data.get('content', '')
+                image_url = article_data.get('urlToImage', '')
+                author = article_data.get('author', '')
                 published_at = parse_datetime(article_data.get('publishedAt', datetime.now().isoformat()))
-                source = article_data.get('source', {}).get('name', '').strip()
+                source = article_data.get('source', {}).get('name', '')
 
                 # Check if article URL is unique
                 if url and url not in existing_hashes:
