@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'home',
     'core',
     'news',
+    'learning_centre',
 ]
 
 AUTH_USER_MODEL = 'core.CustomUser'
