@@ -18,7 +18,7 @@
 
                     {% include 'learn/partials/menu.html' %}
 
-                    <form class="inline-form" action="{% url 'udemy:search' %}" method="get" style="width: 100%;">
+                    <form class="inline-form" action="{% url 'learning_centre:search' %}" method="get" style="width: 100%;">
                         <div class="input-group search-box mobile-search">
                             <input type="text" name='q' class="form-control"
                                    placeholder="Search for courses">
@@ -67,7 +67,7 @@
                                     </li>
 
                                     <li class="user-dropdown-menu-item">
-                                        <a href="{% url 'accounts:enrolled-courses' %}">
+                                        <a href="{% url 'learning_centre:enrolled-courses' %}">
                                             <i class="far fa-gem"></i>Enrolled Courses
                                         </a>
                                     </li>
@@ -77,12 +77,12 @@
                                         </a>
                                     </li>
                                     <li class="user-dropdown-menu-item">
-                                        <a href="{% url 'accounts:my-profile' %}">
+                                        <a href="{% url 'profile' %}">
                                             <i class="fas fa-user"></i>Profile Edit
                                         </a>
                                     </li>
                                     <li class="dropdown-user-logout user-dropdown-menu-item">
-                                        <a href="{% url 'accounts:logout' %}">Logout</a>
+                                        <a href="{% url 'logout' %}">Logout</a>
                                     </li>
                                 </ul>
                             </div>
@@ -91,9 +91,9 @@
                         <span class="signin-box-move-desktop-helper"></span>
                         <div class="sign-in-box btn-group">
 
-                            <a href="{% url 'accounts:login' %}" class="btn btn-sign-in">Login</a>
+                            <a href="{% url 'login' %}" class="btn btn-sign-in">Login</a>
 
-                            <a href="{% url 'accounts:register' %}" class="btn btn-sign-up">Sign up</a>
+                            <a href="{% url 'register' %}" class="btn btn-sign-up">Sign up</a>
 
                         </div>
                     {% endif %}
