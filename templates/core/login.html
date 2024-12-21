@@ -32,7 +32,7 @@
                             </label>
                             {{ form.username }}
                             {% if form.username.errors %}
-                                <div class="error-message">
+                                <div class="error-message text-danger">
                                     {{ form.username.errors }}
                                 </div>
                             {% endif %}
@@ -43,7 +43,7 @@
                             </label>
                             {{ form.password }}
                             {% if form.password.errors %}
-                                <div class="error-message">
+                                <div class="error-message text-danger">
                                     {{ form.password.errors }}
                                 </div>
                             {% endif %}

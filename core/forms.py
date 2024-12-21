@@ -90,42 +90,6 @@ from django import forms
 from django.contrib.auth.forms import PasswordChangeForm
 from .models import CustomUser
 
-class UserUpdateForm(forms.ModelForm):
-    email = forms.EmailField(
-        widget=forms.EmailInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Enter your email'
-        })
-    )
-    first_name = forms.CharField(
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Enter your first name'
-        })
-    )
-    last_name = forms.CharField(
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Enter your last name'
-        })
-    )
-
-    class Meta:
-        model = CustomUser
-        fields = ['first_name', 'last_name', 'email']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['email'].required = True
-        self.fields['first_name'].required = True
-        self.fields['last_name'].required = True
-
-    def clean_email(self):
-        email = self.cleaned_data.get('email')
-        if email and CustomUser.objects.exclude(pk=self.instance.pk).filter(email=email).exists():
-            raise forms.ValidationError('This email is already in use.')
-        return email
-
 class CustomPasswordChangeForm(PasswordChangeForm):
     old_password = forms.CharField(
         widget=forms.PasswordInput(attrs={
@@ -145,3 +109,63 @@ class CustomPasswordChangeForm(PasswordChangeForm):
             'placeholder': 'Confirm new password'
         })
     )
+
+
+
+
+
+from django import forms
+from django.contrib.auth.forms import PasswordChangeForm
+from .models import CustomUser
+
+class UserUpdateForm(forms.ModelForm):
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your email'
+        })
+    )
+    first_name = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your first name'
+        })
+    )
+    last_name = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your last name'
+        })
+    )
+    profile_picture = forms.ImageField(
+        required=False,
+        widget=forms.FileInput(attrs={
+            'class': 'form-control',
+            'accept': 'image/*'
+        })
+    )
+
+    class Meta:
+        model = CustomUser
+        fields = ['first_name', 'last_name', 'email', 'profile_picture']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['email'].required = True
+        self.fields['first_name'].required = True
+        self.fields['last_name'].required = True
+        self.fields['profile_picture'].help_text = 'Max file size: 2MB. Allowed formats: JPG, PNG, GIF'
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if email and CustomUser.objects.exclude(pk=self.instance.pk).filter(email=email).exists():
+            raise forms.ValidationError('This email is already in use.')
+        return email
+
+    def clean_profile_picture(self):
+        image = self.cleaned_data.get('profile_picture')
+        if image:
+            if image.size > 2 * 1024 * 1024:  # 2MB limit
+                raise forms.ValidationError("Image file too large ( > 2MB )")
+            return image
+        return self.instance.profile_picture

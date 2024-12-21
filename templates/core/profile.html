@@ -17,14 +17,29 @@
                         {% endfor %}
                     {% endif %}
                     
-                    <div class="user-info">
-                        <p><strong>Username:</strong> {{ user.username }}</p>
-                        <p><strong>Email:</strong> {{ user.email }}</p>
-                        <p><strong>First Name:</strong> {{ user.first_name }}</p>
-                        <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+                    <div class="row">
+                        <div class="col-md-4 text-center mb-4">
+                            <div class="profile-picture-container">
+                                {% if user.profile_picture %}
+                                    <img src="{{ user.profile_picture.url }}" alt="Profile Picture" 
+                                         class="img-fluid rounded-circle" style="width: 200px; height: 200px; object-fit: cover;">
+                                {% else %}
+                                    <img src="{{ MEDIA_URL }}profile_pics/default.png" alt="Default Profile Picture" 
+                                         class="img-fluid rounded-circle" style="width: 200px; height: 200px; object-fit: cover;">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="user-info">
+                                <p><strong>Username:</strong> {{ user.username }}</p>
+                                <p><strong>Email:</strong> {{ user.email }}</p>
+                                <p><strong>First Name:</strong> {{ user.first_name }}</p>
+                                <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="mt-4">
+                    <div class="mt-4 text-center">
                         <a href="{% url 'profile_update' %}" class="btn btn-primary">Update Profile</a>
                         <a href="{% url 'password_change' %}" class="btn btn-secondary">Change Password</a>
                     </div>

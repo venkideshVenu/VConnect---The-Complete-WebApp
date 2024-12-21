@@ -17,8 +17,21 @@
                         {% endfor %}
                     {% endif %}
                     
-                    <form method="POST">
+                    <form method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
+                        
+                        <div class="text-center mb-4">
+                            <div class="current-profile-picture">
+                                {% if user.profile_picture %}
+                                    <img src="{{ user.profile_picture.url }}" alt="Current Profile Picture" 
+                                         class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                                {% else %}
+                                    <img src="{{ MEDIA_URL }}profile_pics/default.png" alt="Default Profile Picture" 
+                                         class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                                {% endif %}
+                            </div>
+                        </div>
+
                         {% for field in form %}
                             <div class="form-group mb-3">
                                 <label for="{{ field.id_for_label }}">{{ field.label }}</label>
@@ -35,6 +48,7 @@
                                 {% endif %}
                             </div>
                         {% endfor %}
+                        
                         <div class="mt-4">
                             <button type="submit" class="btn btn-primary">Update Profile</button>
                             <a href="{% url 'profile' %}" class="btn btn-secondary">Cancel</a>

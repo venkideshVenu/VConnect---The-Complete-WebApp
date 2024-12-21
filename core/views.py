@@ -69,11 +69,15 @@ def profile_view(request):
     """View for displaying user profile"""
     return render(request, 'core/profile.html', {'user': request.user})
 
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.contrib import messages
+
 @login_required
 def profile_update(request):
     """View for updating user profile information"""
     if request.method == 'POST':
-        form = UserUpdateForm(request.POST, instance=request.user)
+        form = UserUpdateForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, 'Your profile has been updated successfully!')

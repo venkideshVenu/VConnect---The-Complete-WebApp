@@ -4,7 +4,6 @@
 
 {% block body_block %}
 <div class="main">
-    <!-- Sign up form -->
     <section class="signup">
         <div class="container">
             <div class="signup-content">
@@ -27,8 +26,29 @@
                         </div>
                     {% endif %}
 
-                    <form method="POST" class="register-form" id="register-form">
+                    <form method="POST" class="register-form" id="register-form" enctype="multipart/form-data">
                         {% csrf_token %}
+                        
+                        <!-- Profile Picture -->
+                        <div class="form-group">
+                            <div class="profile-picture-preview text-center mb-3">
+                                <img id="preview-image" src="{% static 'core/images/default-profile.png' %}" 
+                                     alt="Profile Preview" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
+                            </div>
+                            <label for="{{ form.profile_picture.id_for_label }}" class="profile-upload-label">
+                                <i class="zmdi zmdi-camera"></i>
+                            </label>
+                            {{ form.profile_picture }}
+                            {% if form.profile_picture.errors %}
+                                <div class="error-message text-danger">
+                                    {{ form.profile_picture.errors }}
+                                </div>
+                            {% endif %}
+                            <small class="form-text text-muted text-center">
+                                Click to upload profile picture (optional)
+                            </small>
+                        </div>
+
                         <!-- First Name -->
                         <div class="form-group">
                             <label for="{{ form.first_name.id_for_label }}">
@@ -41,6 +61,7 @@
                                 </div>
                             {% endif %}
                         </div>
+
                         <!-- Last Name -->
                         <div class="form-group">
                             <label for="{{ form.last_name.id_for_label }}">
@@ -53,6 +74,7 @@
                                 </div>
                             {% endif %}
                         </div>
+
                         <!-- Username -->
                         <div class="form-group">
                             <label for="{{ form.username.id_for_label }}">
@@ -64,13 +86,9 @@
                                     {{ form.username.errors }}
                                 </div>
                             {% endif %}
-                            {% if form.username.help_text %}
-                                <small class="form-text text-muted">
-                                    {{ form.username.help_text }}
-                                </small>
-                            {% endif %}
                         </div>
-                        <!-- Rest of the form fields remain the same -->
+
+                        <!-- Email -->
                         <div class="form-group">
                             <label for="{{ form.email.id_for_label }}">
                                 <i class="zmdi zmdi-email"></i>
@@ -81,12 +99,9 @@
                                     {{ form.email.errors }}
                                 </div>
                             {% endif %}
-                            {% if form.email.help_text %}
-                                <small class="form-text text-muted">
-                                    {{ form.email.help_text }}
-                                </small>
-                            {% endif %}
                         </div>
+
+                        <!-- Password -->
                         <div class="form-group">
                             <label for="{{ form.password1.id_for_label }}">
                                 <i class="zmdi zmdi-lock"></i>
@@ -97,12 +112,9 @@
                                     {{ form.password1.errors }}
                                 </div>
                             {% endif %}
-                            {% if form.password1.help_text %}
-                                <small class="form-text text-muted">
-                                    {{ form.password1.help_text|safe }}
-                                </small>
-                            {% endif %}
                         </div>
+
+                        <!-- Confirm Password -->
                         <div class="form-group">
                             <label for="{{ form.password2.id_for_label }}">
                                 <i class="zmdi zmdi-lock-outline"></i>
@@ -113,12 +125,8 @@
                                     {{ form.password2.errors }}
                                 </div>
                             {% endif %}
-                            {% if form.password2.help_text %}
-                                <small class="form-text text-muted">
-                                    {{ form.password2.help_text }}
-                                </small>
-                            {% endif %}
                         </div>
+
                         <div class="form-group">
                             <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" required />
                             <label for="agree-term" class="label-agree-term">
@@ -126,10 +134,20 @@
                                 <a href="#" class="term-service">Terms of Service</a>
                             </label>
                         </div>
+
                         <div class="form-group form-button">
                             <input type="submit" name="signup" id="signup" class="form-submit" value="Register" />
                         </div>
                     </form>
+
+                    <div class="social-login">
+                        <span class="social-label">Or register with</span>
+                        <ul class="socials">
+                            <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
+                            <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
+                            <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="signup-image">
                     <figure>
@@ -141,4 +159,41 @@
         </div>
     </section>
 </div>
-{% endblock body_block %}
+
+<!-- Add this script at the bottom of the template -->
+<script>
+document.getElementById('{{ form.profile_picture.id_for_label }}').onchange = function(evt) {
+    const [file] = this.files;
+    if (file) {
+        document.getElementById('preview-image').src = URL.createObjectURL(file);
+    }
+};
+</script>
+
+<style>
+.profile-picture-preview {
+    margin-bottom: 15px;
+}
+
+.profile-upload-label {
+    cursor: pointer;
+    display: block;
+    text-align: center;
+}
+
+.profile-upload-label i {
+    font-size: 24px;
+    color: #666666;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.error-message {
+    color: #ff0000;
+    font-size: 12px;
+    margin-top: 5px;
+}
+</style>
+{% endblock %}
