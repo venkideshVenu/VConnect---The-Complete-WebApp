@@ -5,12 +5,25 @@ from django.core.validators import validate_email
 from .models import CustomUser
 
 class UserRegistrationForm(UserCreationForm):
+    first_name = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'placeholder': 'Enter your first name',
+            'class': 'form-control'
+        }),
+    )
+    
+    last_name = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'placeholder': 'Enter your last name',
+            'class': 'form-control'
+        }),
+    )
+
     username = forms.CharField(
         widget=forms.TextInput(attrs={
             'placeholder': 'Choose a username',
             'class': 'form-control'
         }),
-
     )
     
     email = forms.EmailField(
@@ -26,7 +39,6 @@ class UserRegistrationForm(UserCreationForm):
             'placeholder': 'Create a strong password',
             'class': 'form-control'
         }),
-
     )
     
     password2 = forms.CharField(
@@ -38,7 +50,16 @@ class UserRegistrationForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = ['username', 'email', 'password1', 'password2']
+        fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2']
+
+    def clean_email(self):
+        """
+        Validate that the email is unique
+        """
+        email = self.cleaned_data.get('email')
+        if CustomUser.objects.filter(email=email).exists():
+            raise forms.ValidationError("This email is already in use.")
+        return email
 
     def clean_email(self):
         """
