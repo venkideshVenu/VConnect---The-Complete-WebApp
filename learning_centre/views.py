@@ -7,6 +7,13 @@ from courses.models import Course, Category
 def index(request):
     return render(request, 'learn/index.html', {})
 
+def aboutLearn(request):
+    return render(request, 'learn/about.html', {})
+
+def courses(request):
+    courses = Course.objects.all()
+    return render(request, 'learn/courses.html', {'courses': courses})
+
 
 class HomeListView(ListView):
     model = Course

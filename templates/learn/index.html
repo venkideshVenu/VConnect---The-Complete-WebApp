@@ -11,7 +11,11 @@
         <h2 data-aos="fade-up" data-aos-delay="100">Expand Your Knowledge,<br>Build Your Future</h2>
         <p data-aos="fade-up" data-aos-delay="200">Access expert-led courses in technology, business, arts, and more. Learn at your own pace, anywhere.</p>
         <div class="d-flex mt-4" data-aos="fade-up" data-aos-delay="300">
-          <a href="courses.html" class="btn-get-started">Start Learning</a>
+          {% if user.id is not none %}
+            <a href="{% url 'learning_centre:courses' %}" class="btn-get-started">Start Learning</a>
+          {% else %}
+          <a href="{% url 'login' %}" class="btn-get-started">Start Learning</a>
+          {% endif %}
         </div>
       </div>
     </section>
@@ -33,7 +37,7 @@
               <li><i class="bi bi-check-circle"></i> <span>Flexible learning schedule with 24/7 access to course materials</span></li>
               <li><i class="bi bi-check-circle"></i> <span>Interactive learning experience with hands-on projects, quizzes, and peer discussions</span></li>
             </ul>
-            <a href="#" class="read-more"><span>Discover More</span><i class="bi bi-arrow-right"></i></a>
+            <a href=" {% url 'learning_centre:about_learn' %}" class="read-more"><span>Discover More</span><i class="bi bi-arrow-right"></i></a>
           </div>
         </div>
       </div>
@@ -188,88 +192,31 @@
     <section id="courses" class="courses section">
       <div class="container section-title" data-aos="fade-up">
         <h2>Courses</h2>
-        <p>Featured Courses</p>
+        <p>Top Courses</p>
       </div>
 
       <div class="container">
         <div class="row">
+
+        {% for course in top_courses %}
+
           <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
             <div class="course-item">
-              <img src="{% static 'learn/img/course-1.jpg' %}" class="img-fluid" alt="...">
+              <img src="{{ course.thumbnail.url }}" class="img-fluid" alt="Course Thumbnail">
               <div class="course-content">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                  <p class="category">Programming</p>
-                  <p class="price">$99</p>
+                  <p class="category">{{ course.category }}</p>
+                  <p class="price">Rs. {{ course.price }}</p>
                 </div>
 
-                <h3><a href="course-details.html">Complete Python Programming Course</a></h3>
-                <p class="description">Learn Python from basics to advanced concepts with practical projects and real-world applications.</p>
+                <h3><a href="{% url 'courses:course-details' course.slug %}">{{ course.title }}</a></h3>
+                <p class="description">{{ course.short_description }}</p>
                 <div class="trainer d-flex justify-content-between align-items-center">
-                  <div class="trainer-profile d-flex align-items-center">
-                    <img src="{% static 'learn/img/trainers/trainer-1-2.jpg' %}" class="img-fluid" alt="">
-                    <a href="" class="trainer-link">Dr. Sarah Chen</a>
-                  </div>
-                  <div class="trainer-rank d-flex align-items-center">
-                    <i class="bi bi-person user-icon"></i>&nbsp;2150
-                    &nbsp;&nbsp;
-                    <i class="bi bi-heart heart-icon"></i>&nbsp;458
-                  </div>
                 </div>
               </div>
             </div>
           </div>
-
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="200">
-            <div class="course-item">
-              <img src="{% static 'learn/img/course-2.jpg' %}" class="img-fluid" alt="...">
-              <div class="course-content">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <p class="category">Data Science</p>
-                  <p class="price">$149</p>
-                </div>
-
-                <h3><a href="course-details.html">Data Science Fundamentals</a></h3>
-                <p class="description">Master data analysis, visualization, and machine learning with hands-on projects using real datasets.</p>
-                <div class="trainer d-flex justify-content-between align-items-center">
-                  <div class="trainer-profile d-flex align-items-center">
-                    <img src="{% static 'learn/img/trainers/trainer-2-2.jpg' %}" class="img-fluid" alt="">
-                    <a href="" class="trainer-link">Prof. Michael Park</a>
-                  </div>
-                  <div class="trainer-rank d-flex align-items-center">
-                    <i class="bi bi-person user-icon"></i>&nbsp;1840
-                    &nbsp;&nbsp;
-                    <i class="bi bi-heart heart-icon"></i>&nbsp;325
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0" data-aos="zoom-in" data-aos-delay="300">
-            <div class="course-item">
-              <img src="{% static 'learn/img/course-3.jpg' %}" class="img-fluid" alt="...">
-              <div class="course-content">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <p class="category">Web Development</p>
-                  <p class="price">$129</p>
-                </div>
-
-                <h3><a href="course-details.html">Full-Stack Web Development</a></h3>
-                <p class="description">Build modern web applications with HTML, CSS, JavaScript, React, and Node.js through practical projects.</p>
-                <div class="trainer d-flex justify-content-between align-items-center">
-                  <div class="trainer-profile d-flex align-items-center">
-                    <img src="{% static 'learn/img/trainers/trainer-3-2.jpg' %}" class="img-fluid" alt="">
-                    <a href="" class="trainer-link">Emma Rodriguez</a>
-                  </div>
-                  <div class="trainer-rank d-flex align-items-center">
-                    <i class="bi bi-person user-icon"></i>&nbsp;1620
-                    &nbsp;&nbsp;
-                    <i class="bi bi-heart heart-icon"></i>&nbsp;285
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        {% endfor %}
         </div>
       </div>
     </section>
