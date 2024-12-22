@@ -1,0 +1,64 @@
+{% extends 'learn/base.html' %}
+{% load static %}
+{% block body_block %}
+<link href="{% static 'learn/css/main.css' %}" rel="stylesheet">
+
+<!-- Page Title -->
+<div class="page-title" data-aos="fade">
+    <div class="heading">
+      <div class="container">
+        <div class="row d-flex justify-content-center text-center">
+          <div class="col-lg-8">
+            <h1>Search Results For "{{ request.GET.q }}"</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav class="breadcrumbs">
+      <div class="container">
+        <ol>
+          <li><a href="{% url 'learning_centre:home' %}">Home</a></li>
+          <li class="current">Search</li>
+        </ol>
+      </div>
+    </nav>
+  </div><!-- End Page Title -->
+
+  <!-- Courses Section -->
+  <section id="courses" class="courses section">
+
+    <div class="container">
+
+      <div class="row">
+
+        {% for course in courses %}
+
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
+            <div class="course-item">
+              <img src="{{ course.thumbnail.url }}" class="img-fluid" alt="Course Thumbnail">
+              <div class="course-content">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <p class="category">{{ course.category }}</p>
+                  <p class="price">Rs. {{ course.price }}</p>
+                </div>
+
+                <h3><a href="{% url 'courses:course-details' course.slug %}">{{ course.title }}</a></h3>
+                <p class="description">{{ course.short_description }}</p>
+                <div class="trainer d-flex justify-content-between align-items-center">
+                </div>
+              </div>
+            </div>
+          </div>
+          {% empty %}
+          <div class="align-items-center"><h3>Nothing found!</h3>
+        </div>
+          
+          {% endfor %}
+
+      </div>
+
+    </div>
+
+  </section><!-- /Courses Section -->
+
+{% endblock body_block %}
