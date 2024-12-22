@@ -1,160 +1,276 @@
-{% extends 'learn/layouts/base.html' %}
-
+{% extends "learn/base.html" %}
 {% load static %}
-{% load humanize %}
+{% block body_block %}
 
-{% block content %}
+<link href="{% static 'learn/css/main.css' %}" rel="stylesheet">
 
-    <section class="home-banner-area" style="background-image: url({% static 'images/learning.jpg' %})">
-        <div class="container-lg">
-            <div class="row">
-                <div class="col">
-                    <div class="home-banner-wrap">
-                        <h2>Best place for learning</h2>
-                        <p>Learn from any topic, choose from category</p>
-                        <form class="" action="{% url 'learning_centre:search' %}" method="get">
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="q"
-                                       placeholder="what do you want to learn?">
-                                <div class="input-group-append">
-                                    <button class="btn" type="submit"><i class="fas fa-search"></i></button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+    <!-- Hero Section -->
+    <section id="hero" class="hero section dark-background">
+      <img src="{% static 'learn/img/hero-bg.jpg' %}" alt="hero image" data-aos="fade-in">
+      <div class="container">
+        <h2 data-aos="fade-up" data-aos-delay="100">Expand Your Knowledge,<br>Build Your Future</h2>
+        <p data-aos="fade-up" data-aos-delay="200">Access expert-led courses in technology, business, arts, and more. Learn at your own pace, anywhere.</p>
+        <div class="d-flex mt-4" data-aos="fade-up" data-aos-delay="300">
+          <a href="courses.html" class="btn-get-started">Start Learning</a>
         </div>
-    </section>
-    <section class="home-fact-area">
-        <div class="container-lg">
-            <div class="row">
-                <div class="col-md-4 d-flex">
-                    <div class="home-fact-box mr-md-auto ml-auto mr-auto">
-                        <i class="fas fa-bullseye float-left"></i>
-                        <div class="text-box">
-                            <h4>{{ courses.count }} online courses</h4>
-                            <p>Explore A Variety Of Fresh Topics</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4 d-flex">
-                    <div class="home-fact-box mr-md-auto ml-auto mr-auto">
-                        <i class="fa fa-check float-left"></i>
-                        <div class="text-box">
-                            <h4>Expert Instruction</h4>
-                            <p>Find The Right Course For You</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4 d-flex">
-                    <div class="home-fact-box mr-md-auto ml-auto mr-auto">
-                        <i class="fa fa-clock float-left"></i>
-                        <div class="text-box">
-                            <h4>Lifetime Access</h4>
-                            <p>Learn On Your Schedule</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </section>
 
-    <section class="course-carousel-area">
-        <div class="container-lg">
-            <div class="row">
-                <div class="col">
-                    <h2 class="course-carousel-title">Top Courses</h2>
-                    <div class="course-carousel">
-                        {% for top_course in top_courses %}
-
-                            <div class="course-box-wrap">
-                                <a href="{% url 'courses:course-details' top_course.slug %}" class="has-popover">
-                                    <div class="course-box">
-                                        <div class="course-badge position best-seller">Best seller</div>
-                                        <div class="course-image">
-                                            <img style="height: 200px; width: 200px" src="{{ top_course.thumbnail.url }}" alt="" class="img-fluid">
-                                        </div>
-                                        <div class="course-details">
-                                            <h5 class="title">{{ top_course.title }}</h5>
-                                            <p class="instructors">{{ top_course.short_description }}</p>
-                                            <div class="rating">
-                                                <i class="fas fa-star filled"></i>
-                                                <i class="fas fa-star filled"></i>
-                                                <i class="fas fa-star filled"></i>
-                                                <i class="fas fa-star"></i>
-                                                <span class="d-inline-block average-rating">5</span>
-                                            </div>
-                                            <p class="price text-right">
-                                                ${{ top_course.price | floatformat:2 | intcomma }}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </a>
-
-                                <div class="webui-popover-content">
-                                    <div class="course-popover-content">
-
-                                        <div class="course-title">
-                                            <a href="#">{{ top_course.title }}</a>
-                                        </div>
-                                        <!-- <div class="course-category">
-                                            <span class="course-badge best-seller">Best seller</span>
-                                            in
-                                            <a href="">PHP</a>
-                                        </div> -->
-                                        <div class="course-meta">
-                                            <span class=""><i class="fas fa-play-circle"></i>
-                                                0 Lessons
-                                            </span>
-                                            <span class=""><i class="far fa-clock"></i>
-                                                2 Hours
-                                            </span>
-                                            <span class="">
-                                                <i class="fas fa-closed-captioning"></i>English
-                                            </span>
-                                        </div>
-                                        <div class="course-subtitle">{{ top_course.short_description }}</div>
-                                        <div class="what-will-learn">
-                                            <ul>
-                                                {{ top_course.outcomes }}
-                                            </ul>
-                                        </div>
-                                        <div class="popover-btns">
-                                            {#                                            @if(auth()->check() && \App\Enroll::whereCourseId($top_course->id)->first()#}
-                                            {#                                            !== null)#}
-                                            {#                                            <div class="purchased">#}
-                                            {#                                                <a href="#">Already purchased</a>#}
-                                            {#                                            </div>#}
-                                            {#                                            @elseif(Cart::get($top_course->id) !== null)#}
-                                            {#                                            <button type="button"#}
-                                            {#                                                    class="btn add-to-cart-btn addedToCart big-cart-button-1"#}
-                                            {#                                                    id="1">#}
-                                            {#                                                Added To Cart#}
-                                            {#                                            </button>#}
-                                            {#                                            @else#}
-                                            <button type="button"
-                                                    class="btn add-to-cart-btn addedToCart big-cart-button-1"
-                                                    id="1">
-                                                Add To Cart
-                                            </button>
-                                            {#                                            @endif#}
-                                            <button type="button"
-                                                    class="wishlist-btn"
-                                                    title="Add to wishlist"
-                                                    id="1"><i class="fas fa-heart"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
+    <!-- About Section -->
+    <section id="about" class="about section">
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-up" data-aos-delay="100">
+            <img src="{% static 'learn/img/about.jpg' %}" class="img-fluid" alt="">
+          </div>
+          <div class="col-lg-6 order-2 order-lg-1 content" data-aos="fade-up" data-aos-delay="200">
+            <h3>Transform Your Life Through Quality Education</h3>
+            <p class="fst-italic">
+              Our platform offers comprehensive learning experiences designed to help you achieve your educational and career goals.
+            </p>
+            <ul>
+              <li><i class="bi bi-check-circle"></i> <span>Expert instructors with real-world experience in their fields</span></li>
+              <li><i class="bi bi-check-circle"></i> <span>Flexible learning schedule with 24/7 access to course materials</span></li>
+              <li><i class="bi bi-check-circle"></i> <span>Interactive learning experience with hands-on projects, quizzes, and peer discussions</span></li>
+            </ul>
+            <a href="#" class="read-more"><span>Discover More</span><i class="bi bi-arrow-right"></i></a>
+          </div>
         </div>
+      </div>
     </section>
 
-{% endblock %}
+    <!-- Counts Section -->
+    <section id="counts" class="section counts light-background">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row gy-4">
+          <div class="col-lg-3 col-md-6">
+            <div class="stats-item text-center w-100 h-100">
+              <span data-purecounter-start="0" data-purecounter-end="50000" data-purecounter-duration="1" class="purecounter"></span>
+              <p>Active Learners</p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <div class="stats-item text-center w-100 h-100">
+              <span data-purecounter-start="0" data-purecounter-end="200" data-purecounter-duration="1" class="purecounter"></span>
+              <p>Expert Courses</p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <div class="stats-item text-center w-100 h-100">
+              <span data-purecounter-start="0" data-purecounter-end="100" data-purecounter-duration="1" class="purecounter"></span>
+              <p>Live Workshops</p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <div class="stats-item text-center w-100 h-100">
+              <span data-purecounter-start="0" data-purecounter-end="150" data-purecounter-duration="1" class="purecounter"></span>
+              <p>Expert Instructors</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Us Section -->
+    <section id="why-us" class="section why-us">
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="why-box">
+              <h3>Why Choose Our Learning Platform?</h3>
+              <p>
+                We offer a comprehensive learning experience with cutting-edge courses, expert instructors, and a supportive community. Our platform is designed to help you achieve your learning goals through practical, hands-on education that fits your schedule.
+              </p>
+              <div class="text-center">
+                <a href="#" class="more-btn"><span>Learn More</span> <i class="bi bi-chevron-right"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-8 d-flex align-items-stretch">
+            <div class="row gy-4" data-aos="fade-up" data-aos-delay="200">
+              <div class="col-xl-4">
+                <div class="icon-box d-flex flex-column justify-content-center align-items-center">
+                  <i class="bi bi-clipboard-data"></i>
+                  <h4>Interactive Learning</h4>
+                  <p>Engage with hands-on projects, quizzes, and real-world assignments</p>
+                </div>
+              </div>
+
+              <div class="col-xl-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="icon-box d-flex flex-column justify-content-center align-items-center">
+                  <i class="bi bi-gem"></i>
+                  <h4>Quality Content</h4>
+                  <p>Carefully curated courses designed by industry experts and educators</p>
+                </div>
+              </div>
+
+              <div class="col-xl-4" data-aos="fade-up" data-aos-delay="400">
+                <div class="icon-box d-flex flex-column justify-content-center align-items-center">
+                  <i class="bi bi-inboxes"></i>
+                  <h4>Flexible Learning</h4>
+                  <p>Learn at your own pace with 24/7 access to course materials</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features section">
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="features-item">
+              <i class="bi bi-mortarboard" style="color: #5fcf80;"></i>
+              <h3><a href="" class="stretched-link">Self-Paced Learning</a></h3>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="features-item">
+              <i class="bi bi-people" style="color: #5578ff;"></i>
+              <h3><a href="" class="stretched-link">Expert Instructors</a></h3>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="features-item">
+              <i class="bi bi-camera-video" style="color: #e80368;"></i>
+              <h3><a href="" class="stretched-link">HD Video Lessons</a></h3>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="400">
+            <div class="features-item">
+              <i class="bi bi-chat-dots" style="color: #e361ff;"></i>
+              <h3><a href="" class="stretched-link">Community Support</a></h3>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="500">
+            <div class="features-item">
+              <i class="bi bi-certificate" style="color: #47aeff;"></i>
+              <h3><a href="" class="stretched-link">Certificates</a></h3>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="600">
+            <div class="features-item">
+              <i class="bi bi-calendar4-week" style="color: #ffa76e;"></i>
+              <h3><a href="" class="stretched-link">Regular Updates</a></h3>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="700">
+            <div class="features-item">
+              <i class="bi bi-file-earmark-text" style="color: #11dbcf;"></i>
+              <h3><a href="" class="stretched-link">Practice Tests</a></h3>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="800">
+            <div class="features-item">
+              <i class="bi bi-phone" style="color: #4233ff;"></i>
+              <h3><a href="" class="stretched-link">Mobile Learning</a></h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section id="courses" class="courses section">
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Courses</h2>
+        <p>Featured Courses</p>
+      </div>
+
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
+            <div class="course-item">
+              <img src="{% static 'learn/img/course-1.jpg' %}" class="img-fluid" alt="...">
+              <div class="course-content">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <p class="category">Programming</p>
+                  <p class="price">$99</p>
+                </div>
+
+                <h3><a href="course-details.html">Complete Python Programming Course</a></h3>
+                <p class="description">Learn Python from basics to advanced concepts with practical projects and real-world applications.</p>
+                <div class="trainer d-flex justify-content-between align-items-center">
+                  <div class="trainer-profile d-flex align-items-center">
+                    <img src="{% static 'learn/img/trainers/trainer-1-2.jpg' %}" class="img-fluid" alt="">
+                    <a href="" class="trainer-link">Dr. Sarah Chen</a>
+                  </div>
+                  <div class="trainer-rank d-flex align-items-center">
+                    <i class="bi bi-person user-icon"></i>&nbsp;2150
+                    &nbsp;&nbsp;
+                    <i class="bi bi-heart heart-icon"></i>&nbsp;458
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="200">
+            <div class="course-item">
+              <img src="{% static 'learn/img/course-2.jpg' %}" class="img-fluid" alt="...">
+              <div class="course-content">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <p class="category">Data Science</p>
+                  <p class="price">$149</p>
+                </div>
+
+                <h3><a href="course-details.html">Data Science Fundamentals</a></h3>
+                <p class="description">Master data analysis, visualization, and machine learning with hands-on projects using real datasets.</p>
+                <div class="trainer d-flex justify-content-between align-items-center">
+                  <div class="trainer-profile d-flex align-items-center">
+                    <img src="{% static 'learn/img/trainers/trainer-2-2.jpg' %}" class="img-fluid" alt="">
+                    <a href="" class="trainer-link">Prof. Michael Park</a>
+                  </div>
+                  <div class="trainer-rank d-flex align-items-center">
+                    <i class="bi bi-person user-icon"></i>&nbsp;1840
+                    &nbsp;&nbsp;
+                    <i class="bi bi-heart heart-icon"></i>&nbsp;325
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0" data-aos="zoom-in" data-aos-delay="300">
+            <div class="course-item">
+              <img src="{% static 'learn/img/course-3.jpg' %}" class="img-fluid" alt="...">
+              <div class="course-content">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <p class="category">Web Development</p>
+                  <p class="price">$129</p>
+                </div>
+
+                <h3><a href="course-details.html">Full-Stack Web Development</a></h3>
+                <p class="description">Build modern web applications with HTML, CSS, JavaScript, React, and Node.js through practical projects.</p>
+                <div class="trainer d-flex justify-content-between align-items-center">
+                  <div class="trainer-profile d-flex align-items-center">
+                    <img src="{% static 'learn/img/trainers/trainer-3-2.jpg' %}" class="img-fluid" alt="">
+                    <a href="" class="trainer-link">Emma Rodriguez</a>
+                  </div>
+                  <div class="trainer-rank d-flex align-items-center">
+                    <i class="bi bi-person user-icon"></i>&nbsp;1620
+                    &nbsp;&nbsp;
+                    <i class="bi bi-heart heart-icon"></i>&nbsp;285
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock body_block %}

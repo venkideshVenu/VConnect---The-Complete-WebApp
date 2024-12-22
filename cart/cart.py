@@ -36,7 +36,7 @@ class Cart(object):
         course_slugs = self.cart.keys()
         courses = Course.objects.filter(slug__in=course_slugs)
         for course in courses:
-            self.cart[str(course.slug)]['course'] = course
+           self.cart[str(course.slug)]['course'] = course
 
         for item in self.cart.values():
             item['price'] = Decimal(item['price'])

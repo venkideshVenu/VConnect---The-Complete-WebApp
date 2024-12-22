@@ -39,3 +39,4 @@ def cart_checkout(request):
     messages.success(request, 'Successfully checked out!')
     carts.clear()
     return redirect(reverse_lazy('cart:cart_detail'))
+
