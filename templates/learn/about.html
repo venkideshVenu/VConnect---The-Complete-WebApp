@@ -30,7 +30,7 @@
       <div class="container">
         <div class="row gy-4">
           <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-up" data-aos-delay="100">
-            <img src="/api/placeholder/600/400" class="img-fluid rounded shadow" alt="Students learning online">
+            <img src="{% static "learn/img/studentlearning.jpg" %}" class="img-fluid rounded shadow" alt="Students learning online">
           </div>
           <div class="col-lg-6 order-2 order-lg-1 content" data-aos="fade-up" data-aos-delay="200">
             <h3>Our Mission</h3>
@@ -151,7 +151,7 @@
             <div class="swiper-slide">
               <div class="testimonial-wrap">
                 <div class="testimonial-item">
-                  <img src="/api/placeholder/100/100" class="testimonial-img rounded-circle" alt="">
+                  <img src="{% static 'learn/img/testimonials-3.jpg' %}" class="testimonial-img rounded-circle" alt="">
                   <h3>Sarah Johnson</h3>
                   <h4>Web Developer</h4>
                   <div class="stars">
@@ -169,7 +169,7 @@
             <div class="swiper-slide">
               <div class="testimonial-wrap">
                 <div class="testimonial-item">
-                  <img src="/api/placeholder/100/100" class="testimonial-img rounded-circle" alt="">
+                  <img src="{% static 'learn/img/testimonials-1.jpg' %}" class="testimonial-img rounded-circle" alt="">
                   <h3>Michael Chen</h3>
                   <h4>Data Scientist</h4>
                   <div class="stars">
@@ -196,7 +196,7 @@
           <div class="col-lg-8">
             <h3>Start Your Learning Journey Today</h3>
             <p>Join millions of learners worldwide and transform your career with our industry-leading courses.</p>
-            <a href="#" class="btn btn-success btn-lg rounded-pill">Browse Courses</a>
+            <a href="{% url 'learning_centre:courses' %}" class="btn btn-success btn-lg rounded-pill">Browse Courses</a>
           </div>
         </div>
       </div>

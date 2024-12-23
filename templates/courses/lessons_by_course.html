@@ -163,29 +163,6 @@
   }
 </style>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const videoIframe = document.getElementById('video-iframe');
-    const lessonLinks = document.querySelectorAll('.lesson-link');
-    
-    function transformVideoUrl(url) {
-        if (url.includes('youtube.com/watch?v=')) {
-            const videoId = url.split('watch?v=')[1];
-            return `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0`;
-        }
-        return url;
-    }
-    
-    lessonLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            document.querySelector('.active-lesson')?.classList.remove('active-lesson');
-            this.closest('.lesson-item').classList.add('active-lesson');
-            window.history.pushState({}, '', this.href);
-            videoIframe.src = transformVideoUrl(this.getAttribute('data-video-url'));
-        });
-    });
-});
-</script>
+
 
 {% endblock %}
