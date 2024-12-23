@@ -57,7 +57,7 @@ class EnrolledCoursesListView(ListView):
     template_name = 'learn/courses/enrolled_courses.html'
     context_object_name = 'enrolls'
 
-    @method_decorator(login_required(login_url=reverse_lazy('accounts:login')))
+    @method_decorator(login_required(login_url=reverse_lazy('login')))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(self.request, *args, **kwargs)
 
@@ -76,7 +76,7 @@ class StartLessonView(DetailView):
     template_name = 'learn/lessons/lessons_by_course.html'
     context_object_name = 'lesson'
 
-    @method_decorator(login_required(login_url=reverse_lazy('accounts:login')))
+    @method_decorator(login_required(login_url=reverse_lazy('login')))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(self.request, *args, **kwargs)
 
@@ -110,7 +110,7 @@ class LessonView(DetailView):
     template_name = 'learn/lessons/lessons_by_course.html'
     context_object_name = 'lesson'
 
-    @method_decorator(login_required(login_url=reverse_lazy('accounts:login')))
+    @method_decorator(login_required(login_url=reverse_lazy('login')))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(self.request, *args, **kwargs)
 

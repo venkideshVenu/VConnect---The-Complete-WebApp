@@ -151,3 +151,4 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
+CART_SESSION_SLUG = 'cart'

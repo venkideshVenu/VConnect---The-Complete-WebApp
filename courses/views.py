@@ -9,7 +9,7 @@ from learning_centre.models import Enroll
 
 class CourseDetailView(DetailView):
     model = Course
-    template_name = 'courses/details.html'
+    template_name = 'courses/course_detail.html'
     context_object_name = 'course'
 
     def get_object(self, queryset=None):
