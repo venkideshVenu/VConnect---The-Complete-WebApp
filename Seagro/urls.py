@@ -27,5 +27,5 @@ urlpatterns = [
     path('learn/', include('learning_centre.urls')),
     path('courses/', include('courses.urls')),
     path('cart/', include('cart.urls')),
-    path('orders/', include('tasks.urls')),
+    path('tasks/', include('tasks.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

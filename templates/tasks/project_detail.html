@@ -1,0 +1,115 @@
+{% extends 'tasks/base.html' %}
+
+{% block content %}
+<div class="bg-white rounded-lg shadow-md p-6">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold">{{ project.name }}</h1>
+        <div class="space-x-4">
+            <a href="{% url 'tasks:project_edit' project.pk %}" 
+               class="inline-block bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                Edit Project
+            </a>
+            <a href="{% url 'tasks:task_create' project.pk %}" 
+               class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                New Task
+            </a>
+        </div>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        {% for status, _ in task_status_choices %}
+        <div class="bg-gray-100 p-4 rounded">
+            <h2 class="font-semibold mb-4">{{ status|title }}</h2>
+            {% for task in tasks %}
+                {% if task.status == status %}
+                <div class="bg-white p-4 rounded shadow mb-4" draggable="true" data-task-id="{{ task.id }}">
+                    <div class="flex justify-between items-start">
+                        <h3 class="font-medium">{{ task.title }}</h3>
+                        <a href="{% url 'tasks:task_edit' task.pk %}" class="text-blue-500 hover:text-blue-700">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                            </svg>
+                        </a>
+                    </div>
+                    <p class="text-sm text-gray-600">Due: {{ task.due_date|date:"M d, Y" }}</p>
+                    <div class="mt-2 flex justify-between items-center">
+                        <span class="inline-block px-2 py-1 text-sm rounded
+                            {% if task.priority == 'high' %}bg-red-100 text-red-800
+                            {% elif task.priority == 'medium' %}bg-yellow-100 text-yellow-800
+                            {% else %}bg-green-100 text-green-800{% endif %}">
+                            {{ task.priority|title }}
+                        </span>
+                        <span class="text-sm text-gray-500">{{ task.assigned_to.username }}</span>
+                    </div>
+                    <a href="{% url 'tasks:task_detail' task.pk %}" 
+                       class="mt-2 text-blue-500 text-sm hover:text-blue-700 block">
+                        View Details
+                    </a>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const tasks = document.querySelectorAll('[draggable="true"]');
+    const columns = document.querySelectorAll('.bg-gray-100');
+
+    tasks.forEach(task => {
+        task.addEventListener('dragstart', handleDragStart);
+    });
+
+    columns.forEach(column => {
+        column.addEventListener('dragover', handleDragOver);
+        column.addEventListener('drop', handleDrop);
+    });
+
+    function handleDragStart(e) {
+        e.dataTransfer.setData('text/plain', e.target.dataset.taskId);
+    }
+
+    function handleDragOver(e) {
+        e.preventDefault();
+    }
+
+    function handleDrop(e) {
+        e.preventDefault();
+        const taskId = e.dataTransfer.getData('text/plain');
+        const newStatus = e.target.closest('.bg-gray-100').querySelector('h2').textContent.toLowerCase();
+        
+        fetch(`/tasks/${taskId}/update-status/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: `status=${newStatus}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                location.reload();
+            }
+        });
+    }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
+</script>
+{% endblock %}

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'courses',
     'cart',
     'tasks',
+    'widget_tweaks',
 ]
 
 AUTH_USER_MODEL = 'core.CustomUser'
