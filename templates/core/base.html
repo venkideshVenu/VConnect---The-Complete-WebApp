@@ -20,7 +20,52 @@
         
         {% endblock body_block %}
 
+              <!-- Floating Home Button -->
+      <a href="{% url 'homepage' %}" class="float-home">
+        <i class="bi bi-house-fill"></i>
+      </a>
 
+      <style>
+      .float-home {
+        position: fixed;
+        width: 50px;
+        height: 50px;
+        bottom: 40px;
+        left: 40px;
+        background-color:rgb(117, 76, 214);
+        color: #ffffff;
+        border-radius: 50%;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        z-index: 1000;
+      }
+
+      .float-home i {
+        font-size: 20px;
+      }
+
+      .float-home:hover {
+        background-color:rgb(30, 120, 209);
+        color: #ffffff;
+        transform: scale(1.1);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Media query for mobile responsiveness */
+      @media (max-width: 768px) {
+        .float-home {
+            width: 45px;
+            height: 45px;
+            bottom: 20px;
+            left: 20px;
+        }
+      }
+      </style>
     <!-- JS -->
     <script src="{% static 'core/vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'core/js/main.js' %}"></script>

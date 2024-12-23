@@ -1,117 +1,60 @@
-{% extends 'layouts/base.html' %}
-
+{% extends "learn/base.html" %}
 {% load static %}
+{% block body_block %}
+<link href="{% static 'learn/css/main.css' %}" rel="stylesheet">
 
-{% block content %}
-
-    <section class="category-header-area">
-        <div class="container-lg">
-            <div class="row">
-                <div class="col">
-                    <nav>
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <a href="/">
-                                    <i class="fas fa-home"></i>
-                                </a>
-                            </li>
-                            <li class="breadcrumb-item">
-                                <a href="#">
-                                    {{ category.title }}
-                                </a>
-                            </li>
-                        </ol>
-                    </nav>
-                    <h1 class="category-name">
-                        {{ category.title }}
-                    </h1>
-                </div>
-            </div>
+<!-- Page Title -->
+   <div class="page-title" data-aos="fade">
+    <div class="heading">
+      <div class="container">
+        <div class="row d-flex justify-content-center text-center">
+          <div class="col-lg-8">
+            <h1>{{ category.title }}</h1>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+    <nav class="breadcrumbs">
+      <div class="container">
+        <ol>
+          <li><a href="index.html">Home</a></li>
+          <li class="current">Courses By Category</li>
+        </ol>
+      </div>
+    </nav>
+  </div><!-- End Page Title -->
 
-    <section class="category-course-list-area">
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <div class="category-filter-box filter-box clearfix">
-                        <a href="" class="btn btn-outline-secondary all-btn">All</a>
+  <!-- Courses Section -->
+  <section id="courses" class="courses section">
 
-                        <div class="btn-group category-list">
-                            <a class="btn btn-outline-secondary dropdown-toggle" href="#" data-toggle="dropdown">
-                                Category List
-                            </a>
-                            <div class="dropdown-menu">
-                                {% for category in categories %}
-                                    <a class="dropdown-item" href="{% url 'courses:course-by-category' category.slug %}">
-                                        {{ category.title }}
-                                    </a>
-                                {% endfor %}
-                            </div>
-                        </div>
+    <div class="container">
 
-                    </div>
-                    <div class="category-course-list">
-                        <ul>
-                            {% for course in courses %}
-                                <li>
-                                    <div class="course-box-2">
-                                        <div class="course-image">
-                                            <a href="{% url 'courses:course-details' course.slug %}">
-                                                <img src="{% static 'images/learning.jpg' %}" alt="" class="img-fluid">
-                                            </a>
-                                        </div>
-                                        <div class="course-details">
-                                            <a href="{% url 'courses:course-details' course.slug %}"
-                                               class="course-title">{{ course.title }}</a>
-                                            {#                                            {{--<a href="" class="course-instructor">--}}#}
-                                            {#                                                {{--<span class="instructor-name">first_name last_name</span>--}}#}
-                                            {#                                                {{-----}}#}
-                                            {#                                            {{--</a>--}}#}
-                                            <div class="course-subtitle">
-                                                {{ course.short_description }}
-                                            </div>
-                                            <div class="course-meta">
-                                                <span class="">
-                                                    <i class="fas fa-play-circle"></i>
-                                                    {{ course.lessons.count }} Lessons
-                                                </span>
-                                                <span class="">
-                                                    <i class="far fa-clock"></i>
-                                                    3 hours
-                                                </span>
-                                                <span class="">
-                                                    <i class="fas fa-closed-captioning"></i>English
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="course-price-rating">
-                                            <div class="course-price">
-                                                <span class="current-price">${{ course.price }}</span>
-                                                {#                                                {{--<span class="original-price">$300</span>--}}#}
-                                            </div>
-                                            <div class="rating">
-                                                <i class="fas fa-star filled"></i>
-                                                <i class="fas fa-star filled"></i>
-                                                <i class="fas fa-star filled"></i>
-                                                <i class="fas fa-star"></i>
-                                                <span class="d-inline-block average-rating">5</span>
-                                            </div>
-                                            <div class="rating-number">
-                                                33 Ratings
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    <nav>
-                        {#                        {{ $courses->links() }}#}
-                    </nav>
+      <div class="row">
+
+        {% for course in courses %}
+
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
+            <div class="course-item">
+              <img src="{{ course.thumbnail.url }}" class="img-fluid" alt="Course Thumbnail">
+              <div class="course-content">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <p class="category">{{ course.category }}</p>
+                  <p class="price">Rs. {{ course.price }}</p>
                 </div>
-            </div>
-        </div>
-    </section>
 
-{% endblock %}
+                <h3><a href="{% url 'courses:course-details' course.slug %}">{{ course.title }}</a></h3>
+                <p class="description">{{ course.short_description }}</p>
+                <div class="trainer d-flex justify-content-between align-items-center">
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+
+      </div>
+
+    </div>
+
+  </section><!-- /Courses Section -->
+
+{% endblock body_block %}

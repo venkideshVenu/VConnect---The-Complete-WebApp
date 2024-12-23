@@ -66,12 +66,9 @@
                      <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Categories</a>
                         <div class="dropdown-menu">
-                           <a href="#" class="dropdown-item">Development</a>
-                           <a href="#" class="dropdown-item">Business</a>
-                           <a href="#" class="dropdown-item">Design</a>
-                           <a href="#" class="dropdown-item">Marketing</a>
-                           <a href="#" class="dropdown-item">IT & Software</a>
-                        </div>
+                           {% for c in categories %}
+                           <a href="{% url 'courses:course-by-category' c.slug %}" class="dropdown-item">{{ c.title }}</a>
+                           {% endfor%}
                      </div>
                      <a href="{% url 'learning_centre:courses'  %}" class="nav-item nav-link">All Courses</a>
                      <a href="instructors.html" class="nav-item nav-link">Instructors</a>
@@ -88,7 +85,13 @@
                      <div class="nav-item dropdown me-3">
                         <a href="#" class="nav-link" data-bs-toggle="dropdown">
                         <i class="fas fa-shopping-cart"></i>
-                        <span class="badge bg-success rounded-pill">0</span>
+                        {% with total_items=cart|length %}
+                           {% if cart|length > 0 %}
+                           <span class="badge bg-success rounded-pill">{{ cart|length }}</span>
+                           {% else %}
+                           <span class="badge bg-success rounded-pill">0</span>
+                           {% endif %}
+                        {% endwith %}
                         </a>
                         <div class="dropdown-menu dropdown-menu-end" style="min-width: 280px;">
                            <div class="px-3 py-3">
@@ -107,10 +110,7 @@
                                           </a>
                                        </div>
                                        <div class="item-details">
-                                          {#                                    <a href="{% url "cart:cart_detail" %}" style="color: #ffffff">#}
-                                          {#                                        {{ total_items }} item {{ total_items|pluralize }},#}
-                                          {#                                        Kshs. {{ cart.get_total_price }}#}
-                                          {#                                    </a>#}
+
                                           <a href="#">
                                              <div class="course-name">{{ course.title }}</div>
                                              {#                                                
@@ -118,8 +118,7 @@
                                              #}
                                              <div class="item-price">
                                                 <span class="current-price">${{ course.price }}</span>
-                                                {#                                    {{ --<span class="original-price">$300</span>--}}#}
-                                             </div>
+                                                                                            </div>
                                           </a>
                                        </div>
                                     </div>
