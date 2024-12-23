@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'learning_centre',
     'courses',
     'cart',
+    'tasks',
 ]
 
 AUTH_USER_MODEL = 'core.CustomUser'
