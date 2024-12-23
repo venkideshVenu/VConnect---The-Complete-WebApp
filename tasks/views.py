@@ -105,3 +105,18 @@ def task_edit(request, pk):
     else:
         form = TaskForm(instance=task)
     return render(request, 'tasks/task_form.html', {'form': form, 'action': 'Edit'})
+
+
+@login_required
+def project_toggle_complete(request, pk):
+    project = get_object_or_404(Project, pk=pk, owner=request.user)
+    project.mark_completed() if not project.is_completed else setattr(project, 'is_completed', False)
+    project.save()
+    return redirect('tasks:project_detail', pk=pk)
+
+@login_required
+def task_toggle_complete(request, pk):
+    task = get_object_or_404(Task, pk=pk)
+    task.mark_completed() if not task.is_completed else setattr(task, 'is_completed', False)
+    task.save()
+    return redirect('tasks:task_detail', pk=pk)

@@ -4,6 +4,13 @@
 <div class="bg-white rounded-lg shadow-md p-6">
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold">{{ project.name }}</h1>
+        <form method="POST" action="{% url 'tasks:project_toggle_complete' project.pk %}" class="inline">
+            {% csrf_token %}
+            <button type="submit" 
+                class="px-3 py-1 rounded text-sm {% if project.is_completed %}bg-green-500{% else %}bg-gray-500{% endif %} text-white">
+                {{ project.is_completed|yesno:"Completed,Mark Complete" }}
+            </button>
+        </form>
         <div class="space-x-4">
             <a href="{% url 'tasks:project_edit' project.pk %}" 
                class="inline-block bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
