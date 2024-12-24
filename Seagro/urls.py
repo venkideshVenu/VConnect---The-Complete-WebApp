@@ -28,4 +28,6 @@ urlpatterns = [
     path('courses/', include('courses.urls')),
     path('cart/', include('cart.urls')),
     path('tasks/', include('tasks.urls')),
+    path('jobprofile/', include('jobprofile.urls')),
+    path('jobs/', include('news.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

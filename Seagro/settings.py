@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'cart',
     'tasks',
     'widget_tweaks',
-    'job_profile',
+    'jobprofile',
 ]
 
 AUTH_USER_MODEL = 'core.CustomUser'
@@ -61,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'jobprofile.middleware.ProfileCompletionMiddleware',
 ]
 
 ROOT_URLCONF = 'Seagro.urls'

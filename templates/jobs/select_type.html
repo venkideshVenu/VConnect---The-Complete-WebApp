@@ -1,0 +1,21 @@
+{% extends 'jobs/base.html' %}
+
+{% block body_block %}
+<div class="container mx-auto px-4 py-8">
+    <h2 class="text-2xl font-bold mb-6">Select Account Type</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <a href="{% url 'jobprofile:complete_profile' %}?type=employee" 
+           class="p-6 border rounded-lg hover:shadow-lg transition-shadow">
+            <h3 class="text-xl font-semibold mb-3">Job Seeker</h3>
+            <p>Looking for job opportunities? Create your profile as a job seeker.</p>
+        </a>
+        
+        <a href="{% url 'jobprofile:complete_profile' %}?type=employer"
+           class="p-6 border rounded-lg hover:shadow-lg transition-shadow">
+            <h3 class="text-xl font-semibold mb-3">Employer</h3>
+            <p>Want to post jobs and find talent? Create your profile as an employer.</p>
+        </a>
+    </div>
+</div>
+{% endblock %}
