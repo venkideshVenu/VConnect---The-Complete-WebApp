@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'cart',
     'tasks',
     'widget_tweaks',
+    'job_profile',
 ]
 
 AUTH_USER_MODEL = 'core.CustomUser'
