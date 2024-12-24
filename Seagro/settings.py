@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'tasks',
     'widget_tweaks',
     'jobprofile',
+    'jobs',
 ]
 
 AUTH_USER_MODEL = 'core.CustomUser'
