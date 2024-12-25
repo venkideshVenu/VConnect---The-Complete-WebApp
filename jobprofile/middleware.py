@@ -2,9 +2,6 @@ from django.shortcuts import redirect
 from django.urls import resolve
 
 class ProfileCompletionMiddleware:
-    """
-    Middleware to ensure the user's profile is complete before accessing job-related pages.
-    """
     def __init__(self, get_response):
         self.get_response = get_response
 
@@ -13,11 +10,14 @@ class ProfileCompletionMiddleware:
             excluded_urls = ['select_type', 'complete_profile']
             current_url = resolve(request.path).url_name
 
+            # Skip the middleware logic for excluded URLs
+            if current_url in excluded_urls:
+                return self.get_response(request)
+
             try:
-                # Check if the user has a Profile
                 profile = request.user.job_profile
 
-                # Redirect to type selection if account type is not set
+                # Redirect to type selection if no type is selected
                 if profile.is_employer is None:
                     return redirect('jobprofile:select_type')
 
@@ -26,14 +26,13 @@ class ProfileCompletionMiddleware:
                 if profile.is_employer:
                     required_fields.append('company_name')
 
-                if any(not getattr(profile, field, None) for field in required_fields):
-                    if current_url not in excluded_urls:
-                        return redirect('jobprofile:complete_profile')
+                if any(not getattr(profile, field) for field in required_fields):
+                    request.user.mark_profile_section_complete('profile', False)
+                    return redirect('jobprofile:complete_profile')
+                else:
+                    request.user.mark_profile_section_complete('profile', True)
 
             except AttributeError:
-                # Redirect if the profile is missing
                 return redirect('jobprofile:select_type')
 
-        # Proceed with the normal request flow
-        response = self.get_response(request)
-        return response
+        return self.get_response(request)

@@ -8,22 +8,23 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = [
-            'is_employer', 'gender', 'education', 'short_intro', 'bio', 
+            'gender', 'education', 'short_intro', 'bio', 
             'location', 'social_github', 'social_linkedin', 'social_twitter', 
             'social_website', 'social_youtube'
         ]
-        widgets = {
-            'is_employer': forms.Select(choices=[
-                (None, "Select Role"),
-                (True, "Employer"),
-                (False, "Job Seeker")
-            ])
-        }
-        
+
     def __init__(self, *args, **kwargs):
+        is_employer = kwargs.pop('is_employer', None)
         super().__init__(*args, **kwargs)
+        if is_employer:
+            self.fields['company_name'] = forms.CharField(
+                max_length=200,
+                required=True,
+                widget=forms.TextInput(attrs={'class': 'profile-input'}),
+            )
         for field in self.fields.values():
-            field.widget.attrs['class'] = 'input'
+            field.widget.attrs['class'] = 'profile-input'
+
 
 class SkillForm(forms.ModelForm):
     class Meta:

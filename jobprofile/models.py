@@ -5,7 +5,7 @@ import uuid
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='job_profile')
-    is_employer = models.BooleanField(default=False)
+    is_employer = models.BooleanField(null=True, blank=True)
     gender_choices = [("F", "Female"), ("M", "Male")]
     gender = models.CharField(choices=gender_choices, max_length=5, null=True, blank=True)
     education_choices = [

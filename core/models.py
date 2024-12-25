@@ -13,12 +13,10 @@ class CustomUser(AbstractUser):
     # Add fields for profile completion tracking
     profile_completed = models.JSONField(default=dict, blank=True)
     
-    def mark_profile_section_complete(self, section):
-        """
-        Mark a specific profile section as complete
-        """
+    def mark_profile_section_complete(self, section, status=True):
+        """Mark a specific profile section as complete/incomplete"""
         completed = self.profile_completed or {}
-        completed[section] = True
+        completed[section] = status
         self.profile_completed = completed
         self.save()
     
