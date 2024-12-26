@@ -16,10 +16,15 @@ def index(request):
 
 def jobs(request):
     jobs, search_query = searchJobs(request)
-    custom_range, jobs = paginateJobs(request, jobs, 6)
+    job_count = jobs.count()
+    
+    context = {
+        'jobs': jobs, 
+        'search_query': search_query,
+        'job_count': job_count
+    }
+    return render(request, 'jobs/jobs_listing.html', context)
 
-    context = {'jobs': jobs, 'search_query': search_query, 'custom_range': custom_range}
-    return render(request, 'jobs/jobs.html', context)
 
 def job(request, pk):
     job = get_object_or_404(JobModel, id=pk)
@@ -198,3 +203,5 @@ def appliedApplicantsView(request, pk):
 
     context = {'applicant': applicant}
     return render(request, 'jobs/applied_applicant.html', context)
+
+

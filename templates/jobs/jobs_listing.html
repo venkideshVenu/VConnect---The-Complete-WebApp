@@ -1,0 +1,154 @@
+{% extends "jobs/base.html" %}
+{% load static %}
+
+{% block body_block %}
+
+<link rel="stylesheet" href="{% static 'jobs/css/flaticon.css' %}">
+
+<link rel="stylesheet" href="{% static 'jobs/css/style.css' %}">
+<!-- Hero Area Start-->
+<div class="slider-area">
+    <div class="single-slider section-overly slider-height2 d-flex align-items-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="hero-cap text-center">
+                        <h2>Find your dream job</h2>
+                        
+                        <!-- Search Form -->
+                        <form action="{% url 'jobs:jobs' %}" method="GET" class="mt-4">
+                            <div class="input-group mb-3 w-75 mx-auto">
+                                <input type="text" name="search_query" class="form-control" placeholder="Search jobs..." value="{{ search_query }}">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="submit">Search</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Hero Area End -->
+
+<!-- Job Listing Area -->
+<div class="job-listing-area pt-120 pb-120">
+    <div class="container">
+        <div class="row">
+            <!-- Left content -->
+            <div class="col-xl-3 col-lg-3 col-md-4">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="small-section-tittle2 mb-45">
+                            <h4>Filter Jobs</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filter Form -->
+                <form action="{% url 'jobs:jobs' %}" method="GET">
+                    <!-- Job Type Filter -->
+                    <div class="job-category-listing mb-50">
+                        <div class="single-listing">
+                            <div class="small-section-tittle2">
+                                <h4>Job Type</h4>
+                            </div>
+                            <div class="select-Categories pt-20">
+                                <label class="container">
+                                    <input type="radio" name="job_type" value="1" {% if request.GET.job_type == '1' %}checked{% endif %}>
+                                    Full Time
+                                </label>
+                                <label class="container">
+                                    <input type="radio" name="job_type" value="2" {% if request.GET.job_type == '2' %}checked{% endif %}>
+                                    Part Time
+                                </label>
+                                <label class="container">
+                                    <input type="radio" name="job_type" value="3" {% if request.GET.job_type == '3' %}checked{% endif %}>
+                                    Internship
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Location Filter -->
+                        <div class="single-listing mt-4">
+                            <div class="small-section-tittle2">
+                                <h4>Location</h4>
+                            </div>
+                            <div class="select-job-items2">
+                                <input type="text" name="location" class="form-control" placeholder="Enter location" value="{{ request.GET.location }}">
+                            </div>
+                        </div>
+
+                        <!-- Salary Range Filter -->
+                        <div class="single-listing mt-4">
+                            <div class="small-section-tittle2">
+                                <h4>Salary Range</h4>
+                            </div>
+                            <div class="select-job-items2">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <input type="number" name="salary_min" class="form-control" placeholder="Min" value="{{ request.GET.salary_min }}">
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="number" name="salary_max" class="form-control" placeholder="Max" value="{{ request.GET.salary_max }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+                            <a href="{% url 'jobs:jobs' %}" class="btn btn-outline-secondary w-100 mt-2">Clear Filters</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Right content -->
+            <div class="col-xl-9 col-lg-9 col-md-8">
+                <!-- Count of Job list Start -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="count-job mb-35">
+                            <span>{{ job_count }} Jobs found</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Job Listings -->
+                {% for job in jobs %}
+                <div class="single-job-items mb-30">
+                    <div class="job-items">
+                        <div class="company-img">
+                            {% if job.imageURL %}
+                                <img src="{{ job.imageURL }}" alt="{{ job.title }}">
+                            {% endif %}
+                        </div>
+                        <div class="job-tittle job-tittle2">
+                            <a href="{% url 'jobs:job' job.id %}">
+                                <h4>{{ job.title }}</h4>
+                            </a>
+                            <ul>
+                                <li>{{ job.owner.name }}</li>
+                                <li><i class="fas fa-map-marker-alt"></i>{{ job.location }}</li>
+                                <li>{{ job.salary_range }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="items-link items-link2 f-right">
+                        <a href="{% url 'jobs:job' job.id %}">{{ job.get_type_display }}</a>
+                        <span>{{ job.created|timesince }} ago</span>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center py-5">
+                    <h3>No jobs found</h3>
+                    <p>Try adjusting your search criteria</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
