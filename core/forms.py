@@ -169,3 +169,143 @@ class UserUpdateForm(forms.ModelForm):
                 raise forms.ValidationError("Image file too large ( > 2MB )")
             return image
         return self.instance.profile_picture
+    
+
+
+# core/forms.py
+
+from django import forms
+from .models import CustomUser
+from jobprofile.models import Profile
+
+class CombinedProfileForm(forms.ModelForm):
+    # CustomUser fields
+    first_name = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your first name'
+        })
+    )
+    last_name = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your last name'
+        })
+    )
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your email'
+        })
+    )
+    profile_picture = forms.ImageField(
+        required=False,
+        widget=forms.FileInput(attrs={
+            'class': 'form-control',
+            'accept': 'image/*'
+        })
+    )
+
+    # Profile fields
+    gender = forms.ChoiceField(
+        choices=[("", "Select Gender")] + Profile.gender_choices,
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    education = forms.ChoiceField(
+        choices=[("", "Select Education")] + Profile.education_choices,
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    location = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your location'
+        })
+    )
+    bio = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'placeholder': 'Tell us about yourself',
+            'rows': 4
+        })
+    )
+    short_intro = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Brief introduction'
+        })
+    )
+    company_name = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter company name'
+        })
+    )
+    social_github = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Github profile URL'
+        })
+    )
+    social_linkedin = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'LinkedIn profile URL'
+        })
+    )
+    social_twitter = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Twitter profile URL'
+        })
+    )
+    social_youtube = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'YouTube channel URL'
+        })
+    )
+    social_website = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Personal website URL'
+        })
+    )
+
+    class Meta:
+        model = CustomUser
+        fields = ['first_name', 'last_name', 'email', 'profile_picture']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and hasattr(self.instance, 'job_profile'):
+            # Populate Profile model fields
+            profile = self.instance.job_profile
+            for field in Profile._meta.fields:
+                if field.name in self.fields:
+                    self.fields[field.name].initial = getattr(profile, field.name)
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        if commit:
+            user.save()
+            profile, created = Profile.objects.get_or_create(user=user)
+            
+            # Update Profile fields
+            profile_fields = [f.name for f in Profile._meta.fields]
+            for field_name, value in self.cleaned_data.items():
+                if field_name in profile_fields:
+                    setattr(profile, field_name, value)
+            
+            profile.save()
+        return user

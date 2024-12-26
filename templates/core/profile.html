@@ -1,50 +1,125 @@
-{% extends 'core/base.html' %}
+{% extends 'home/base.html' %}
+{% load static %}
 
 {% block body_block %}
-<div class="container mt-5">
+<div class="container py-5">
     <div class="row">
-        <div class="col-md-8 offset-md-2">
+        <!-- Left Section - Basic Info -->
+        <div class="col-md-4">
             <div class="card">
-                <div class="card-header">
-                    <h2>Profile</h2>
-                </div>
-                <div class="card-body">
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }}">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
+                <div class="card-body text-center">
+                    <img src="{{ user.profile_picture.url }}" alt="Profile Picture" 
+                         class="rounded-circle img-fluid mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                    <h4>{{ user.get_full_name }}</h4>
+                    <p class="text-muted">{{ user.email }}</p>
+                    {% if user.job_profile.is_employer %}
+                        <span class="badge bg-primary">Employer</span>
+                    {% else %}
+                        <span class="badge bg-success">Employee</span>
                     {% endif %}
                     
-                    <div class="row">
-                        <div class="col-md-4 text-center mb-4">
-                            <div class="profile-picture-container">
-                                {% if user.profile_picture %}
-                                    <img src="{{ user.profile_picture.url }}" alt="Profile Picture" 
-                                         class="img-fluid rounded-circle" style="width: 200px; height: 200px; object-fit: cover;">
-                                {% else %}
-                                    <img src="{{ MEDIA_URL }}profile_pics/default.png" alt="Default Profile Picture" 
-                                         class="img-fluid rounded-circle" style="width: 200px; height: 200px; object-fit: cover;">
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="user-info">
-                                <p><strong>Username:</strong> {{ user.username }}</p>
-                                <p><strong>Email:</strong> {{ user.email }}</p>
-                                <p><strong>First Name:</strong> {{ user.first_name }}</p>
-                                <p><strong>Last Name:</strong> {{ user.last_name }}</p>
-                            </div>
-                        </div>
+                    {% if user == request.user %}
+                    <div class="mt-3">
+                        <a href="{% url 'profile_update' %}" class="btn btn-primary">Edit Profile</a>
                     </div>
-                    
-                    <div class="mt-4 text-center">
-                        <a href="{% url 'profile_update' %}" class="btn btn-primary">Update Profile</a>
-                        <a href="{% url 'password_change' %}" class="btn btn-secondary">Change Password</a>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if not profile.is_employer and skills %}
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">Skills</h5>
+                    {% for skill in skills %}
+                    <span class="badge bg-secondary me-1">{{ skill.name }}</span>
+                    {% endfor %}
+                    {% if user == request.user %}
+                    <div class="mt-2">
+                        <a href="{% url 'jobprofile:add_skill' %}" class="btn btn-sm btn-outline-primary">Add Skill</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Right Section - Profile Details -->
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Personal Information</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>First Name:</strong> {{ user.first_name }}</p>
+                            <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+                            <p><strong>Email:</strong> {{ user.email }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Gender:</strong> {{ profile.get_gender_display|default:"Not specified" }}</p>
+                            <p><strong>Location:</strong> {{ profile.location|default:"Not specified" }}</p>
+                            <p><strong>Education:</strong> {{ profile.get_education_display|default:"Not specified" }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            {% if profile.is_employer %}
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Company Information</h5>
+                    <p><strong>Company Name:</strong> {{ profile.company_name|default:"Not specified" }}</p>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">About</h5>
+                    <p><strong>Short Introduction:</strong></p>
+                    <p>{{ profile.short_intro|default:"No introduction provided" }}</p>
+                    <p><strong>Bio:</strong></p>
+                    <p>{{ profile.bio|default:"No bio provided" }}</p>
+                </div>
+            </div>
+
+            {% if profile.social_github or profile.social_twitter or profile.social_linkedin or profile.social_youtube or profile.social_website %}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Social Links</h5>
+                    <div class="d-flex flex-wrap gap-3">
+                        {% if profile.social_github %}
+                        <a href="{{ profile.social_github }}" target="_blank" class="btn btn-outline-dark">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                        {% endif %}
+                        
+                        {% if profile.social_linkedin %}
+                        <a href="{{ profile.social_linkedin }}" target="_blank" class="btn btn-outline-primary">
+                            <i class="fab fa-linkedin"></i> LinkedIn
+                        </a>
+                        {% endif %}
+                        
+                        {% if profile.social_twitter %}
+                        <a href="{{ profile.social_twitter }}" target="_blank" class="btn btn-outline-info">
+                            <i class="fab fa-twitter"></i> Twitter
+                        </a>
+                        {% endif %}
+                        
+                        {% if profile.social_youtube %}
+                        <a href="{{ profile.social_youtube }}" target="_blank" class="btn btn-outline-danger">
+                            <i class="fab fa-youtube"></i> YouTube
+                        </a>
+                        {% endif %}
+                        
+                        {% if profile.social_website %}
+                        <a href="{{ profile.social_website }}" target="_blank" class="btn btn-outline-secondary">
+                            <i class="fas fa-globe"></i> Website
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>

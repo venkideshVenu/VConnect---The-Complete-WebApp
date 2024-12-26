@@ -63,29 +63,42 @@ from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserUpdateForm, CustomPasswordChangeForm
+from .forms import CombinedProfileForm
+
+# core/views.py
+
+# core/views.py
 
 @login_required
 def profile_view(request):
     """View for displaying user profile"""
-    return render(request, 'core/profile.html', {'user': request.user})
-
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-from django.contrib import messages
+    context = {
+        'user': request.user,
+        'profile': request.user.job_profile,
+        'skills': request.user.job_profile.skill_set.all() if hasattr(request.user, 'job_profile') else None
+    }
+    return render(request, 'core/profile.html', context)
 
 @login_required
 def profile_update(request):
-    """View for updating user profile information"""
+    """View for updating user profile"""
     if request.method == 'POST':
-        form = UserUpdateForm(request.POST, request.FILES, instance=request.user)
+        form = CombinedProfileForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Your profile has been updated successfully!')
+            messages.success(request, 'Profile updated successfully!')
             return redirect('profile')
     else:
-        form = UserUpdateForm(instance=request.user)
-    
-    return render(request, 'core/profile_update.html', {'form': form})
+        form = CombinedProfileForm(instance=request.user)
+
+    context = {
+        'form': form,
+        'user': request.user,
+        'skills': request.user.job_profile.skill_set.all() if hasattr(request.user, 'job_profile') else None
+    }
+    return render(request, 'core/profile_update.html', context)
+
+
 
 @login_required
 def password_change(request):
