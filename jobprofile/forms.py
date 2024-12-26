@@ -2,7 +2,8 @@ from django import forms
 from .models import Profile, Skill
 
 from django import forms
-from jobprofile.models import Profile
+from jobprofile.models import Profile, Message
+from django.forms import ModelForm
 
 class ProfileForm(forms.ModelForm):
     class Meta:
@@ -35,3 +36,16 @@ class SkillForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs['class'] = 'input'
+
+
+
+class MessageForm(ModelForm):
+    class Meta:
+        model = Message
+        fields = ['name', 'email', 'subject', 'body']
+
+    def __init__(self, *args, **kwargs):
+        super(MessageForm, self).__init__(*args, **kwargs)
+
+        for name, field in self.fields.items():
+            field.widget.attrs.update({'class': 'input'})

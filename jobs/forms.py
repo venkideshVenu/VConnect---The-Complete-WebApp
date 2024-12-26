@@ -1,25 +1,26 @@
-from django.forms import ModelForm
-from .models import *
 from django import forms
+from .models import JobModel, ApplicantModel
 
-
-class JobForm(ModelForm):
+class JobForm(forms.ModelForm):
     class Meta:
-        model =JobModel
-        fields =['title','featured_image','description','type','tags']
-
-        widgets={
-            'tags':forms.CheckboxSelectMultiple()
+        model = JobModel
+        fields = [
+            'title', 'description', 'requirements', 'responsibilities', 
+            'qualifications', 'featured_image', 'company_logo',
+            'company_name', 'company_description', 'company_website',
+            'company_email', 'type', 'salary_range', 'location', 'deadline',
+            'tags'
+        ]
+        widgets = {
+            'tags': forms.CheckboxSelectMultiple(),
+            'deadline': forms.DateInput(attrs={'type': 'date'}),
+            'description': forms.Textarea(attrs={'rows': 6}),
+            'requirements': forms.Textarea(attrs={'rows': 4}),
+            'responsibilities': forms.Textarea(attrs={'rows': 4}),
+            'qualifications': forms.Textarea(attrs={'rows': 4}),
         }
 
-    def __init__(self, *args, **kwargs):
-        super(JobForm, self).__init__(*args, **kwargs)
-
-        for name, field in self.fields.items():
-            field.widget.attrs.update({'class': 'input'})
-
-
-class ApplyJobForm(ModelForm):
+class ApplyJobForm(forms.ModelForm):
     class Meta:
-        model=ApplicantModel
-        fields=['job']
+        model = ApplicantModel
+        fields = [] # No fields needed for this form

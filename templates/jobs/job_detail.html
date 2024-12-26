@@ -1,0 +1,160 @@
+{% extends "jobs/base.html" %}
+{% load static %}
+
+{% block body_block %}
+<div class="container py-5">
+    <div class="row justify-content-between">
+        <!-- Left Content -->
+        <div class="col-xl-8 col-lg-8">
+            <!-- Job Header -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-4">
+                        {% if job.company_logo %}
+                            <img src="{{ job.company_logo.url }}" alt="Company Logo" class="me-3" style="width: 80px; height: 80px; object-fit: cover;">
+                        {% endif %}
+                        <div>
+                            <h2 class="mb-1">{{ job.title }}</h2>
+                            <p class="text-muted mb-0">{{ job.company_name }}</p>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-3">
+                        <span class="badge bg-primary">{{ job.get_type_display }}</span>
+                        <span class="badge bg-secondary"><i class="fas fa-map-marker-alt me-1"></i>{{ job.location }}</span>
+                        {% if job.salary_range %}
+                            <span class="badge bg-success"><i class="fas fa-money-bill me-1"></i>{{ job.salary_range }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Job Description -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Job Description</h4>
+                    <div class="job-description">
+                        {{ job.description|linebreaks }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Requirements -->
+            {% if job.requirements %}
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Requirements</h4>
+                    <div class="job-requirements">
+                        {{ job.requirements|linebreaks }}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Responsibilities -->
+            {% if job.responsibilities %}
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Responsibilities</h4>
+                    <div class="job-responsibilities">
+                        {{ job.responsibilities|linebreaks }}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Qualifications -->
+            {% if job.qualifications %}
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Qualifications</h4>
+                    <div class="job-qualifications">
+                        {{ job.qualifications|linebreaks }}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Right Content -->
+        <div class="col-xl-4 col-lg-4">
+            <!-- Job Overview -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Job Overview</h4>
+                    <ul class="list-unstyled">
+                        <li class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">Posted Date:</span>
+                                <span>{{ job.created|date:"M d, Y" }}</span>
+                            </div>
+                        </li>
+                        <li class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">Location:</span>
+                                <span>{{ job.location }}</span>
+                            </div>
+                        </li>
+                        <li class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">Job Type:</span>
+                                <span>{{ job.get_type_display }}</span>
+                            </div>
+                        </li>
+                        {% if job.salary_range %}
+                        <li class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">Salary Range:</span>
+                                <span>{{ job.salary_range }}</span>
+                            </div>
+                        </li>
+                        {% endif %}
+                        {% if job.deadline %}
+                        <li class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">Application Deadline:</span>
+                                <span>{{ job.deadline|date:"M d, Y" }}</span>
+                            </div>
+                        </li>
+                        {% endif %}
+                    </ul>
+
+                    {% if user.is_authenticated and not user.job_profile.is_employer %}
+                        {% if not already_applied %}
+                            <a href="{% url 'jobs:job-apply' job.id %}" class="btn btn-primary w-100">Apply Now</a>
+                        {% else %}
+                            <button class="btn btn-secondary w-100" disabled>Already Applied</button>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Company Information -->
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Company Information</h4>
+                    <div class="mb-4">
+                        <h5>{{ job.company_name }}</h5>
+                        {% if job.company_description %}
+                            <p class="text-muted">{{ job.company_description }}</p>
+                        {% endif %}
+                    </div>
+                    <ul class="list-unstyled">
+                        {% if job.company_website %}
+                        <li class="mb-2">
+                            <i class="fas fa-globe me-2"></i>
+                            <a href="{{ job.company_website }}" target="_blank">Website</a>
+                        </li>
+                        {% endif %}
+                        {% if job.company_email %}
+                        <li class="mb-2">
+                            <i class="fas fa-envelope me-2"></i>
+                            <a href="mailto:{{ job.company_email }}">Email</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body_block %}

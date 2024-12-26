@@ -30,18 +30,17 @@ def job(request, pk):
     job = get_object_or_404(JobModel, id=pk)
     tags = job.tags.all()
     
-    # Check if user has already applied
-    has_applied = False
+    already_applied = False
     if request.user.is_authenticated:
         profile = request.user.job_profile
-        has_applied = ApplicantModel.objects.filter(user=profile, job=job).exists()
+        already_applied = ApplicantModel.objects.filter(user=profile, job=job).exists()
 
     context = {
-        'job': job, 
+        'job': job,
         'tags': tags,
-        'has_applied': has_applied
+        'already_applied': already_applied
     }
-    return render(request, 'jobs/job.html', context)
+    return render(request, 'jobs/job_detail.html', context)
 
 @login_required
 def createJob(request):
@@ -65,7 +64,7 @@ def createJob(request):
         form = JobForm()
 
     context = {'form': form}
-    return render(request, 'jobs/job_form.html', context)
+    return render(request, 'jobs/create_job.html', context)
 
 @login_required
 def updateJob(request, pk):
@@ -156,24 +155,29 @@ def myApplications(request):
     return render(request, 'jobs/my_applications.html', context)
 
 
-@login_required()
+@login_required
 def createApplyJobview(request, pk):
-    form = ApplyJobForm(request.POST or None)
-    profile = get_object_or_404(Profile, id=request.user.profile.pk)
-    applicant = ApplicantModel.objects.filter(user=profile, job=pk)
+    profile = request.user.job_profile
+    job = get_object_or_404(JobModel, id=pk)
+    
+    if profile.is_employer:
+        messages.error(request, 'Employers cannot apply for jobs')
+        return redirect('jobs:job', pk=job.id)
+        
+    if ApplicantModel.objects.filter(user=profile, job=job).exists():
+        messages.info(request, 'You have already applied for this job')
+        return redirect('jobs:job', pk=job.id)
+        
+    if request.method == 'POST':
+        application = ApplicantModel.objects.create(
+            user=profile,
+            job=job
+        )
+        messages.success(request, 'Application submitted successfully!')
+        return redirect('jobs:job', pk=job.id)
 
-    if not applicant:
-        if request.method == 'POST':
-            if form.is_valid():
-                instance = form.save(commit=False)
-                instance.user = profile
-                instance.save()
-                return redirect('jobs:jobs')
-        else:
-            return redirect('jobs:jobs')
-
-    context = {'applicant': applicant, 'form': form}
-    return render(request, 'jobs/job.html', context)
+    context = {'job': job}
+    return render(request, 'jobs/apply_form.html', context)
 
 
 @login_required()
@@ -181,16 +185,22 @@ def allApplicantsView(request):
     applicants = ApplicantModel.objects.all()
 
     context = {'applicants': applicants}
-    return render(request, 'jobs/all_applicant.html', context)
+    return render(request, 'jobs/applicants_list.html', context)
 
 
-@login_required()
+@login_required
 def applicantView(request):
-    profile = request.user.profile
-    applicant = profile.applicants.all()
-
-    context = {'applicant': applicant}
-    return render(request, 'jobs/job_applicant.html', context)
+    # Get the profile of the logged-in user
+    profile = request.user.job_profile
+    
+    # Get all the applications for this user's profile
+    applicants = profile.applicants.all()
+    
+    # Fetch the jobs associated with these applications
+    jobs = [applicant.job for applicant in applicants]
+    
+    context = {'jobs': jobs}  # Pass the list of jobs to the template
+    return render(request, 'jobs/job_applications.html', context)
 
 
 @login_required()

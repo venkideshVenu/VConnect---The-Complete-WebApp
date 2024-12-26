@@ -101,3 +101,13 @@ def add_skill(request):
     else:
         form = SkillForm()
     return render(request, 'jobs/skill_form.html', {'form': form})
+
+
+@login_required
+def inbox(request):
+    profile = request.user.job_profile
+
+    messageRequests = profile.messages.all()
+    unreadCount = messageRequests.filter(is_read=False).count()
+    context = {'messageRequests': messageRequests, 'unreadCount': unreadCount}
+    return render(request, 'jobs/inbox.html', context)

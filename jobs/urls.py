@@ -13,7 +13,7 @@ urlpatterns = [
     path('job-delete/<str:pk>/', views.deleteJob, name='job-delete'),
 
 
-    path('job-applications/<str:pk>/', views.createApplyJobview, name='job-applications'),
+    path('job-applications/<str:pk>/', views.createApplyJobview, name='job-apply'),
     path('all-applicant/', views.allApplicantsView, name='all-applicant'),
     path('job-applicant/', views.applicantView, name='job-applicant'),
     path('applied-applicant/<str:pk>/', views.appliedApplicantsView, name='applied-applicant'),

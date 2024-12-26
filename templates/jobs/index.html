@@ -63,7 +63,7 @@
                             </div>
                             <div class="services-cap">
                                <h5><a href="{% url 'jobs:jobs' %}?search_query=design">Design & Creative</a></h5>
-                                <span>(653)</span>
+                                <span></span>
                             </div>
                         </div>
                     </div>
@@ -74,7 +74,7 @@
                             </div>
                             <div class="services-cap">
                                <h5><a href="{% url 'jobs:jobs' %}?search_query=information+technology">Design & Development</a></h5>
-                                <span>(658)</span>
+                                <span></span>
                             </div>
                         </div>
                     </div>
@@ -84,8 +84,8 @@
                                 <span class="flaticon-report"></span>
                             </div>
                             <div class="services-cap">
-                               <h5><a href="{% url 'jobs:jobs' %}?search_query=sales ">Sales & Marketing</a></h5>
-                                <span>(658)</span>
+                               <h5><a href="{% url 'jobs:jobs' %}?search_query=marketing ">Sales & Marketing</a></h5>
+                                <span></span>
                             </div>
                         </div>
                     </div>
@@ -96,7 +96,7 @@
                             </div>
                             <div class="services-cap">
                                <h5><a href="{% url 'jobs:jobs' %}?search_query=information+technology">Information Technology</a></h5>
-                                <span>(658)</span>
+                                <span></span>
                             </div>
                         </div>
                     </div>
@@ -138,7 +138,7 @@
                                     <a href="{% url 'jobs:job' job.id %}"><img src="{{ job.imageURL }}" alt="job thumbnail"></a>
                                 </div>
                                 <div class="job-tittle">
-                                    <a href="job_details.html"><h4>{{ job.title }}</h4></a>
+                                    <a href="{% url 'jobs:job' job.id %}"><h4>{{ job.title }}</h4></a>
                                     <ul>
                                         <li>{{ job.get_type_display }}</li>
                                         <li><i class="fas fa-map-marker-alt"></i>{{ job.location }}</li>

@@ -1,17 +1,60 @@
-{% extends 'jobs/base1.html' %}
+{% extends 'jobs/base.html' %}
 {% load static %}
 
-{% block content %}
-    <main class="messagePage my-xl">
-        <div class="content-box">
-            <div class="message">
-                <a class="backButton" href="{% url 'jobs:all-applicant' %}"><i class="im im-angle-left"></i></a>
-                <h2 class="message__subject">{{ applicant.job.title }}</h2>
-                <a href=""
-                   class="message__author">{{ applicant.user.user.get_full_name }}</a>
-                <p class="message__date">{{ applicant.created }}</p>
-                <div class="message__body"></div>
+{% block body_block %}
+
+<link rel="stylesheet" href="{% static 'jobs/css/flaticon.css' %}">
+<link rel="stylesheet" href="{% static 'jobs/css/style.css' %}">
+
+<div class="our-services section-pad-t30">
+
+    
+    <div class="container d-flex justify-content-center">
+        
+        <div class="card shadow-lg p-4" style="max-width: 600px; width: 100%; border-radius: 10px;">
+            <!-- Section Title -->
+             
+            <div class="text-center mb-4">
+                <h2 class="section-tittle">Applicant Details</h2>
+            </div>
+
+
+
+            <!-- Applicant Details -->
+            <div class="applicant-details text-center">
+                <h3 class="job-title mb-3">Job: {{ applicant.job.title }}</h3>
+                <p class="applicant-name"><strong>Applicant:</strong> {{ applicant.user.user.get_full_name }}</p>
+                <p class="application-date"><strong>Applied on:</strong> {{ applicant.created|date:"F j, Y" }}</p>
+
+                <div class="applicant-message mt-4">
+                    <h4 class="section-title">Message</h4>
+                    <p>{{ applicant.message|default:"No message provided." }}</p>
+                </div>
+
+                <div class="application-status mt-4">
+                    <h4 class="section-title">Status</h4>
+                    <p class="status text-muted">{{ applicant.status|default:"Pending" }}</p>
+                </div>
+            </div>
+            {% comment "" %}
+
+                <div class="action-buttons text-center mt-4">
+                <button class="btn btn-success mx-2">Approve</button>
+                <button class="btn btn-danger mx-2">Reject</button>
+            </div>
+             {% endcomment %}
+
+
+
+                        <!-- Back Button -->
+            <div class="text-start mb-3 text-center mt-4">
+                <a class="btn btn-outline-secondary" href="{% url 'jobs:all-applicant' %}">
+                    <i class="im im-angle-left"></i> Back to Applications
+                </a>
             </div>
         </div>
-    </main>
-{% endblock %} %}
+    </div>
+    
+</div>
+
+{% endblock %}
