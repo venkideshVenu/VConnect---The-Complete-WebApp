@@ -116,4 +116,4 @@ def password_change(request):
     else:
         form = CustomPasswordChangeForm(request.user)
     
-    return render(request, 'core/password_change.html', {'form': form})
+    return render(request, 'core/password_update.html', {'form': form})

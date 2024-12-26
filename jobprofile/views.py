@@ -87,21 +87,6 @@ def complete_profile(request):
 
 
 @login_required
-def profile(request):
-    """
-    View to display the user's profile.
-    """
-    profile = getattr(request.user, 'job_profile', None)
-    if not profile:
-        return redirect('jobprofile:select_type')
-
-    context = {
-        'profile': profile,
-        'skills': profile.skill_set.all() if not profile.is_employer else None
-    }
-    return render(request, 'jobs/profile.html', context)
-
-@login_required
 def add_skill(request):
     """
     View to add skills to the user's profile.
