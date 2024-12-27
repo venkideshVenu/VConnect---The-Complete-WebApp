@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'jobprofile',
     'jobs',
+    'bikeshare',
 ]
 
 AUTH_USER_MODEL = 'core.CustomUser'

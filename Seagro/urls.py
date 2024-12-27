@@ -30,4 +30,5 @@ urlpatterns = [
     path('tasks/', include('tasks.urls')),
     path('jobprofile/', include('jobprofile.urls')),
     path('jobs/', include('jobs.urls')),
+    path('bikeshare/', include('bikeshare.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
