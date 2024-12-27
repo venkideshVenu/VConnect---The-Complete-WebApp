@@ -5,12 +5,12 @@ from .models import Project, Task, TaskComment
 from .forms import ProjectForm, TaskForm, CommentForm
 from django.utils import timezone
 
-@login_required
+@login_required(login_url='login')
 def project_list(request):
     projects = Project.objects.filter(owner=request.user)
     return render(request, 'tasks/project_list.html', {'projects': projects})
 
-@login_required
+@login_required(login_url='login')
 def project_detail(request, pk):
     project = get_object_or_404(Project, pk=pk, owner=request.user)
     tasks = project.tasks.all().order_by('status', '-priority', 'due_date')
@@ -21,7 +21,7 @@ def project_detail(request, pk):
         'task_status_choices': task_status_choices  # Add this line
     })
 
-@login_required
+@login_required(login_url='login')
 def task_detail(request, pk):
     task = get_object_or_404(Task, pk=pk)
     comments = task.comments.all()
@@ -43,7 +43,7 @@ def task_detail(request, pk):
         'form': form
     })
 
-@login_required
+@login_required(login_url='login')
 def update_task_status(request, pk):
     if request.method == 'POST':
         task = get_object_or_404(Task, pk=pk)
@@ -56,7 +56,7 @@ def update_task_status(request, pk):
             return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'error'})
 
-@login_required
+@login_required(login_url='login')
 def project_create(request):
     if request.method == 'POST':
         form = ProjectForm(request.POST)
@@ -69,7 +69,7 @@ def project_create(request):
         form = ProjectForm()
     return render(request, 'tasks/project_form.html', {'form': form, 'action': 'Create'})
 
-@login_required
+@login_required(login_url='login')
 def project_edit(request, pk):
     project = get_object_or_404(Project, pk=pk, owner=request.user)
     if request.method == 'POST':
@@ -81,7 +81,7 @@ def project_edit(request, pk):
         form = ProjectForm(instance=project)
     return render(request, 'tasks/project_form.html', {'form': form, 'action': 'Edit'})
 
-@login_required
+@login_required(login_url='login')
 def task_create(request, project_pk):
     project = get_object_or_404(Project, pk=project_pk, owner=request.user)
     if request.method == 'POST':
@@ -96,7 +96,7 @@ def task_create(request, project_pk):
         form = TaskForm()
     return render(request, 'tasks/task_form.html', {'form': form, 'action': 'Create'})
 
-@login_required
+@login_required(login_url='login')
 def task_edit(request, pk):
     task = get_object_or_404(Task, pk=pk)
     if request.method == 'POST':
@@ -109,14 +109,14 @@ def task_edit(request, pk):
     return render(request, 'tasks/task_form.html', {'form': form, 'action': 'Edit'})
 
 
-@login_required
+@login_required(login_url='login')
 def project_toggle_complete(request, pk):
     project = get_object_or_404(Project, pk=pk, owner=request.user)
     project.mark_completed() if not project.is_completed else setattr(project, 'is_completed', False)
     project.save()
     return redirect('tasks:project_detail', pk=pk)
 
-@login_required
+@login_required(login_url='login')
 def task_toggle_complete(request, pk):
     task = get_object_or_404(Task, pk=pk)
     if task.is_completed:

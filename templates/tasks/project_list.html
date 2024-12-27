@@ -6,8 +6,15 @@
     <!-- Section Title -->
     <div class="text-center mb-12">
         <h1 class="text-4xl font-bold text-gray-800">Projects</h1>
-        <p class="text-gray-600 mt-2">Manage and track your ongoing projects</p>
+        <p class="text-gray-600 mt-2">Manage and track your ongoing projects</p>    
+        
+        <a href="{% url 'tasks:project_create' %}" 
+    class="inline-block bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300">
+     Create New
+ </a>
     </div>
+
+
 
     <!-- Projects Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
