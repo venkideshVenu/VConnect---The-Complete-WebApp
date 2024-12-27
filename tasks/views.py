@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from .models import Project, Task, TaskComment
 from .forms import ProjectForm, TaskForm, CommentForm
+from django.utils import timezone
 
 @login_required
 def project_list(request):
@@ -13,9 +14,11 @@ def project_list(request):
 def project_detail(request, pk):
     project = get_object_or_404(Project, pk=pk, owner=request.user)
     tasks = project.tasks.all().order_by('status', '-priority', 'due_date')
+    task_status_choices = Task.STATUS_CHOICES  # Add this line
     return render(request, 'tasks/project_detail.html', {
         'project': project,
-        'tasks': tasks
+        'tasks': tasks,
+        'task_status_choices': task_status_choices  # Add this line
     })
 
 @login_required
@@ -45,14 +48,13 @@ def update_task_status(request, pk):
     if request.method == 'POST':
         task = get_object_or_404(Task, pk=pk)
         new_status = request.POST.get('status')
+        # Convert status to lowercase and remove spaces
+        new_status = new_status.lower().replace(' ', '_')
         if new_status in dict(Task.STATUS_CHOICES):
             task.status = new_status
             task.save()
             return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'error'})
-
-
-
 
 @login_required
 def project_create(request):
@@ -117,6 +119,13 @@ def project_toggle_complete(request, pk):
 @login_required
 def task_toggle_complete(request, pk):
     task = get_object_or_404(Task, pk=pk)
-    task.mark_completed() if not task.is_completed else setattr(task, 'is_completed', False)
+    if task.is_completed:
+        task.is_completed = False
+        task.completed_at = None
+        task.status = 'todo'  # Reset to todo when uncompleted
+    else:
+        task.is_completed = True
+        task.completed_at = timezone.now()
+        task.status = 'done'  # Set status to done when completed
     task.save()
     return redirect('tasks:task_detail', pk=pk)

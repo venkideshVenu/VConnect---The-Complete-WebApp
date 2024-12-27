@@ -35,7 +35,6 @@ class Task(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='tasks')
-    assigned_to = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='assigned_tasks')
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='created_tasks')
     due_date = models.DateTimeField(null=True, blank=True)
     priority = models.CharField(max_length=10, choices=PRIORITY_CHOICES, default='medium')
@@ -45,10 +44,11 @@ class Task(models.Model):
     is_completed = models.BooleanField(default=False)
     completed_at = models.DateTimeField(null=True, blank=True)
 
-    def mark_completed(self):
-        self.is_completed = True
-        self.completed_at = timezone.now()
-        self.save()
+def mark_completed(self):
+    self.is_completed = True
+    self.completed_at = timezone.now()
+    self.status = 'done'  # Add this line
+    self.save()
     
     def __str__(self):
         return self.title
