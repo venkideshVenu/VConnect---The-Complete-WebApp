@@ -1,0 +1,41 @@
+{% extends 'bikeshare/base.html' %}
+
+{% block content %}
+
+
+
+<br>
+<h5>Bike Activity</h5>
+<br>
+    <table>
+        <thead>
+        <tr>
+            <th><label>Bike ID</label></th>
+            <th><label>Current Location</label></th>
+            <th><label>Condition</label></th>
+            <th><label>Move Bike</label></th>
+            <th><label>Repair</label></th>
+        </tr>
+        </thead>
+    <tbody>
+    {% for bike in all_bikes %}
+    <tr>
+    <th><label>{{ bike.id }}</label></th>
+        <th><label>{{ bike.station }}</label></th>
+    <th><label> {{ bike.condition }}</label></th>
+    <th><label>    {% if bike.in_use %} <br>Bike currently in use<br><br> {% else %}
+   <form action="{% url 'bikeshare:move_bike' bike.id %}" method="post">{% csrf_token %}
+       <button type="submit" class="cancelbtn waves-effect waves-light btn" name="return_station">Move Bike</button><br>
+   </form>
+    {% endif %}
+    </label></th>
+        <th>
+            {% if bike.is_faulty %}<label> <form action="{% url 'bikeshare:repair_bike' bike.id %}" method="post">{% csrf_token %}
+            <button type="submit" class="cancelbtn waves-effect waves-light btn" name="repair_bike" value="">Repair Bike </button>
+    </form></label>{% endif %}</th>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'bikeshare/base.html' %}
+
+{% block content %}
+
+
+    <h3>
+        <center>Return Bike</center>
+    </h3>
+    <h6>
+        <center>Start Location: {{ order.start_station }}</center>
+    </h6>
+
+
+     <div class="container" align="center">
+
+        <form method="post" name="movebikeform" action="{% url 'bikeshare:return_bike' order.id %}"
+              enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="id_locations">Station location:</label>
+            <select class="browser-default" id="id_locations" name="locations" required>
+                {% for field in form.visible_fields %}
+                    <option value="{{ field }}"></option>
+                {% endfor %}
+            </select>
+        <br>
+            <button type="submit" class="waves-effect waves-light btn">Return Bike</button>        </form>
+            <button id="cancel" class="cancelbtn waves-effect waves-light btn"
+            onclick="location.href='{% url 'bikeshare:bikeshare-customer' %}'">Go Back
+            </button>
+        <br>
+
+
+    </div>
+
+
+
+
+
+
+{% endblock %}

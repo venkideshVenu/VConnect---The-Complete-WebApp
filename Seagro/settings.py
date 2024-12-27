@@ -64,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'jobprofile.middleware.ProfileCompletionMiddleware',
+    'bikeshare.middleware.BikeShareProfileMiddleware',
 ]
 
 ROOT_URLCONF = 'Seagro.urls'
