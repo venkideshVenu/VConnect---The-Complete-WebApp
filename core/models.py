@@ -25,3 +25,27 @@ class CustomUser(AbstractUser):
         Check if a specific profile section is complete
         """
         return self.profile_completed.get(section, False)
+    
+    def get_profile(self):
+        """
+        Returns the user's profile, creating it if necessary
+        """
+        from socialhub.models import Profile
+        profile, created = Profile.objects.get_or_create(user=self)
+        return profile
+    
+    @property
+    def follows(self):
+        return self.profile.follows
+
+    @property
+    def followers(self):
+        return self.profile.followers
+
+    @property
+    def camps(self):
+        return self.profile.camps
+
+    @property
+    def wing(self):
+        return self.profile.wing

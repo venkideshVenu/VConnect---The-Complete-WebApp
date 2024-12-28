@@ -51,7 +51,10 @@ INSTALLED_APPS = [
     'jobprofile',
     'jobs',
     'bikeshare',
-    'socialhub',
+    'socialhub.apps.SocialhubConfig',
+
+
+    'taggit',
 ]
 
 AUTH_USER_MODEL = 'core.CustomUser'
