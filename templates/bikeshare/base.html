@@ -1,20 +1,323 @@
-<head>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-</head>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>RideShare - Seagro</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="" name="keywords">
+        <meta content="" name="description">
 
+        <!-- Google Web Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
-{% include 'bikeshare/navbar.html' %}
+        <!-- Icon Font Stylesheet -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
+        <!-- Libraries Stylesheet -->
+        <link rel="stylesheet" href="{% static 'home/lib/animate/animate.min.css' %}"/>
+        <link href="{% static 'home/lib/lightbox/css/lightbox.min.css' %}" rel="stylesheet">
+        <link href="{% static 'home/lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
 
-<body>
+        <!-- Customized Bootstrap Stylesheet -->
+        <link href="{% static 'home/css/bootstrap.min.css' %}" rel="stylesheet">
 
-<div class="container">
-{% block content %}
+        <!-- Template Stylesheet -->
+        <link href="{% static 'home/css/style.css' %}" rel="stylesheet">
 
+        <!-- Custom Theme Color -->
 
-{% endblock content %}
+    </head>
 
+    <body>
+        <style>
+            :root {
+                --primary-color: #f77214;
+                --hover-primary-color: #e0215d;
+            }
+
+            .text-primary {
+                color: var(--primary-color) !important;
+            }
+
+            .bg-primary {
+                background-color: var(--primary-color) !important;
+            }
+
+            .btn-primary {
+                background-color: var(--primary-color) !important;
+                border-color: var(--primary-color) !important;
+            }
+
+            .btn-primary:hover {
+                background-color: var(--hover-primary-color) !important;
+                border-color: var(--hover-primary-color) !important;
+            }
+
+            .navbar-light .navbar-nav .nav-link.active {
+                color: var(--primary-color) !important;
+            }
+        </style>
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+
+<!-- Navbar & Hero Start -->
+<div class="container-fluid nav-bar px-0 px-lg-4 py-lg-0">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <a href="{% url 'jobs:index' %}" class="navbar-brand p-0">
+                <h1 class="text-primary mb-0"><i class="fab fa-slack me-2"></i>RideShare</h1>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="fa fa-bars"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mx-auto"> <!-- Changed to mx-auto for center alignment -->
+                    <li class="nav-item">
+                        <a href="{% url 'bikeshare:index' %}" class="nav-link ">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'bikeshare:about' %}" class="nav-link ">About</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    {% if user.bikeshare_profile %}
+                        {% if user.bikeshare_profile.role == 'Customer' %}
+                            <li class="nav-item">
+                                <a href="{% url 'bikeshare:bikeshare-customer' %}" class="nav-link">Dashboard</a>
+                            </li>
+                        {% elif user.bikeshare_profile.role == 'Operator' %}
+                            <li class="nav-item">
+                                <a href="{% url 'bikeshare:bikeshare-operator' %}" class="nav-link">Dashboard</a>
+                            </li>
+                        {% elif user.bikeshare_profile.role == 'Manager' %}
+                            <li class="nav-item">
+                                <a href="{% url 'bikeshare:bikeshare-manager' %}" class="nav-link">Dashboard</a>
+                            </li>
+                        {% endif %}
+                    {% else %}
+                        <li class="nav-item">
+                            <a href="{% url 'bikeshare:select_role' %}" class="nav-link">Complete Profile</a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+                </ul>
+
+                <!-- User profile/login button moved outside navbar-nav -->
+                <div class="ms-auto"> <!-- Changed to ms-auto to push to right -->
+                    {% if user.id is not none %}
+                        <div class="nav-item dropdown">
+                            <a href="#" class="btn btn-primary rounded-pill py-2 px-4 dropdown-toggle" data-bs-toggle="dropdown">
+                                {{ user.username }}
+                            </a>
+                            <div class="dropdown-menu">
+                                <a href="{% url 'profile' %}" class="dropdown-item">View Profile</a>
+                                <a href="{% url 'logout' %}" class="dropdown-item">Logout</a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-primary rounded-pill py-2 px-4">Get Started</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+    </div>
 </div>
+<!-- Navbar & Hero End -->
 
-</body>
+        {% block body_block %}
+        
+        {% endblock body_block %}
+
+        <!-- Floating Home Button -->
+        <a href="{% url 'homepage' %}" class="float-home">
+            <i class="bi bi-house-fill"></i>
+        </a>
+
+
+        
+      <style>
+        .float-home {
+          position: fixed;
+          width: 50px;
+          height: 50px;
+          bottom: 40px;
+          left: 40px;
+          background-color:rgb(117, 76, 214);
+          color: #ffffff;
+          border-radius: 50%;
+          text-align: center;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-decoration: none;
+          transition: all 0.3s ease;
+          z-index: 1000;
+        }
+  
+        .float-home i {
+          font-size: 20px;
+        }
+  
+        .float-home:hover {
+          background-color:rgb(30, 120, 209);
+          color: #ffffff;
+          transform: scale(1.1);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+  
+        /* Media query for mobile responsiveness */
+        @media (max-width: 768px) {
+          .float-home {
+              width: 45px;
+              height: 45px;
+              bottom: 20px;
+              left: 20px;
+          }
+        }
+        </style>
+
+        <footer class="footer position-relative bg-light py-5">
+            <div class="container">
+                <div class="row gy-4">
+                    <div class="col-lg-5 col-md-6">
+                        <div class="footer-brand mb-4">
+                            <a href="{% url 'bikeshare:index' %}" class="d-flex align-items-center text-decoration-none">
+                                <span class="h3 mb-0 text-primary fw-bold">RideShare</span> 
+                            </a>
+                            <p class="mt-3 text-muted">Rent and share bikes with ease. Explore your city, stay fit, and reduce your carbon footprint.</p> 
+                        </div>
+                        <div class="footer-contact">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-geo-alt me-2 text-primary"></i>
+                                <span>Shop no 5, first floor, Green Park, Near City Mall, Mumbai</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-telephone me-2 text-primary"></i>
+                                <span>+91 9876543210</span> 
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-envelope me-2 text-primary"></i>
+                                <span>support@seagro.com</span> 
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="col-lg-3 col-md-6">
+                        <h5 class="footer-heading mb-3">Quick Links</h5>
+                        <ul class="list-unstyled footer-links">
+                            <li><a href="{% url 'bikeshare:index' %}" class="text-decoration-none mb-2 d-block">Home</a></li>
+                            <li><a href="{% url 'bikeshare:about' %}" class="text-decoration-none mb-2 d-block">About Us</a></li> 
+                            <li><a href="#" class="text-decoration-none mb-2 d-block">Blog</a></li> 
+                            <li><a href="#" class="text-decoration-none mb-2 d-block">Contact</a></li> 
+                            <li><a href="#" class="text-decoration-none mb-2 d-block">Privacy Policy</a></li> 
+                            <li><a href="#" class="text-decoration-none mb-2 d-block">Terms of Service</a></li> 
+                        </ul>
+                    </div>
+        
+                    <div class="col-lg-4 col-md-6">
+                        <h5 class="footer-heading mb-3">For Riders</h5>
+                        <div class="row">
+                            <div class="col-6">
+                                <ul class="list-unstyled footer-links">
+                                    <li><a href="#" class="text-decoration-none mb-2 d-block">Rent a Bike</a></li>
+                                    <li><a href="#" class="text-decoration-none mb-2 d-block">Share a Bike</a></li> 
+                                    <li><a href="#" class="text-decoration-none mb-2 d-block">FAQ</a></li> 
+                                </ul>
+                            </div>
+                            <div class="col-6">
+                                <ul class="list-unstyled footer-links">
+                                    <li><a href="#" class="text-decoration-none mb-2 d-block">Pricing</a></li> 
+                                    <li><a href="#" class="text-decoration-none mb-2 d-block">Riding Tips</a></li> 
+                                    <li><a href="#" class="text-decoration-none mb-2 d-block">Safety Guidelines</a></li> 
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container mt-4">
+                <hr class="my-4">
+                <div class="text-center">
+                    <p class="mb-0">© 2024 <strong class="text-primary">RideShare - SeaGro</strong>. All Rights Reserved.</p>
+                </div>
+            </div>
+        </footer>
+        
+        
+        <style>
+            .footer {
+                font-size: 0.95rem;
+            }
+        
+            .footer-heading {
+                color: #2c3e50;
+                font-weight: 600;
+            }
+        
+            .footer-links a {
+                color: #6c757d;
+                transition: color 0.3s ease;
+            }
+        
+            .footer-links a:hover {
+                color: #f77214;
+            }
+        
+            .social-icon {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 36px;
+                height: 36px;
+                background-color: #f8f9fa;
+                color: #6c757d;
+                border-radius: 50%;
+                transition: all 0.3s ease;
+            }
+        
+            .social-icon:hover {
+                background-color: #f77214;
+                color: white;
+            }
+        
+            .text-primary {
+                color: #f77214 !important;
+            }
+        
+            .footer-contact {
+                color: #6c757d;
+            }
+        </style>
+    
+
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-primary btn-lg-square rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>   
+
+        
+        <!-- JavaScript Libraries -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="{% static 'home/lib/wow/wow.min.js' %}"></script>
+        <script src="{% static 'home/lib/easing/easing.min.js' %}"></script>
+        <script src="{% static 'home/lib/waypoints/waypoints.min.js' %}"></script>
+        <script src="{% static 'home/lib/counterup/counterup.min.js' %}"></script>
+        <script src="{% static 'home/lib/lightbox/js/lightbox.min.js' %}"></script>
+        <script src="{% static 'home/lib/owlcarousel/owl.carousel.min.js' %}"></script>
+        
+
+        <!-- Template Javascript -->
+        <script src="{% static 'home/js/main.js' %}"></script>
+    </body>
+
+</html>

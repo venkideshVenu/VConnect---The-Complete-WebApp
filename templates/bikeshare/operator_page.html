@@ -1,41 +1,69 @@
 {% extends 'bikeshare/base.html' %}
-
-{% block content %}
-
-
-
-<br>
-<h5>Bike Activity</h5>
-<br>
-    <table>
-        <thead>
-        <tr>
-            <th><label>Bike ID</label></th>
-            <th><label>Current Location</label></th>
-            <th><label>Condition</label></th>
-            <th><label>Move Bike</label></th>
-            <th><label>Repair</label></th>
-        </tr>
-        </thead>
-    <tbody>
-    {% for bike in all_bikes %}
-    <tr>
-    <th><label>{{ bike.id }}</label></th>
-        <th><label>{{ bike.station }}</label></th>
-    <th><label> {{ bike.condition }}</label></th>
-    <th><label>    {% if bike.in_use %} <br>Bike currently in use<br><br> {% else %}
-   <form action="{% url 'bikeshare:move_bike' bike.id %}" method="post">{% csrf_token %}
-       <button type="submit" class="cancelbtn waves-effect waves-light btn" name="return_station">Move Bike</button><br>
-   </form>
-    {% endif %}
-    </label></th>
-        <th>
-            {% if bike.is_faulty %}<label> <form action="{% url 'bikeshare:repair_bike' bike.id %}" method="post">{% csrf_token %}
-            <button type="submit" class="cancelbtn waves-effect waves-light btn" name="repair_bike" value="">Repair Bike </button>
-    </form></label>{% endif %}</th>
-    </tr>
-    {% endfor %}
-    </tbody>
-    </table>
-
+{% block body_block %}
+<div class="container py-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Bike Activity Dashboard</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">Bike </th>
+                            <th scope="col">Current Location</th>
+                            <th scope="col">Condition</th>
+                            <th scope="col">Move Bike</th>
+                            <th scope="col">Repair</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for bike in all_bikes %}
+                        <tr>
+                            <td class="fw-bold">{{ bike.name }}</td>
+                            <td>
+                                <span class="d-flex align-items-center">
+                                    <i class="bi bi-geo-alt-fill text-primary me-2"></i>
+                                    {{ bike.station }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if bike.condition == 'Good' %}
+                                    <span class="badge bg-success">{{ bike.condition }}</span>
+                                {% elif bike.condition == 'Fair' %}
+                                    <span class="badge bg-warning">{{ bike.condition }}</span>
+                                {% else %}
+                                    <span class="badge bg-danger">{{ bike.condition }}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if bike.in_use %}
+                                    <span class="badge bg-info text-dark">Currently in use</span>
+                                {% else %}
+                                    <form action="{% url 'bikeshare:move_bike' bike.id %}" method="post" class="m-0">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-outline-primary btn-sm" name="return_station">
+                                            <i class="bi bi-bicycle me-1"></i>Move Bike
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if bike.is_faulty %}
+                                    <form action="{% url 'bikeshare:repair_bike' bike.id %}" method="post" class="m-0">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-outline-warning btn-sm" name="repair_bike">
+                                            <i class="bi bi-tools me-1"></i>Repair Bike
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

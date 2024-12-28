@@ -1,40 +1,55 @@
 {% extends 'bikeshare/base.html' %}
 
-{% block content %}
+{% block body_block %}
 
-
-    <h3>
-        <center>Return Bike</center>
-    </h3>
-    <h6>
-        <center>Start Location: {{ order.start_station }}</center>
-    </h6>
-
-
-     <div class="container" align="center">
-
-        <form method="post" name="movebikeform" action="{% url 'bikeshare:return_bike' order.id %}"
-              enctype="multipart/form-data">
-            {% csrf_token %}
-            <label for="id_locations">Station location:</label>
-            <select class="browser-default" id="id_locations" name="locations" required>
-                {% for field in form.visible_fields %}
-                    <option value="{{ field }}"></option>
-                {% endfor %}
-            </select>
-        <br>
-            <button type="submit" class="waves-effect waves-light btn">Return Bike</button>        </form>
-            <button id="cancel" class="cancelbtn waves-effect waves-light btn"
-            onclick="location.href='{% url 'bikeshare:bikeshare-customer' %}'">Go Back
-            </button>
-        <br>
-
-
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h3 class="mb-0">Return Bike</h3>
+                </div>
+                <div class="card-body">
+                    <p class="text-center text-muted mb-4">
+                        <strong>Start Location:</strong> {{ order.start_station }}
+                    </p>
+                    
+                    <!-- Return Bike Form -->
+                    <form method="post" action="{% url 'bikeshare:return_bike' order.id %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="id_locations" class="form-label">
+                                <i class="fas fa-map-marker-alt me-2"></i>Select Return Station
+                            </label>
+                            <select id="id_locations" name="locations" class="form-select" required>
+                                <option selected disabled value="">Choose a station</option>
+                                {% for field in form.visible_fields %}
+                                    <option value="{{ field }}"></option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-bicycle me-2"></i>Return Bike
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="location.href='{% url 'bikeshare:bikeshare-customer' %}'">
+                                <i class="fas fa-arrow-left me-2"></i>Go Back
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 
-
-
-
-
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
 {% endblock %}

@@ -1,0 +1,217 @@
+{% extends "bikeshare/base.html" %}
+{% load static %}
+{% block body_block %}
+
+<link href="{% static 'learn/css/main.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'bikeshare/css/style.css' %}">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+
+<!-- Hero Section -->
+<section id="hero" class="hero section dark-background">
+    <img src="{% static 'bikeshare/images/hero.jpg' %}" alt="hero image" data-aos="fade-in">
+    <div class="container">
+        <h2 data-aos="fade-up" data-aos-delay="100">Sustainable Urban Mobility<br>At Your Fingertips</h2>
+        <p data-aos="fade-up" data-aos-delay="200">Join our bike-sharing community and explore the city in an eco-friendly way. Available 24/7 at multiple locations.</p>
+        <div class="d-flex mt-4" data-aos="fade-up" data-aos-delay="300">
+            {% if user.id is not None %}
+                {% if user.bikeshare_profile %}
+                    {% if user.bikeshare_profile.role == 'Customer' %}
+                        
+                            <a href="{% url 'bikeshare:bikeshare-customer' %}" class="btn-get-started">Dashboard</a>
+                        
+                    {% elif user.bikeshare_profile.role == 'Operator' %}
+                        
+                            <a href="{% url 'bikeshare:bikeshare-operator' %}" class="btn-get-started">Dashboard</a>
+                        
+                    {% elif user.bikeshare_profile.role == 'Manager' %}
+                        
+                            <a href="{% url 'bikeshare:bikeshare-manager' %}" class="btn-get-started">Dashboard</a>
+                        
+                    {% endif %}
+                {% else %}
+                    
+                        <a href="{% url 'bikeshare:select_role' %}" class="btn-get-started">Complete Profile</a>
+                    
+                {% endif %}
+            {% else %}
+                <a href="{% url 'login' %}" class="btn-get-started">Start Riding</a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+   <!-- Work -->
+   <section class="work" id="work">
+    <!-- heading -->
+    <div class="heading container">
+        <span>ONE-OF-A-KIND MOTORCYCLE RENTALS</span>
+        <h2>Search, Compare, Reserve.</h2>
+    </div>
+    <div class="work-container container">
+        <!-- box 1 -->
+        <div class="work-box">
+            <i class="ri-medal-line"></i>
+            <h3 class="work-title">Find the right motorbike</h3>
+            <p class="work-description">
+                Enter a location and date to browse and compare thousands of motorbikes available to rent in over
+                600 cities.
+            </p>
+        </div>
+        <!-- box 2 -->
+        <div class="work-box">
+            <i class="ri-bank-card-line"></i>
+            <h3 class="work-title">Book at the best price</h3>
+            <p class="work-description">
+                Our prices are guranteed equal or lower than you can book on arrival! Cancel for free up to 24 hours
+                before.
+            </p>
+        </div>
+        <!-- box 3 -->
+        <div class="work-box">
+            <i class="ri-riding-line"></i>
+            <h3 class="work-title">Enjoy the ride</h3>
+            <p class="work-description">
+                Have the motorbike delivered or pick it up from the local rental office. Show voucher, grab the keys
+                and hit the road.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Stations -->
+<section class="destination" id="destination">
+    <div class="heading container">
+        <span>OUR NETWORK</span>
+        <h2>Top BikeShare Stations</h2>
+    </div>
+    <div class="destination-container container">
+        <div class="stations-list">
+            {% for station in top_stations %}
+            <div class="station-tile">
+                <img src="{{ station.image.url }}" alt="{{ station.station_name }}" class="station-img">
+                <div class="station-info">
+                    <h3>{{ station.station_name }}</h3>
+                    <p>{{ station.number_of_bikes }} Bikes Available</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<style>
+    /* General styles for the stations section */
+.stations-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+}
+
+.station-tile {
+    display: flex;
+    align-items: center;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 400px;
+    padding: 8px;
+}
+
+.station-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 16px;
+}
+
+.station-info {
+    flex: 1;
+}
+
+.station-info h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.station-info p {
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: #666;
+}
+
+</style>
+
+<!-- Reviews -->
+<section class="reviews" id="reviews">
+    <div class="heading container">
+        <span>TESTIMONIALS</span>
+        <h2>What Our Riders Say</h2>
+    </div>
+    <div class="review-container container">
+        <div class="rev-box">
+            <div class="stars">
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+            </div>
+            <p>
+                BikeShare has transformed my daily commute. The bikes are always well-maintained, and the stations are conveniently located. It's both eco-friendly and cost-effective!
+            </p>
+            <div class="profile">
+                <img src="{% static 'bikeshare/images/review1.jpg' %}" alt="">
+                <div class="profile-text">
+                    <h3 class="name">Sarah M.</h3>
+                    <span>Daily Commuter</span>
+                </div>
+            </div>
+        </div>
+        <div class="rev-box">
+            <div class="stars">
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-half-fill"></i>
+            </div>
+            <p>
+                Perfect for weekend rides! The app makes it super easy to find and rent bikes. I love that I can pick up from one station and drop off at another.
+            </p>
+            <div class="profile">
+                <img src="{% static 'bikeshare/images/review2.jpg' %}" alt="">
+                <div class="profile-text">
+                    <h3 class="name">Mike R.</h3>
+                    <span>Weekend Rider</span>
+                </div>
+            </div>
+        </div>
+        <div class="rev-box">
+            <div class="stars">
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+                <i class="ri-star-fill"></i>
+            </div>
+            <p>
+                As a student, BikeShare is a lifesaver! It's affordable, environmentally friendly, and the stations near campus are always well-stocked. Perfect for getting to classes on time.
+            </p>
+            <div class="profile">
+                <img src="{% static 'bikeshare/images/review3.jpg' %}" alt="">
+                <div class="profile-text">
+                    <h3 class="name">Emma L.</h3>
+                    <span>Student</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="{% static 'bikeshare/js/main.js' %}"></script>
+
+{% endblock %}

@@ -6,6 +6,7 @@ class Station(models.Model):
     station_name = models.CharField(max_length=100, default="")
     station_latitude = models.FloatField(null=True)
     station_longitude = models.FloatField(null=True)
+    image = models.ImageField(upload_to='locations/', default='locations/location.png', blank=True)
 
     def __str__(self):
         return self.station_name
@@ -16,9 +17,12 @@ class Station(models.Model):
         return available_bikes.count()
 
 class Bike(models.Model):
+    name = models.CharField(max_length=100,default='no_name')
+    station = models.ForeignKey(Station, on_delete=models.CASCADE, related_name='bike_set')
     in_use = models.BooleanField(default=False)
     is_faulty = models.BooleanField(default=False)
-    station = models.ForeignKey(Station, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='bikeimage/', default='bikeshare/default.png', blank=True)
+
 
     class Meta:
         verbose_name_plural = 'Bikes'

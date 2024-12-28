@@ -6,6 +6,28 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import BikeShareProfile
 
+
+
+from django.db.models import Count, Q
+
+def index(request):
+    # Get all stations for the locations section
+    stations = Station.objects.all()
+    
+    # Get top stations by bike availability
+    top_stations = Station.objects.annotate(
+        available_bikes=Count('bike_set', filter=Q(bike_set__in_use=False, bike_set__is_faulty=False))
+    ).order_by('-available_bikes')[:6]
+    
+    context = {
+        'stations': stations,
+        'top_stations': top_stations,
+    }
+    return render(request, 'bikeshare/index.html', context)
+
+
+def about(request):
+    return render(request, 'bikeshare/about.html')
 @login_required
 def select_role(request):
     """
@@ -15,9 +37,9 @@ def select_role(request):
         profile = BikeShareProfile.objects.get(user=request.user)
         # Redirect if role is already selected
         if profile.role:
-            return redirect('bikeshare:customer-page' if profile.role == 'Customer' 
-                          else 'bikeshare:operator-page' if profile.role == 'Operator'
-                          else 'bikeshare:manager-page')
+            return redirect('bikeshare:bikeshare-customer' if profile.role == 'Customer' 
+                          else 'bikeshare:bikeshare-operator' if profile.role == 'Operator'
+                          else 'bikeshare:bikeshare-manager')
     except BikeShareProfile.DoesNotExist:
         profile = BikeShareProfile.objects.create(user=request.user)
 
@@ -34,11 +56,11 @@ def select_role(request):
             
             # Redirect based on role
             if role == 'Customer':
-                return redirect('bikeshare:customer-page')
+                return redirect('bikeshare:bikeshare-customer')
             elif role == 'Operator':
-                return redirect('bikeshare:operator-page')
+                return redirect('bikeshare:bikeshare-operator')
             else:
-                return redirect('bikeshare:manager-page')
+                return redirect('bikeshare:bikeshare-manager')
         else:
             messages.error(request, 'Invalid role selected')
 
@@ -57,103 +79,132 @@ from .models import Bike, Station, Order, BikeShareProfile
 from .forms import TopUpForm, PayBalanceForm, LocationForm
 import datetime
 
+from django.shortcuts import get_object_or_404, render
+from .models import Station, Bike, Order, BikeShareProfile
+import datetime
+
 def rent_bike(request, station_id):
-
-    # get station object from the id passed to the function
+    # Get station object from the ID
     station = get_object_or_404(Station, pk=station_id)
-    # take the first bike from the station which is not in use or faulty
+    # Get the first available bike
     bike = station.bike_set.all().filter(in_use=False, is_faulty=False).first()
-    rented_bike = get_object_or_404(Bike, pk=bike.id)
-    # get user object
-    user = get_object_or_404(BikeShareProfile, pk=request.POST.get('user_id', False))
 
-    # take the time the rental began
+    if not bike:
+        return render(request, 'bikeshare/customer_page.html', {
+            'error': 'No available bikes at this station.',
+            'all_stations': Station.objects.all(),
+            'all_bikes': Bike.objects.all(),
+            'customers_orders': Order.objects.all(),
+        })
+
+    rented_bike = get_object_or_404(Bike, pk=bike.id)
+
+    # Get the user's BikeShareProfile
+    try:
+        user_profile = request.user.bikeshare_profile
+    except BikeShareProfile.DoesNotExist:
+        return render(request, 'bikeshare/customer_page.html', {
+            'error': 'BikeShareProfile not found for this user.',
+            'all_stations': Station.objects.all(),
+            'all_bikes': Bike.objects.all(),
+            'customers_orders': Order.objects.all(),
+        })
+
+    # Start the rental process
     time = datetime.datetime.now()
 
-    # increment the users 'hires in progress' attribute
-    user.hires_in_progress += 1
-    user.save()
+    # Increment user's hires in progress
+    user_profile.hires_in_progress += 1
+    user_profile.save()
 
-    # create a new order with bike, user, station and start time
-    new_order = Order(bike=rented_bike, user=user, start_station=station, start_time=time)
+    # Create a new order
+    new_order = Order(bike=rented_bike, user=request.user, start_station=station, start_time=time)
     new_order.save()
 
-    # change bike in use to true to stop it from being rented again
-    bike.in_use = True
-    bike.save()
+    # Mark the bike as in use
+    rented_bike.in_use = True
+    rented_bike.save()
 
-    all_stations = Station.objects.all()
-    all_bikes = Bike.objects.all()
-    customers_orders = Order.objects.all()
     context = {
-        'user':user,
-        'all_stations': all_stations,
-        'all_bikes': all_bikes,
-        'customers_orders':customers_orders,
+        'user': user_profile,
+        'all_stations': Station.objects.all(),
+        'all_bikes': Bike.objects.all(),
+        'customers_orders': Order.objects.all(),
     }
     return render(request, 'bikeshare/customer_page.html', context=context)
 
 
-def submit_pay_balance(request):
 
+from django.shortcuts import render
+from .forms import PayBalanceForm
+
+def submit_pay_balance(request):
     msg = ""
 
-    if request.method=='POST':
+    if request.method == 'POST':
         form = PayBalanceForm(request.POST)
         if form.is_valid():
-            user = request.user
-            payment_amount = int(form.cleaned_data['money'])
-            if payment_amount <= user.wallet_balance and payment_amount <= user.amount_owed:
-                user.wallet_balance -= payment_amount
-                user.amount_owed -= payment_amount
-                user.save()
-                if user.amount_owed == 0:
+            # Access the related `BikeShareProfile` instance
+            user_profile = request.user.bikeshare_profile
+
+            payment_amount = form.cleaned_data['money']
+            if payment_amount <= user_profile.wallet_balance and payment_amount <= user_profile.amount_owed:
+                user_profile.wallet_balance -= payment_amount
+                user_profile.amount_owed -= payment_amount
+                user_profile.save()
+
+                if user_profile.amount_owed == 0:
                     msg = "You have paid off all your balance!"
                 else:
-                    msg = "You have paid £{}. You still owe £{}".format(payment_amount, user.amount_owed)
-            elif payment_amount > user.wallet_balance:
-                msg = "You don't have enough money in your wallet"
-            elif payment_amount > user.amount_owed:
-                msg = "You don't owe this much"
+                    msg = "You have paid ₹{}. You still owe ₹{}".format(payment_amount, user_profile.amount_owed)
+            elif payment_amount > user_profile.wallet_balance:
+                msg = "You don't have enough money in your wallet."
+            elif payment_amount > user_profile.amount_owed:
+                msg = "You don't owe this much."
 
-            if msg:
-                context = {'msg':msg, 'form':form}
-            else:
-                context = {'form':form}
-        else:
-            form = TopUpForm()
-            context={'form':form}
-
+        context = {'msg': msg, 'form': form}
         return render(request, 'bikeshare/pay_balance.html', context=context)
+    else:
+        form = PayBalanceForm()
+        return render(request, 'bikeshare/pay_balance.html', {'form': form})
+
+
+# views.py
+from django.shortcuts import render, redirect
+from .forms import TopUpForm
+from django.contrib import messages
+
+
+from django.db import transaction
 
 def submit_top_up(request):
-
-    # user tops up wallet balance
-
-    success_message = ""
-
     if request.method == 'POST':
         form = TopUpForm(request.POST)
         if form.is_valid():
-            user = request.user
-            money = int(form.cleaned_data['money'])
-            user.wallet_balance += money
-            success_message = "You have topped up by £{}".format(money)
-            user.save()
-    else:
-        form = TopUpForm()
-
-    if success_message:
-        context = {'success_message':success_message, 'form':form}
-    else:
-        context = {'form':form}
+            with transaction.atomic():
+                user = request.user.bikeshare_profile
+                amount = form.cleaned_data['amount']
+                user.wallet_balance += float(amount)
+                user.save()
+                success_message = f"You have topped up by ₹{amount:.2f}"
+                
+                # Optional: Add a success message that can be displayed on redirect
+                messages.success(request, success_message)
+                
+                # Optional: Redirect to customer page after successful top-up
+                return redirect('bikeshare:bikeshare-customer')
+        else:
+            form = TopUpForm()
+    
+    context = {
+        'form': form,
+        'success_message': success_message if 'success_message' in locals() else None
+    }
     return render(request, 'bikeshare/top_up.html', context=context)
 
 
-def home(request):
-    return render(request, 'bikeshare/home.html')
 
-
+from django.conf import settings
 
 @login_required
 def customer_page(request):
@@ -174,7 +225,8 @@ def customer_page(request):
         'all_bikes': all_bikes,
         'customers_orders': customers_orders,
         'form': LocationForm(),
-        'all_stations_map': all_stations_map
+        'all_stations_map': all_stations_map,
+        'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
     }
     return render(request, 'bikeshare/customer_page.html', context)
 
@@ -215,8 +267,8 @@ def return_bike(request, order_id):
             profile.amount_owed += cost
             profile.save()
 
-            messages.success(request, f"Bike successfully returned. Amount charged: £{cost:.2f}")
-            return redirect('bikeshare:customer-page')
+            messages.success(request, f"Bike successfully returned. Amount charged: ₹{cost:.2f}")
+            return redirect('bikeshare:bikeshare-customer')
     else:
         form = LocationForm()
 
@@ -237,8 +289,8 @@ def top_up_balance(request):
             amount = form.cleaned_data['money']
             profile.wallet_balance += amount
             profile.save()
-            messages.success(request, f"Successfully topped up £{amount:.2f}")
-            return redirect('bikeshare:customer-page')
+            messages.success(request, f"Successfully topped up ₹{amount:.2f}")
+            return redirect('bikeshare:bikeshare-customer')
     else:
         form = TopUpForm()
 
@@ -260,8 +312,8 @@ def pay_balance(request):
                 profile.wallet_balance -= amount
                 profile.amount_owed -= amount
                 profile.save()
-                messages.success(request, f"Successfully paid £{amount:.2f}")
-                return redirect('bikeshare:customer-page')
+                messages.success(request, f"Successfully paid ₹{amount:.2f}")
+                return redirect('bikeshare:bikeshare-customer')
     else:
         form = PayBalanceForm()
 
@@ -282,8 +334,8 @@ def report_faulty(request, order_id):
     bike.is_faulty = True
     bike.save()
     
-    messages.warning(request, "You have been charged £15 for reporting bike damage.")
-    return redirect('bikeshare:customer-page')
+    messages.warning(request, "You have been charged ₹15 for reporting bike damage.")
+    return redirect('bikeshare:bikeshare-customer')
 
 @login_required
 def operator_page(request):
@@ -314,7 +366,7 @@ def repair_bike(request, bike_id):
     bike.save()
     
     messages.success(request, f"Bike {bike_id} has been repaired successfully.")
-    return redirect('bikeshare:operator-page')
+    return redirect('bikeshare:bikeshare-operator')
 
 @login_required
 def move_bike(request, bike_id):
@@ -338,7 +390,7 @@ def move_bike(request, bike_id):
                 messages.success(request, f"Bike moved from {old_station} to {new_station}")
             else:
                 messages.info(request, f"Bike is already at {new_station}")
-            return redirect('bikeshare:operator-page')
+            return redirect('bikeshare:bikeshare-operator')
     else:
         form = LocationForm()
 
