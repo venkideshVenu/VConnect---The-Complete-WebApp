@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'jobprofile',
     'jobs',
     'bikeshare',
+    'socialhub',
 ]
 
 AUTH_USER_MODEL = 'core.CustomUser'
