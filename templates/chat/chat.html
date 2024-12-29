@@ -1,95 +1,181 @@
 {% extends "socialhub/base.html" %}
 {% load static %}
-{% block content %}
-<div class="content-section">
-    <div style="display: flex; align-items: center;">
-        <img src="{{ chat_user.profile.image_thumbnail_user.url }}" class="rounded-circle chat-image" alt="Profile">    
-        <p><b>{{ chat_user.username }}</b></p>
+
+{% block body_block %}
+<div class="container py-4">
+  <div class="card shadow-sm">
+    <!-- Chat Header -->
+    <div class="card-header bg-white py-3">
+      <div class="d-flex align-items-center">
+        <img src="{{ chat_user.profile_picture.url }}" 
+             class="rounded-circle me-3" 
+             alt="Profile"
+             style="width: 40px; height: 40px; object-fit: cover;">
+        <div>
+          <h6 class="mb-0 fw-bold">{{ chat_user.username }}</h6>
+          <small class="text-muted">Active Now</small>
+        </div>
+      </div>
     </div>
-    <hr>
-    <div id="messages">
-    {% for message in history_messages %}
+
+    <!-- Chat Messages -->
+    <div class="card-body bg-light" style="height: 70vh; overflow-y: auto;" id="messages">
+      {% for message in history_messages %}
         {% if message.sender == request.user %}
-            <div class="d-flex justify-content-end">
-                <div class="alert alert-success" role="alert">
-                    {{ message.message }}<br>
-                    <small class="text-muted">{{ message.timestamp }}</small>
+          <div class="d-flex justify-content-end mb-3">
+            <div class="message-content me-2">
+              <div class="bg-primary text-white p-3 rounded-3 shadow-sm" 
+                   style="max-width: 80%; word-wrap: break-word;">
+                {{ message.message }}
+                <div class="mt-1">
+                  <small class="opacity-75">{{ message.timestamp }}</small>
                 </div>
-                <img src="{{ message.sender.profile.image_thumbnail_user.url }}" class="rounded-circle chat-image" alt="Profile">
+              </div>
             </div>
+            <img src="{{ message.sender.profile_picture.url }}" 
+                 class="rounded-circle" 
+                 alt="Profile"
+                 style="width: 35px; height: 35px; object-fit: cover;">
+          </div>
         {% else %}
-            <div class="d-flex justify-content-start">
-                <!-- Profile image on the left for the other user -->
-                <img src="{{ message.sender.profile.image_thumbnail_user.url }}" class="rounded-circle chat-image" alt="Profile">
-                <div class="alert alert-primary" role="alert">
-                    {{ message.message }}<br>
-                    <small class="text-muted">{{ message.timestamp }}</small>
+          <div class="d-flex justify-content-start mb-3">
+            <img src="{{ message.sender.profile_picture.url }}" 
+                 class="rounded-circle me-2" 
+                 alt="Profile"
+                 style="width: 35px; height: 35px; object-fit: cover;">
+            <div class="message-content">
+              <div class="bg-white p-3 rounded-3 shadow-sm" 
+                   style="max-width: 80%; word-wrap: break-word;">
+                {{ message.message }}
+                <div class="mt-1">
+                  <small class="text-muted">{{ message.timestamp }}</small>
                 </div>
+              </div>
             </div>
-            
+          </div>
         {% endif %}
-    {% endfor %}
+      {% endfor %}
+    </div>
+
+    <!-- Message Input -->
+    <div class="card-footer bg-white p-3">
+      <form id="chat-form" class="mb-0">
+        <div class="input-group">
+          <input type="text" 
+                 class="form-control border-end-0" 
+                 placeholder="Type your message..." 
+                 id="chat-message-input" 
+                 name="message"
+                 autocomplete="off">
+          <button class="btn btn-primary" type="submit">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
-    <form id="chat-form">
-        <input class="message-input form-control" placeholder="Type your message" type="text" id="chat-message-input" name="message">
-    </form>
-</div>
 
-<script type="text/javascript">
-    const room_name = `{{ room_name }}`
+<style>
+.message-content {
+  max-width: 70%;
+}
 
-    let url = `ws://${window.location.host}/ws/chat/${room_name}/`;
-    const chatSocket = new WebSocket(url);
+#messages {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
 
-    chatSocket.onmessage = function(e) {
-        const data = JSON.parse(e.data);
-        console.log('Data:', data);
-        
-        if (data.type == 'chat'){
-            let messages = document.getElementById("messages")
-            let messageHTML = '';
-        if (data.username === '{{ request.user.username }}') {
-            // Display message on the right for the current user
-            messageHTML = `
-                <div class="d-flex justify-content-end">
-                    <div class="alert alert-success" role="alert">
-                        ${data.message}
-                        <br>
-                        <small class="text-muted">${data.timestamp}</small>
-                    </div>
-                    <img src="${data.sender_user_image}" class="rounded-circle chat-image" alt="Profile">
-                </div>
-            `;
-        } else {
-            // Display message on the left for the other user
-            messageHTML = `
-                <div class="d-flex justify-content-start">
-                    <img src="${data.sender_user_image}" class="rounded-circle chat-image" alt="Profile">
-                    <div class="alert alert-primary" role="alert">
-                        ${data.message}
-                        <br>
-                        <small class="text-muted">${data.timestamp}</small>
-                    </div>
-                </div>
-            `;
-        }
-        
-        messages.insertAdjacentHTML('beforeend', messageHTML);
-        }
-    };
+#messages::-webkit-scrollbar {
+  width: 6px;
+}
 
-    let form = document.getElementById('chat-form');
-    form.addEventListener('submit', (e)=>{
-        e.preventDefault()
-        let message = e.target.message.value
-        chatSocket.send(JSON.stringify({
-            'message': message,
-            'username': '{{ request.user.username }}',
-            'recipient': '{{ chat_user.username }}',
-            'is_group': false
-        }))
-        form.reset()
-    })
+#messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#messages::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: #dee2e6;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const messages = document.getElementById('messages');
+  const form = document.getElementById('chat-form');
+  const messageInput = document.getElementById('chat-message-input');
+  
+  // Scroll to bottom of messages
+  messages.scrollTop = messages.scrollHeight;
+
+  // WebSocket setup
+  const room_name = '{{ room_name }}';
+  const chatSocket = new WebSocket(
+    `ws://${window.location.host}/ws/chat/${room_name}/`
+  );
+
+  chatSocket.onmessage = function(e) {
+    const data = JSON.parse(e.data);
+    
+    if (data.type === 'chat') {
+      const isCurrentUser = data.username === '{{ request.user.username }}';
+      const messageHTML = `
+        <div class="d-flex justify-content-${isCurrentUser ? 'end' : 'start'} mb-3">
+          ${!isCurrentUser ? `
+            <img src="${data.sender_user_image}" 
+                 class="rounded-circle me-2" 
+                 alt="Profile"
+                 style="width: 35px; height: 35px; object-fit: cover;">
+          ` : ''}
+          <div class="message-content ${isCurrentUser ? 'me-2' : ''}">
+            <div class="${isCurrentUser ? 'bg-primary text-white' : 'bg-white'} p-3 rounded-3 shadow-sm" 
+                 style="max-width: 80%; word-wrap: break-word;">
+              ${data.message}
+              <div class="mt-1">
+                <small class="${isCurrentUser ? 'opacity-75' : 'text-muted'}">${data.timestamp}</small>
+              </div>
+            </div>
+          </div>
+          ${isCurrentUser ? `
+            <img src="${data.sender_user_image}" 
+                 class="rounded-circle" 
+                 alt="Profile"
+                 style="width: 35px; height: 35px; object-fit: cover;">
+          ` : ''}
+        </div>
+      `;
+      
+      messages.insertAdjacentHTML('beforeend', messageHTML);
+      messages.scrollTop = messages.scrollHeight;
+    }
+  };
+
+  // Handle form submission
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const message = messageInput.value.trim();
+    
+    if (message) {
+      chatSocket.send(JSON.stringify({
+        'message': message,
+        'username': '{{ request.user.username }}',
+        'recipient': '{{ chat_user.username }}',
+        'is_group': false
+      }));
+      form.reset();
+    }
+  });
+
+  // Handle connection errors
+  chatSocket.onclose = function(e) {
+    console.error('Chat socket closed unexpectedly');
+  };
+});
 </script>
-
-{% endblock content %}
+{% endblock body_block %}
