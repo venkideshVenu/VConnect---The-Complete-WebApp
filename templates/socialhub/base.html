@@ -48,7 +48,7 @@
                 </a>
                 <a class="nav-item nav-link" href="{% url 'socialhub:profile' request.user.username %}">Profile
                 </a>
-                <a class="nav-item nav-link" {% comment "" %}href="{% url 'chat:chat_list'" %}{% endcomment %} >
+                <a class="nav-item nav-link" href="{% url 'chat:chat_list' %}" >
                   Chat <i class="fa-brands fa-rocketchat"></i>
                 </a>
                 <a class="nav-item nav-link" href="{% url 'socialhub:notifications' request.user.username %}">

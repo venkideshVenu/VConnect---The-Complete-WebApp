@@ -38,8 +38,15 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+
+    'daphne',
+
+    
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    
+
+
     'home',
     'core',
     'news',
@@ -54,10 +61,11 @@ INSTALLED_APPS = [
     'socialhub.apps.SocialhubConfig',
     'chat',
 
-
+    'channels',
     'taggit',
     'crispy_forms',
     'crispy_bootstrap4',
+    
 ]
 
 AUTH_USER_MODEL = 'core.CustomUser'
@@ -172,3 +180,12 @@ GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY')
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+ASGI_APPLICATION = 'Seagro.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    }
+}

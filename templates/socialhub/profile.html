@@ -84,7 +84,7 @@
                 		<button type="button" class="btn btn-info btn-sm">Follow Buddy</button>
                 		{% endif %}
                 </a>
-				<a {% comment "" %} href="{% url 'chat:chat' user_id %}"{% endcomment %} style="margin-left: 1px;">
+				<a href="{% url 'chat:chat' user_id %}" style="margin-left: 1px;">
 					<button type="button" class="btn btn-outline-info btn-sm">Message</button>
 				</a>
                 {% endif %}
@@ -213,7 +213,7 @@
         			<img class="rounded-circle account-img-f" src="{{pro.profile.image_thumbnail_user.url}}">
         		</div>
         		<div class="user-follow-status-model-name">
-        			<a href="{% url 'profile' pro.username %}" class="link-style-none">{{pro.username}}</a>
+        			<a href="{% url 'socialhub:profile' pro.username %}" class="link-style-none">{{pro.username}}</a>
         		</div>
         	</div>
             {% empty %}
