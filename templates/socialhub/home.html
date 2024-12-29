@@ -5,20 +5,21 @@
 {% endblock %}
 {% block content %}
   <div class="infinite-container">
+    <h1>{{ request.user.username }}</h1>
     {% for post in posts %}
     <div class="article-div infinite-item" name="{{post.id}}">
         <article class="media content-section">
           <div class="media-body">
             <div class="article-metadata">
               <a class="mr-2"
-                 href="{% url 'profile' post.author.username %}">{{ post.author }}
+                 href="{% url 'socialhub:profile' post.author.username %}">{{ post.author }}
               </a>
               <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}
               </small>
             </div>
             <div class="img-heading-wrap">
               <div class="article-post-img">
-                <img class="post-img" src="{{post.image_thumbnail.url}}">
+                <img class="post-img" src="{{post.image.url}}">
               </div>
               <p class="h-font">
                 <a class="article-title"

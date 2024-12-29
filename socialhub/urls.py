@@ -18,10 +18,14 @@ urlpatterns = [
     
     # Post interactions
     path('post/like/', views.like_view, name='like'),
-    path('post/report/', views.post_report_view, name='report'),
+    path('post/report/', views.post_report_view, name='report-user'),
     
     # Notifications
-    path('notifications/', views.notifications_view, name='notifications'),
-    path('notifications/update/', views.notifications_update_view, name='notifications-update'),
-    path('notifications/count/', views.notifications_unread_count_view, name='notifications-count'),
+    path('<str:username>/notifications/',views.notifications_view,name='notifications'),
+    path('<str:username>/notifications/update/',views.notifications_update_view,name='notifications-update'),
+    path('<str:username>/notifications/count/',views.notifications_unread_count_view,name='notifications-count'),
+
+
+    path('profile/<str:username>/', views.profile, name='profile'),
+    path('follow-unfollow/<int:pk>/',views.userFollowUnfollow,name="follow-unfollow"),
 ]

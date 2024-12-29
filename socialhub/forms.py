@@ -1,5 +1,5 @@
 from django import forms
-from .models import Comment, PostReport, Post
+from .models import Comment, PostReport, Post, UserReport
 
 class PostForm(forms.ModelForm):
     class Meta:
@@ -20,4 +20,9 @@ class CommentForm(forms.ModelForm):
 class ReportPostForm(forms.ModelForm):
     class Meta:
         model = PostReport
+        fields = ['reason']
+
+class ReportUserForm(forms.ModelForm):
+    class Meta:
+        model = UserReport
         fields = ['reason']

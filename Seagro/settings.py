@@ -55,6 +55,8 @@ INSTALLED_APPS = [
 
 
     'taggit',
+    'crispy_forms',
+    'crispy_bootstrap4',
 ]
 
 AUTH_USER_MODEL = 'core.CustomUser'
@@ -166,3 +168,6 @@ STATICFILES_DIRS = [
 
 CART_SESSION_SLUG = 'cart'
 GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY')
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

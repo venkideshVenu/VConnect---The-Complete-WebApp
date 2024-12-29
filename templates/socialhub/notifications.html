@@ -11,7 +11,7 @@
           <p class="notification-list-items-unread infinite-item">
           {% endif %}
 
-            <a href="{% url 'profile' notification.sender.username %}" style="text-decoration: blink;">{{notification.sender.username}}</a> {{notification.action}} 
+            <a href="{% url 'socialhub:profile' notification.sender.username %}" style="text-decoration: blink;">{{notification.sender.username}}</a> {{notification.action}} 
             {% if notification.post %}
              <span class="post-title-notify"><a href="{% url 'socialhub:post-detail' notification.post.slug %}">"{{notification.post.title}}".</a></span>
             {% endif %}

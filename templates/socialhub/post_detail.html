@@ -14,7 +14,7 @@
     <div class="media-body">
       <div class="article-metadata">
         <a class="mr-2"
-           href="{% url 'profile' post.author.username %}"><span class="link-style-none">Post by: </span> {{ post.author }}
+           href="{% url 'socialhub:profile' post.author.username %}"><span class="link-style-none">Post by: </span> {{ post.author }}
         </a>
         <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
         {% if not post.author == user %}
@@ -89,8 +89,8 @@
   <p>{{comments.count}} Comments</p>
   {% for comment in comments %}
   <div class="comments-inside">
-    <a class="link-style-none" href="{% url 'profile' comment.author.username %}">
-      <img class="rounded-circle article-img-comment" src="{{comment.author.profile.image_thumbnail_user.url}}" width="55">
+    <a class="link-style-none" href="{% url 'socialhub:profile' comment.author.username %}">
+      <img class="rounded-circle article-img-comment" src="{{comment.author.profile.image.url}}" width="55">
     </a>
     <article class="media content-section-blue">
       <div class="media-body">
@@ -113,7 +113,7 @@
         </button>
       </div>
       <div class="modal-body" style="overflow: hidden;">
-        <form action="{% url 'socialhub:report' %}" method="POST" id="report-form" name="{{post.id}}">
+        <form action="{% url 'socialhub:report-user' %}" method="POST" id="report-form" name="{{post.id}}">
           {% csrf_token %}
           {{report_form | crispy}}
           <button type="submit" class="btn btn-outline-primary" style="float: right;">Report</button>
@@ -200,7 +200,7 @@ $('#report-form').on('submit',function(event){
 
     event.preventDefault();
     $.ajax({
-      url: "{% url 'socialhub:report' %}",
+      url: "{% url 'socialhub:report-user' %}",
       type: "POST",
       data: {'reason':$('#id_reason').val(),'pk': $(this).attr('name'),'csrfmiddlewaretoken': '{{ csrf_token }}'},
       success: function(response) {

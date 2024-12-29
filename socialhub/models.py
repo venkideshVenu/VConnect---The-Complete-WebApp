@@ -193,3 +193,4 @@ class UserReport(models.Model):
 
     def __str__(self):
         return self.reported_user.username
+

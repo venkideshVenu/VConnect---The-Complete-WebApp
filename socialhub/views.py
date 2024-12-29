@@ -28,7 +28,6 @@ def home_view(request):
     
     # Get user's own posts
     user_posts = Post.objects.filter(author=request.user)
-    
     # Combine and order posts
     post_list = (follows_posts | user_posts).distinct().order_by('-date_posted')
     
@@ -86,47 +85,37 @@ def post_create_view(request):
         return render(request, 'socialhub/post_form.html', context)
 
 @login_required
-def post_update_view(request, pk):
-    """Update an existing post"""
-    post = get_object_or_404(Post, pk=pk)
-    
-    if post.author != request.user:
-        messages.error(request, "You can't edit this post!")
-        return redirect('socialhub:post-detail', slug=post.slug)
-        
+def post_update_view(request,pk):
+    post1 = get_object_or_404(Post,pk=pk)
     if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES, instance=post)
+        form = PostForm(request.POST, request.FILES,instance=post1)
         if form.is_valid():
-            post = form.save()
-            messages.success(request, 'Post updated successfully!')
-            return JsonResponse({'url': post.get_absolute_url()})
-        else:
-            return JsonResponse({'errors': form.errors}, status=400)
+            post=form.save(commit=False)
+            post.author = request.user
+            post.save()
+            ctx = {'url':post.get_absolute_url()}
+            return HttpResponse(json.dumps(ctx), content_type='application/json')
     else:
-        form = PostForm(instance=post)
+        post = get_object_or_404(Post,pk=pk)
+        form = PostForm(instance = post)
         context = {
             'form': form,
-            'post': post,
-            'action': 'Update'
+            'post':post,
         }
-        return render(request, 'socialhub/post_form.html', context)
+        return render(request,'socialhub/post_form_update.html',context)
+    
 
 @login_required
-def post_delete_view(request, pk):
-    """Delete a post"""
-    post = get_object_or_404(Post, pk=pk)
+def post_delete_view(request, pk=None):
+    context = {}
+    post = get_object_or_404(Post,pk=pk)
     
-    if post.author != request.user:
-        messages.error(request, "You can't delete this post!")
-        return redirect('socialhub:post-detail', slug=post.slug)
-        
-    if request.method == "POST":
-        post.delete()
-        messages.success(request, 'Post deleted successfully!')
-        return redirect('profile', username=request.user.username)
-        
-    context = {"post": post}
-    return render(request, 'socialhub/post_confirm_delete.html', context)
+    if request.method =="POST":
+        if post.author == request.user:
+            post.delete()
+            return redirect('socialhub:profile', username=request.user.username)
+    context = {"post":post}
+    return render(request,'socialhub/post_confirm_delete.html',context)
 
 @login_required
 def search_view(request):
@@ -250,3 +239,49 @@ def notifications_unread_count_view(request, username):
     ).count()
     
     return JsonResponse({'count': count})
+
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from .forms import ReportUserForm
+
+# @login_required
+def profile(request,username=None):
+    report_form = ReportUserForm()
+    user =  get_object_or_404(CustomUser,username=username)
+    post_list = Post.objects.filter(author=user).order_by('-id')
+    post_count = post_list.count()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(post_list, 4)
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)    
+    
+    context = {
+        'report_form':report_form,
+        'posts':posts,
+        'user_id':user,
+        'post_count':post_count,
+    }
+    template_name = 'socialhub/profile.html'
+
+    return render(request, template_name, context)
+
+
+
+@login_required
+def userFollowUnfollow(request,pk=None):
+    current_user = request.user
+    other_user = CustomUser.objects.get(pk=pk)
+
+    if other_user not in current_user.profile.follows.all():
+        current_user.profile.follows.add(other_user)
+        other_user.profile.followers.add(current_user)
+        
+        notify = Notification.objects.create(sender=current_user,receiver=other_user,action="started following you.")
+
+    else:
+        current_user.profile.follows.remove(other_user)
+        other_user.profile.followers.remove(current_user)
+    return redirect('socialhub:profile',username=other_user.username)
