@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'jobs',
     'bikeshare',
     'socialhub.apps.SocialhubConfig',
+    'chat',
 
 
     'taggit',

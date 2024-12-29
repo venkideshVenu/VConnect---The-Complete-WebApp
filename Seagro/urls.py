@@ -32,4 +32,5 @@ urlpatterns = [
     path('jobs/', include('jobs.urls')),
     path('bikeshare/', include('bikeshare.urls')),
     path('socialhub/', include('socialhub.urls')),
+    path('chat/', include('chat.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
