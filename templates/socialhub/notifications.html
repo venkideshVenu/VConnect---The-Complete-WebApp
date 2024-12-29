@@ -1,58 +1,126 @@
 {% extends "socialhub/base.html" %}
-{% block title %}<title> @{{request.user.username}}'s notifications- nccbuddy.com</title>{% endblock %}
 
-{% block content %}
-      <div class="content-section overflow-auto infinite-container">
-        <h1>Notifications</h1>
-        {% for notification in notifications %}
-          {% if notification.read %}
-          <p class="notification-list-items-read infinite-item">
-          {%else%}
-          <p class="notification-list-items-unread infinite-item">
+
+{% block body_block %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">
+            <i class="fas fa-bell me-2"></i>Notifications
+          </h5>
+          {% if notifications %}
+          <span class="badge bg-primary">{{ notifications|length }}</span>
           {% endif %}
-
-            <a href="{% url 'socialhub:profile' notification.sender.username %}" style="text-decoration: blink;">{{notification.sender.username}}</a> {{notification.action}} 
-            {% if notification.post %}
-             <span class="post-title-notify"><a href="{% url 'socialhub:post-detail' notification.post.slug %}">"{{notification.post.title}}".</a></span>
-            {% endif %}
-             <br><small>({{notification.timestamp|date:"D, d M, g:i a"}})</small>
-          </p>
-        {% empty %}
-        <p class="notification-list-items-unread">No notifications yet! Welcome to nccbuddy.com.</p>
-        {% endfor %}
+        </div>
+        
+        <div class="card-body p-0">
+          <div class="infinite-container">
+            {% for notification in notifications %}
+              <div class="notification-item infinite-item p-3 border-bottom {% if not notification.read %}bg-light{% endif %}">
+                <div class="d-flex align-items-start">
+                  <div class="flex-grow-1">
+                    <div class="notification-content">
+                      <a href="{% url 'socialhub:profile' notification.sender.username %}" 
+                         class="fw-bold text-decoration-none">
+                        @{{ notification.sender.username }}
+                      </a>
+                      <span class="text-muted">{{ notification.action }}</span>
+                      
+                      {% if notification.post %}
+                        <a href="{% url 'socialhub:post-detail' notification.post.slug %}" 
+                           class="text-decoration-none post-link">
+                          "{{ notification.post.title }}"
+                        </a>
+                      {% endif %}
+                    </div>
+                    <small class="text-muted">
+                      <i class="far fa-clock me-1"></i>
+                      {{ notification.timestamp|date:"D, d M, g:i a" }}
+                    </small>
+                  </div>
+                  {% if not notification.read %}
+                    <span class="badge bg-primary ms-2">New</span>
+                  {% endif %}
+                </div>
+              </div>
+            {% empty %}
+              <div class="text-center py-5">
+                <i class="far fa-bell fa-3x text-muted mb-3"></i>
+                <p class="text-muted">No notifications yet! Welcome to nccbuddy.com.</p>
+              </div>
+            {% endfor %}
+          </div>
+          
+          <div class="loading text-center py-3" style="display: none;">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div class="loading" style="display: none;">
-        Loading...
-      </div>
-      {% if notifications.has_next %}
-        <a class="infinite-more-link" style="display: none;" href="?page={{ notifications.next_page_number }}">More</a>
-      {% endif %}
       
-{% endblock content %}
-{% block script %}
-        <script>
-        $( document ).ready(function(){
-            $.ajax({
-                url: "{% url 'socialhub:notifications-update' request.user.username %}",
-                type: 'get',
-                success: function(data){
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                  }
-            });
-        });
-        </script>
-        <script>
-          var infinite = new Waypoint.Infinite({
-            element: $('.infinite-container')[0],
-            onBeforePageLoad: function () {
-              $('.loading').show();
-            },
-            onAfterPageLoad: function ($items) {
-              $('.loading').hide();
-            }
-          });
-      </script>
+      {% if notifications.has_next %}
+        <a class="infinite-more-link d-none" href="?page={{ notifications.next_page_number }}">More</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock body_block %}
 
+{% block script %}
+<script>
+$(document).ready(function() {
+  // Mark notifications as read
+  $.ajax({
+    url: "{% url 'socialhub:notifications-update' request.user.username %}",
+    type: 'get',
+    success: function(data) {
+      console.log('Notifications marked as read');
+    },
+    error: function(xhr, ajaxOptions, thrownError) {
+      console.error('Error updating notifications:', thrownError);
+    }
+  });
+
+  // Initialize infinite scroll
+  var infinite = new Waypoint.Infinite({
+    element: $('.infinite-container')[0],
+    offset: 'bottom-in-view',
+    onBeforePageLoad: function() {
+      $('.loading').fadeIn(300);
+    },
+    onAfterPageLoad: function($items) {
+      $('.loading').fadeOut(300);
+    }
+  });
+});
+</script>
+
+<style>
+.notification-item {
+  transition: background-color 0.2s ease;
+}
+
+.notification-item:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.post-link {
+  color: var(--bs-primary);
+}
+
+.post-link:hover {
+  text-decoration: underline !important;
+}
+
+.card {
+  border-radius: 0.5rem;
+}
+
+.loading {
+  background: rgba(255, 255, 255, 0.9);
+}
+</style>
 {% endblock %}

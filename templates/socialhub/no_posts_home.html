@@ -1,17 +1,212 @@
 {% load static %}
 
-<section>
-	<div class="">
-	  <div class="">
-	    Welcome <b>{{user.username}}</b>
-	  </div>
-	  <div class="card-body">
-	    <p class="card-text">Posts of your buddies will appear on this page.</p>
-	    <p class="card-text">To add or update your personal information <a href="">click here</a>.</p>
-	    <p>You can also search for your buddies and posts at <a href="{% url 'socialhub:search' %}">search</a> page.</p>
-	    <p>To add your first post click the button below.</p>
-	    <a href="{% url 'socialhub:post-create' %}" class="btn btn-primary">Add Post</a>
-	  </div>
-	</div>
-	<br>
+<section class="welcome-section">
+    <div class="welcome-card">
+        <div class="welcome-header">
+            <div class="welcome-avatar">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <h2 class="welcome-title">Welcome, <span class="username">{{user.username}}</span>!</h2>
+        </div>
+        
+        <div class="welcome-content">
+            <div class="welcome-message">
+                <p class="lead">Get started with your social journey! 🚀</p>
+                <div class="info-cards">
+                    <div class="info-card">
+                        <i class="fas fa-users"></i>
+                        <p>Posts from your buddies will appear here</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <i class="fas fa-search"></i>
+                        <p>Find your buddies and interesting posts on the <a href="{% url 'socialhub:search' %}" class="feature-link">search page</a></p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <i class="fas fa-user-edit"></i>
+                        <p>Complete your profile to connect better with others. <a href="{% url 'profile_update'  %}" class="feature-link">Update profile</a></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="create-post-section">
+                <p class="create-post-text">Ready to share your first post?</p>
+                <a href="{% url 'socialhub:post-create' %}" class="create-post-btn">
+                    <i class="fas fa-plus-circle"></i>
+                    Create Your First Post
+                </a>
+            </div>
+        </div>
+    </div>
 </section>
+
+<style>
+.welcome-section {
+    padding: 2rem 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.welcome-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.08);
+}
+
+.welcome-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.welcome-avatar {
+    width: 60px;
+    height: 60px;
+    background: #f0f2f5;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.welcome-avatar i {
+    font-size: 32px;
+    color: #90a4ae;
+}
+
+.welcome-title {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #2c3e50;
+}
+
+.username {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.welcome-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.welcome-message .lead {
+    font-size: 1.2rem;
+    color: #64748b;
+    margin-bottom: 1.5rem;
+}
+
+.info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.info-card {
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    transition: transform 0.2s;
+}
+
+.info-card:hover {
+    transform: translateY(-2px);
+}
+
+.info-card i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+.info-card p {
+    margin: 0;
+    color: #475569;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.feature-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.feature-link:hover {
+    color: var(--hover-primary-color);
+    text-decoration: underline;
+}
+
+.create-post-section {
+    text-align: center;
+    padding: 2rem;
+    background: linear-gradient(to right, #f8fafc, #f1f5f9);
+    border-radius: 12px;
+    margin-top: 1rem;
+}
+
+.create-post-text {
+    font-size: 1.1rem;
+    color: #475569;
+    margin-bottom: 1rem;
+}
+
+.create-post-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--primary-color);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.create-post-btn:hover {
+    background: var(--hover-primary-color);
+    transform: translateY(-2px);
+    color: white;
+}
+
+.create-post-btn i {
+    font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+    .welcome-section {
+        padding: 1rem;
+    }
+    
+    .welcome-card {
+        padding: 1.5rem;
+    }
+    
+    .welcome-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .welcome-title {
+        font-size: 1.5rem;
+    }
+    
+    .info-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .create-post-section {
+        padding: 1.5rem;
+    }
+}
+</style>

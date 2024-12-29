@@ -1,132 +1,232 @@
 {% extends "socialhub/base.html" %}
-{% block title %}
-  <title>Search & Recent Posts -  nccbuddy.com</title>
-{% endblock %}
-{% block content %}
 
-        <div class="search-form-div">
-          <form method="POST" class="search-form">
-            {% csrf_token %}
-            <input type="text" name="search" class="search-input" placeholder="search username and posts">
-            <input type="submit" name="" value="Search" class="btn-search">
-          </form>
-        </div>
 
-    {% if message %}
-      <div class="resent-posts">
-        <h1 class="resent-posts-heading">{{message}}</h1>
+{% block body_block %}
+
+<div class="container py-4">
+  <!-- Search Section -->
+  <div class="search-container mb-4">
+    <form method="POST" class="search-form">
+      {% csrf_token %}
+      <div class="input-group">
+        <input type="text" name="search" class="form-control rounded-pill-start" placeholder="Search users and posts...">
+        <button type="submit" class="btn btn-primary rounded-pill-end px-4">
+          <i class="fas fa-search"></i> Search
+        </button>
       </div>
-    {% endif %}
-    {% if users %}
-        <div class="resent-posts">
-            <h1 class="resent-posts-heading">User result:</h1>
-        </div>
-        <div class="content-section-blue"> 
-          
-          {% for pro in users %}
-            <div class="d-flex flex-row justify-content-between align-items-center">
-                <div class="d-flex flex-row align-items-center">
-                  <a class="link-style-none" href="{% url 'socialhub:profile' pro.username %}">
-                    <img class="rounded-circle article-img-search" src="{{pro.profile.image_thumbnail_user.url}}" width="55">
-                  </a>
-                  <div class="d-flex flex-column align-items-start ml-2">
-                    <span>{{ pro.profile.name }}</span>
-                    <a class="link-style-none" href="{% url 'socialhub:profile' pro.username %}"><span class="font-weight-bold">{{pro.username}}</span></a>
-                  </div>
-                </div>
-                <div class="d-flex flex-row align-items-center mt-2">
-                  {% if pro in user.profile.follows.all %}
-                    <p>following</p>
-                  {% endif %}
-                </div>
-            </div>      
-          {% endfor %}
-        </div>
+    </form>
+  </div>
 
-    {% endif %}
+  <!-- Search Results Section -->
+  {% if message %}
+    <div class="alert alert-info rounded-3 shadow-sm">
+      {{ message }}
+    </div>
+  {% endif %}
 
-    {% if result_posts %}
-        <div class="resent-posts">
-          <h1 class="resent-posts-heading">Post results for: {{search_input}}</h1>
-        </div>
-      {% for post in result_posts %}
-        
-        <article class="media content-section">
-          <img class="rounded-circle article-img"
-               src="{{ post.author.profile.image_thumbnail_user.url }}">
-          <div class="media-body">
-            <div class="article-metadata">
-              <a class="mr-2"
-                 href="{% url 'socialhub:profile' post.author.username %}">{{ post.author }}
+  <!-- User Results -->
+  {% if users %}
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-transparent">
+        <h5 class="mb-0">User Results</h5>
+      </div>
+      <div class="card-body">
+        {% for pro in users %}
+          <div class="d-flex align-items-center py-2 {% if not forloop.last %}border-bottom{% endif %}">
+            <div class="d-flex align-items-center flex-grow-1">
+              <a href="{% url 'socialhub:profile' pro.username %}" class="text-decoration-none">
+                <img src="{{ pro.profile.image_thumbnail_user.url }}" 
+                     class="rounded-circle profile-image" 
+                     width="50" 
+                     height="50"
+                     alt="{{ pro.username }}'s profile picture">
               </a>
-              <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}
-              </small>
-            </div>
-            <h2><a class="article-title"
-                   href="{% url 'socialhub:post-detail' post.slug %}">{{ post.title }}
+              <div class="ms-3">
+                <h6 class="mb-0">{{ pro.profile.name }}</h6>
+                <a href="{% url 'socialhub:profile' pro.username %}" class="text-decoration-none text-muted">
+                  @{{ pro.username }}
                 </a>
-            </h2>
-            <p class="article-content">{{ post.content|truncatewords:30}}</p>
-            <a class="read-more" href="{% url 'socialhub:post-detail' post.slug %}"><small>Read More</small></a>
+              </div>
+            </div>
+            <div class="ms-auto">
+              {% if pro in user.profile.follows.all %}
+                <span class="badge bg-primary rounded-pill">Following</span>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
 
-            <div class="post-applause">
-              <span class="badge badge-secondary">{{post.likes.count}} NCC Claps</span>
+
+  <!-- Post Results -->
+    <h5 class="mb-3">Search Results for: "{{ search_input }}"</h5>
+    <div class="infinite-container">
+      {% for post in result_posts %}
+        <div class="card shadow-sm mb-4 infinite-item post-card">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+              <img src="{{ post.author.profile_picture.url }}" 
+                   class="rounded-circle profile-image" 
+                   width="40" 
+                   height="40"
+                   alt="{{ post.author.profile_picture.url }}'s profile picture">
+              <div class="ms-3">
+                <a href="{% url 'socialhub:profile' post.author.username %}" 
+                   class="text-decoration-none text-dark fw-bold">
+                  {{ post.author }}
+                </a>
+                <div class="text-muted small">
+                  {{ post.date_posted|date:"F d, Y" }}
+                </div>
+              </div>
             </div>
             
-          </div>
-        </article>
-    {% endfor %}
-    {% endif %}
-      <div class="resent-posts">
-        <h1 class="resent-posts-heading">Resent Posts:</h1>
-      </div>
-    <div class="infinite-container">
-    {% for post in posts %}
-      <article class="media content-section infinite-item">
-        <img class="rounded-circle article-img" src="{{ post.author.profile.image_thumbnail_user.url }}">
-          <div class="media-body">
-            <div class="article-metadata">
-              <a class="mr-2"
-                 href="{% url 'socialhub:profile' post.author.username %}">{{ post.author }}
+            <h5 class="card-title">
+              <a href="{% url 'socialhub:post-detail' post.slug %}" 
+                 class="text-decoration-none text-dark">
+                {{ post.title }}
               </a>
-              <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}
-              </small>
-            </div>
-            <h2><a class="article-title"
-                   href="{% url 'socialhub:post-detail' post.slug %}">{{ post.title }}
-                </a>
-            </h2>
-            <p class="article-content">{{ post.content|truncatewords:30}}</p>
-            <a class="read-more" href="{% url 'socialhub:post-detail' post.slug %}"><small>Read More</small></a>
-            <div class="post-applause">
-              <span class="badge badge-secondary">{{post.likes.count}} NCC Claps</span>
+            </h5>
+            
+            <p class="card-text">{{ post.content|truncatewords:30 }}</p>
+            
+            <div class="d-flex align-items-center justify-content-between">
+              <a href="{% url 'socialhub:post-detail' post.slug %}" 
+                 class="btn btn-link text-decoration-none p-0">
+                Read More →
+              </a>
+              <div class="d-flex align-items-center">
+                <i class="fas fa-hands-clapping me-2"></i>
+                <span class="badge bg-secondary">{{ post.likes.count }} Likes</span>
+              </div>
             </div>
           </div>
-        </article>
+        </div>
+      {% endfor %}
+    </div>
+
+
+
+
+  <!-- Recent Posts Section -->
+  <h5 class="mb-3">Recent Posts</h5>
+  <div class="infinite-container">
+    {% for post in posts %}
+      <div class="card shadow-sm mb-4 infinite-item post-card">
+        <div class="card-body">
+          <div class="d-flex align-items-center mb-3">
+            <img src="{{ post.author.profile_picture.url }}" 
+                 class="rounded-circle profile-image" 
+                 width="40" 
+                 height="40"
+                 alt="{{ post.author.username }}'s profile picture">
+            <div class="ms-3">
+              <a href="{% url 'socialhub:profile' post.author.username %}" 
+                 class="text-decoration-none text-dark fw-bold">
+                {{ post.author }}
+              </a>
+              <div class="text-muted small">
+                {{ post.date_posted|date:"F d, Y" }}
+              </div>
+            </div>
+          </div>
+          
+          <h5 class="card-title">
+            <a href="{% url 'socialhub:post-detail' post.slug %}" 
+               class="text-decoration-none text-dark">
+              {{ post.title }}
+            </a>
+          </h5>
+          
+          <p class="card-text">{{ post.content|truncatewords:30 }}</p>
+          
+          <div class="d-flex align-items-center justify-content-between">
+            <a href="{% url 'socialhub:post-detail' post.slug %}" 
+               class="btn btn-link text-decoration-none p-0">
+              Read More →
+            </a>
+            <div class="d-flex align-items-center">
+              <i class="fas fa-hands-clapping me-2"></i>
+              <span class="badge bg-secondary">{{ post.likes.count }} Likes</span>
+            </div>
+          </div>
+        </div>
+      </div>
     {% endfor %}
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading text-center py-4" style="display: none;">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
     </div>
+  </div>
 
-    <div class="loading" style="display: none;">
-      Loading...
-      <br>
-    </div>
+  {% if posts.has_next %}
+    <a class="infinite-more-link d-none" href="?page={{ posts.next_page_number }}">More</a>
+  {% endif %}
+</div>
+{% endblock body_block %}
 
+{% block style %}
+<style>
+  .rounded-pill-start {
+    border-top-left-radius: 50rem !important;
+    border-bottom-left-radius: 50rem !important;
+  }
+  
+  .rounded-pill-end {
+    border-top-right-radius: 50rem !important;
+    border-bottom-right-radius: 50rem !important;
+  }
 
-    {% if posts.has_next %}
-      <a class="infinite-more-link" style="display: none;" href="?page={{ posts.next_page_number }}">More</a>
-    {% endif %}
-{% endblock content %}
+  .profile-image {
+    object-fit: cover;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .post-card {
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .post-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .card {
+    border: none;
+    border-radius: 1rem;
+  }
+
+  .search-container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .infinite-container {
+    position: relative;
+  }
+
+  .spinner-border {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+</style>
+{% endblock %}
 
 {% block script %}
-    <script>
-          var infinite = new Waypoint.Infinite({
-            element: $('.infinite-container')[0],
-            onBeforePageLoad: function () {
-              $('.loading').show();
-            },
-            onAfterPageLoad: function ($items) {
-              $('.loading').hide();
-            }
-          });
-      </script>
+<script>
+  var infinite = new Waypoint.Infinite({
+    element: $('.infinite-container')[0],
+    onBeforePageLoad: function () {
+      $('.loading').fadeIn(300);
+    },
+    onAfterPageLoad: function ($items) {
+      $('.loading').fadeOut(300);
+    }
+  });
+</script>
 {% endblock %}

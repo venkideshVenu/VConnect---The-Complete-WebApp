@@ -1,62 +1,282 @@
 {% extends "socialhub/base.html" %}
 {% load static %}
-{% block title %}
-  <title>nccbuddy.com</title>
-{% endblock %}
-{% block content %}
+
+{% block body_block %}
+<div class="feed-container">
+  <div class="feed-header">
+    <h1 class="profile-name">{{ request.user.username }}'s Feed</h1>
+  </div>
+  
   <div class="infinite-container">
-    <h1>{{ request.user.username }}</h1>
     {% for post in posts %}
-    <div class="article-div infinite-item" name="{{post.id}}">
-        <article class="media content-section">
-          <div class="media-body">
-            <div class="article-metadata">
-              <a class="mr-2"
-                 href="{% url 'socialhub:profile' post.author.username %}">{{ post.author }}
-              </a>
-              <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}
-              </small>
-            </div>
-            <div class="img-heading-wrap">
-              <div class="article-post-img">
-                <img class="post-img" src="{{post.image.url}}">
-              </div>
-              <p class="h-font">
-                <a class="article-title"
-                     href="{% url 'socialhub:post-detail' post.slug %}">{{ post.title }}
-                  </a>
-              </p>              
-            </div>
-            <a class="read-more" href="{% url 'socialhub:post-detail' post.slug %}"><small>Read More</small></a>
-            <div class="post-applause">
-              <span class="badge badge-secondary">{{post.likes.count}} NCC Claps</span>
-            </div>
+    <div class="post-card infinite-item shadow-sm" name="{{post.id}}">
+      <div class="post-header">
+        <div class="post-author">
+          <div class="author-avatar">
+            <!-- If you have user avatars, add them here -->
+            <i class="fas fa-user-circle"><img src="{{ post.author.user.profile_picture }}"></i>
           </div>
-        </article>
+          <div class="author-info">
+            <a href="{% url 'socialhub:profile' post.author.username %}" class="author-name">
+              {{ post.author }}
+            </a>
+            <span class="post-date">{{ post.date_posted|date:"F d, Y" }}</span>
+          </div>
+        </div>
+        <div class="post-options">
+          <i class="fas fa-ellipsis-h"></i>
+        </div>
       </div>
+
+      <div class="post-content">
+        <h2 class="post-title">
+          <a href="{% url 'socialhub:post-detail' post.slug %}">{{ post.title }}</a>
+        </h2>
+        <div class="post-image">
+          <img src="{{post.image.url}}" alt="{{ post.title }}">
+        </div>
+      </div>
+
+      <div class="post-footer">
+        <div class="post-actions">
+          <div class="action-button clap-button">
+            <i class="fas fa-hands-clapping"></i>
+            <span class="clap-count">{{post.likes.count}}</span>
+          </div>
+          <div class="action-button">
+            <i class="far fa-comment"></i>
+          </div>
+          <div class="action-button">
+            <i class="far fa-share-square"></i>
+          </div>
+        </div>
+        <a href="{% url 'socialhub:post-detail' post.slug %}" class="read-more-link">
+          Read More <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
     {% empty %}
       {% include "socialhub/no_posts_home.html" %}
     {% endfor %}
   </div>
-  <div class="loading" style="display: none;">
-    Loading...
-    <br>
+
+  <div class="loading-indicator" style="display: none;">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
   </div>
+
   {% if posts.has_next %}
     <a class="infinite-more-link" style="display: none;" href="?page={{ posts.next_page_number }}">More</a>
   {% endif %}
-{% endblock content %}
+</div>
+
+<style>
+.feed-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.feed-header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.profile-name {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.post-card {
+  background: white;
+  border-radius: 15px;
+  margin-bottom: 25px;
+  overflow: hidden;
+  transition: transform 0.2s;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+.post-card:hover {
+  transform: translateY(-2px);
+}
+
+.post-header {
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.post-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.author-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #f0f2f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.author-avatar i {
+  font-size: 24px;
+  color: #90a4ae;
+}
+
+.author-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.author-name {
+  font-weight: 600;
+  color: #2c3e50;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.author-name:hover {
+  color: var(--primary-color);
+}
+
+.post-date {
+  font-size: 0.85rem;
+  color: #90a4ae;
+}
+
+.post-content {
+  padding: 15px;
+}
+
+.post-title {
+  font-size: 1.25rem;
+  margin-bottom: 15px;
+}
+
+.post-title a {
+  color: #2c3e50;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.post-title a:hover {
+  color: var(--primary-color);
+}
+
+.post-image {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.post-image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.post-image img:hover {
+  transform: scale(1.02);
+}
+
+.post-footer {
+  padding: 15px;
+  border-top: 1px solid rgba(0,0,0,0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.post-actions {
+  display: flex;
+  gap: 20px;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #64748b;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.action-button:hover {
+  color: var(--primary-color);
+}
+
+.clap-button {
+  color: #64748b;
+}
+
+.clap-count {
+  font-size: 0.9rem;
+}
+
+.read-more-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.2s;
+}
+
+.read-more-link:hover {
+  transform: translateX(3px);
+}
+
+.loading-indicator {
+  text-align: center;
+  padding: 20px;
+}
+
+@media (max-width: 768px) {
+  .feed-container {
+    padding: 10px;
+  }
+  
+  .post-card {
+    border-radius: 10px;
+  }
+  
+  .profile-name {
+    font-size: 1.5rem;
+  }
+}
+</style>
+{% endblock body_block %}
 
 {% block script %}
-      <script>
-          var infinite = new Waypoint.Infinite({
-            element: $('.infinite-container')[0],
-            onBeforePageLoad: function () {
-              $('.loading').show();
-            },
-            onAfterPageLoad: function ($items) {
-              $('.loading').hide();
-            }
-          });
-      </script>
+<script>
+  var infinite = new Waypoint.Infinite({
+    element: $('.infinite-container')[0],
+    onBeforePageLoad: function () {
+      $('.loading-indicator').show();
+    },
+    onAfterPageLoad: function ($items) {
+      $('.loading-indicator').hide();
+    }
+  });
+
+  // Optional: Add animation to clap button
+  $(document).on('click', '.clap-button', function() {
+    $(this).addClass('animate__animated animate__heartBeat');
+    setTimeout(() => {
+      $(this).removeClass('animate__animated animate__heartBeat');
+    }, 1000);
+  });
+</script>
 {% endblock %}

@@ -1,169 +1,319 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
-<head>
-    <link rel="icon" href="{% static 'socialhub/img/favicon.png' %}"
-          type="image/gif" sizes="16x16">
-    <meta charset="utf-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    {% block meta %}{% endblock %}
-    
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-          crossorigin="anonymous">    
-    <link rel="stylesheet" type="text/css"
-          href="{% static 'socialhub/css/main.css' %}">
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    {% block title %}{% endblock %}
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>SocialHub - Seagro</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="" name="keywords">
+        <meta content="" name="description">
 
-    
-</head>
-<body>
-    <header class="site-header">
-      {% if user.is_authenticated %}
-      <nav class="navbar navbar-expand-md navbar-dark bg-blue fixed-top d-none d-md-block">
-      {% else %}
-      <nav class="navbar navbar-expand-md navbar-dark bg-blue fixed-top">
-      {% endif %}
+        <!-- Google Web Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
-        <div class="container">
-          <a class="navbar-brand mr-4"
-             href="{% url 'socialhub:home' %}"><span class="ncc-title">NCC</span><span class="buddies-title"> BUDDY</span></a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse"
-                  data-target="#navbarToggle" aria-controls="navbarToggle"
-                  aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarToggle">
-            <div class="navbar-nav mr-auto">
-              
+        <!-- Icon Font Stylesheet -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+        <!-- Libraries Stylesheet -->
+        <link rel="stylesheet" href="{% static 'home/lib/animate/animate.min.css' %}"/>
+        <link href="{% static 'home/lib/lightbox/css/lightbox.min.css' %}" rel="stylesheet">
+        <link href="{% static 'home/lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+
+        <!-- Customized Bootstrap Stylesheet -->
+        <link href="{% static 'home/css/bootstrap.min.css' %}" rel="stylesheet">
+
+        <!-- Template Stylesheet -->
+        <link href="{% static 'home/css/style.css' %}" rel="stylesheet">
+
+        <!-- Custom Theme Color -->
+
+    </head>
+
+    <body>
+        <style>
+            :root {
+                --primary-color: #fb246a;
+                --hover-primary-color: #e0215d;
+            }
+
+            .text-primary {
+                color: var(--primary-color) !important;
+            }
+
+            .bg-primary {
+                background-color: var(--primary-color) !important;
+            }
+
+            .btn-primary {
+                background-color: var(--primary-color) !important;
+                border-color: var(--primary-color) !important;
+            }
+
+            .btn-primary:hover {
+                background-color: var(--hover-primary-color) !important;
+                border-color: var(--hover-primary-color) !important;
+            }
+
+            .navbar-light .navbar-nav .nav-link.active {
+                color: var(--primary-color) !important;
+            }
+        </style>
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
             </div>
-            <div class="navbar-nav">
-              {% if user.is_authenticated %}
-                <a class="nav-item nav-link" href="{% url 'socialhub:home' %}">Home</a>
+        </div>
+        <!-- Spinner End -->
 
-                <a class="nav-item nav-link" href="{% url 'socialhub:search' %}">Search
-                </a>
-                <a class="nav-item nav-link" href="{% url 'socialhub:profile' request.user.username %}">Profile
-                </a>
-                <a class="nav-item nav-link" href="{% url 'chat:chat_list' %}" >
-                  Chat <i class="fa-brands fa-rocketchat"></i>
-                </a>
-                <a class="nav-item nav-link" href="{% url 'socialhub:notifications' request.user.username %}">
-                  <i class="fa-solid fa-bell"></i> <span class="badge badge-light" style="display: none;" id="notifications-count"></span>
-                </a>
-              {% else %}
-                <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
-                <a class="nav-item nav-link" href="{% url 'register' %}">Register
-                </a>
-              {% endif %}
+<!-- Navbar & Hero Start -->
+<div class="container-fluid nav-bar px-0 px-lg-4 py-lg-0">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <a href="{% url 'jobs:index' %}" class="navbar-brand p-0">
+                <h1 class="text-primary mb-0"><i class="fab fa-slack me-2"></i>SocialHub</h1>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="fa fa-bars"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mx-auto"> <!-- Changed to mx-auto for center alignment -->
+                    <li class="nav-item">
+                        <a href="{% url 'socialhub:home' %}" class="nav-link active">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'socialhub:search' %}" class="nav-link">Search</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'socialhub:profile' request.user.username %}" class="nav-link">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'chat:chat_list' %}" class="nav-link">Chats</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{% url 'socialhub:notifications' request.user.username %}" class="nav-link">Notifications..   </a>
+                                  {% if notifications %}
+                                    <span class="badge bg-primary"> {{   notifications|length }}</span>
+                                {% endif %}
+                    </li>
+
+
+                </ul>
+
+                <!-- User profile/login button moved outside navbar-nav -->
+                <div class="ms-auto"> <!-- Changed to ms-auto to push to right -->
+                    {% if user.id is not none %}
+                        <div class="nav-item dropdown">
+                            <a href="#" class="btn btn-primary rounded-pill py-2 px-4 dropdown-toggle" data-bs-toggle="dropdown">
+                                {{ user.username }}
+                            </a>
+                            <div class="dropdown-menu">
+                                <a href="{% url 'profile' %}" class="dropdown-item">View Profile</a>
+                                <a href="#" class="dropdown-item">anything</a>
+                                <a href="{% url 'logout' %}" class="dropdown-item">Logout</a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-primary rounded-pill py-2 px-4">Get Started</a>
+                    {% endif %}
+                </div>
             </div>
+        </nav>
+    </div>
+</div>
+<!-- Navbar & Hero End -->
+
+        {% block body_block %}
+        
+        {% endblock body_block %}
+
+        <!-- Floating Home Button -->
+        <a href="{% url 'homepage' %}" class="float-home">
+            <i class="bi bi-house-fill"></i>
+        </a>
+
+
+        
+      <style>
+        .float-home {
+          position: fixed;
+          width: 50px;
+          height: 50px;
+          bottom: 40px;
+          left: 40px;
+          background-color:rgb(117, 76, 214);
+          color: #ffffff;
+          border-radius: 50%;
+          text-align: center;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-decoration: none;
+          transition: all 0.3s ease;
+          z-index: 1000;
+        }
+  
+        .float-home i {
+          font-size: 20px;
+        }
+  
+        .float-home:hover {
+          background-color:rgb(30, 120, 209);
+          color: #ffffff;
+          transform: scale(1.1);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+  
+        /* Media query for mobile responsiveness */
+        @media (max-width: 768px) {
+          .float-home {
+              width: 45px;
+              height: 45px;
+              bottom: 20px;
+              left: 20px;
+          }
+        }
+        </style>
+
+        <footer class="footer position-relative bg-light py-5">
+            <div class="container">
+                <div class="row gy-4">
+                    <div class="col-lg-5 col-md-6">
+                        <div class="footer-brand mb-4">
+                            <a href="{% url 'jobs:index' %}" class="d-flex align-items-center text-decoration-none">
+                                <span class="h3 mb-0 text-primary fw-bold">SocialHub</span> 
+                            </a>
+                            <p class="mt-3 text-muted">Find your dream job with ease. Browse thousands of openings, build your resume, and connect with employers.</p> 
+                        </div>
+                        <div class="footer-contact">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-geo-alt me-2 text-primary"></i>
+                                <span>Shop no 2, ground floor, Maria Apartments, Nargis Dutt Road, Pali Hill, Bandra (W)</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-telephone me-2 text-primary"></i>
+                                <span>+1 (123) 456-7890</span> 
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-envelope me-2 text-primary"></i>
+                                <span>info@eagro.com</span> 
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="col-lg-3 col-md-6">
+                        <h5 class="footer-heading mb-3">Quick Links</h5>
+                        <ul class="list-unstyled footer-links">
+                            <li><a href="{% url 'jobs:index' %}" class="text-decoration-none mb-2 d-block">Home</a></li>
+                            <li><a href="#" class="text-decoration-none mb-2 d-block">About Us</a></li> 
+                            <li><a href="#" class="text-decoration-none mb-2 d-block">Blog</a></li> 
+                            <li><a href="#" class="text-decoration-none mb-2 d-block">Contact</a></li> 
+                            <li><a href="#" class="text-decoration-none mb-2 d-block">Privacy Policy</a></li> 
+                            <li><a href="#" class="text-decoration-none mb-2 d-block">Terms of Service</a></li> 
+                        </ul>
+                    </div>
+        
+                    <div class="col-lg-4 col-md-6">
+                        <h5 class="footer-heading mb-3">For Job Seekers</h5>
+                        <div class="row">
+                            <div class="col-6">
+                                <ul class="list-unstyled footer-links">
+                                    <li><a href="{% url 'jobs:jobs' %}" class="text-decoration-none mb-2 d-block">Job Search</a></li>
+                                    <li><a href="#" class="text-decoration-none mb-2 d-block">Resume Builder</a></li> 
+                                    <li><a href="#" class="text-decoration-none mb-2 d-block">Career Advice</a></li> 
+                                </ul>
+                            </div>
+                            <div class="col-6">
+                                <ul class="list-unstyled footer-links">
+                                    <li><a href="#" class="text-decoration-none mb-2 d-block">Interview Tips</a></li> 
+                                    <li><a href="#" class="text-decoration-none mb-2 d-block">Salary Guides</a></li> 
+                                    <li><a href="#" class="text-decoration-none mb-2 d-block">Employer Reviews</a></li> 
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </nav>
-      {% if user.is_authenticated %}
-      <div class="d-block d-md-none">
-      <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-blue navbar-mobile">
-          <div class="icon-navbar">
-            <a class="nav-link-2" href="{% url 'socialhub:home' %}">
-            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-              width="24" height="24"
-              viewBox="0 0 172 172"
-              style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g fill="#ecf0f1"><path d="M86,15.0472l-78.83333,70.9528h21.5v64.5h43v-43h28.66667v43h43v-64.5h21.5z"></path></g></g></svg>
-            </a>
-          </div>
-          <div class="icon-navbar">
-            <a class="nav-link-2" href="{% url 'socialhub:search' %}">
-            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-              width="24" height="24"
-              viewBox="0 0 172 172"
-              style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g fill="#ecf0f1"><path d="M72.24,10.32c-32.33062,0 -58.48,26.14938 -58.48,58.48c0,32.33063 26.14938,58.48 58.48,58.48c11.54281,0 22.22563,-3.38625 31.2825,-9.1375l42.2475,42.2475l14.62,-14.62l-41.71,-41.6025c7.49813,-9.83625 12.04,-22.02406 12.04,-35.3675c0,-32.33062 -26.14937,-58.48 -58.48,-58.48zM72.24,24.08c24.76531,0 44.72,19.95469 44.72,44.72c0,24.76531 -19.95469,44.72 -44.72,44.72c-24.76531,0 -44.72,-19.95469 -44.72,-44.72c0,-24.76531 19.95469,-44.72 44.72,-44.72z"></path></g></g></svg>
-            </a>
-          </div>
-          <div class="icon-navbar">
-            <a class="nav-link-2" href="">
-            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-              width="24" height="24"
-              viewBox="0 0 172 172"
-              style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g fill="#ecf0f1"><path d="M86,14.33333c-5.934,0 -10.75,4.816 -10.75,10.75v4.98307c-18.54017,4.78017 -32.25,21.56943 -32.25,41.60026v43l-14.33333,14.33333v7.16667h114.66667v-7.16667l-14.33333,-14.33333v-43c0,-20.03083 -13.70983,-36.8061 -32.25,-41.58626v-4.99707c0,-5.934 -4.816,-10.75 -10.75,-10.75zM71.66667,143.33333c0,7.91917 6.42133,14.33333 14.33333,14.33333c7.912,0 14.33333,-6.42133 14.33333,-14.33333z"></path></g></g></svg>
-              <small><span class="badge-color" id="notifications-count-2" style="display: none;"></span></small>
-
-            </a>
-          </div>
-          <div class="icon-navbar">
-            <a class="nav-link-2" href="">
-            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-              width="24" height="24"
-              viewBox="0 0 172 172"
-              style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g fill="#ecf0f1"><path d="M86,21.5c-15.83216,0 -28.66667,12.8345 -28.66667,28.66667c0,15.83216 12.8345,28.66667 28.66667,28.66667c15.83216,0 28.66667,-12.8345 28.66667,-28.66667c0,-15.83216 -12.8345,-28.66667 -28.66667,-28.66667zM86,100.33333c-21.52867,0 -64.5,10.80733 -64.5,32.25v10.75c0,3.956 3.21067,7.16667 7.16667,7.16667h114.66667c3.956,0 7.16667,-3.21067 7.16667,-7.16667v-10.75c0,-21.44267 -42.97133,-32.25 -64.5,-32.25z"></path></g></g></svg>
-            </a>
-          </div>
-      </nav>
-      </div>
-      {% endif %}
-    </header>
-    <main role="main" class="container">
-      <div class="row">
-        <div class="col-lg-8">
-          {% if messages %}
-            {% for message in messages %}
-              <div class="alert alert-{{ message.tags }}">
-                {{ message }}
-              </div>
-            {% endfor %}
-          {% endif %}
-          {% block content %}{% endblock %}
-        </div>
-        <div class="col-lg-4">
-          <div class="content-section-sidebar" id="facts-div">
-            <h3 class="sidebar-heading">Facts</h3>
-            
-          </div>
-          <div class="content-section-sidebar">
-            <h3 class="sidebar-heading">YouTube</h3>
-            <script src="https://apis.google.com/js/platform.js"></script>
-            <div class="g-ytsubscribe" data-channelid="UCnbda_vAZxb4H_zXa6Q2I6w" data-layout="full" data-count="default"></div>
-          </div>
-          <div class="content-section-sidebar">
-            <h3 class="sidebar-heading">Twitter</h3>
-            <a href="https://twitter.com/nccbuddy?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @ncc_buddies</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-          </div>            
-        </div>
-      </div>
-    </main>
-
-
-
-    <footer class="footer">
-      <a href="">About</a>
-      <a href="">Contact</a>
-      <a href="">Contribute</a>
-      <a href="">Sponsor</a>
-      <a href="">Guidelines</a>
-      <div class="tag-line">
-        <a href="">NCC BUDDY MADE WITH ❤️ IN INDIA</a>
-      </div>
-    </footer>
+            <div class="container mt-4">
+                <hr class="my-4">
+                <div class="text-center">
+                    <p class="mb-0">© 2024 <strong class="text-primary">SocialHub - Seagro</strong>. All Rights Reserved.</p>
+                </div>
+            </div>
+        </footer>
+        
+        <style>
+            .footer {
+                font-size: 0.95rem;
+            }
+        
+            .footer-heading {
+                color: #2c3e50;
+                font-weight: 600;
+            }
+        
+            .footer-links a {
+                color: #6c757d;
+                transition: color 0.3s ease;
+            }
+        
+            .footer-links a:hover {
+                color: #fb246a;
+            }
+        
+            .social-icon {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 36px;
+                height: 36px;
+                background-color: #f8f9fa;
+                color: #6c757d;
+                border-radius: 50%;
+                transition: all 0.3s ease;
+            }
+        
+            .social-icon:hover {
+                background-color: #fb246a;
+                color: white;
+            }
+        
+            .text-primary {
+                color: #fb246a !important;
+            }
+        
+            .footer-contact {
+                color: #6c757d;
+            }
+        </style>
     
 
-    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous">
-    </script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
 
-    <script src="{% static 'socialhub/js/jquery.waypoints.min.js' %}"></script>
-    <script src="{% static 'socialhub/js/infinite.min.js' %}"></script> 
-    
-{% block script %}{% endblock %}
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-primary btn-lg-square rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>   
 
-{% if user.is_authenticated %}
+        
+        <!-- JavaScript Libraries -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="{% static 'home/lib/wow/wow.min.js' %}"></script>
+        <script src="{% static 'home/lib/easing/easing.min.js' %}"></script>
+        <script src="{% static 'home/lib/waypoints/waypoints.min.js' %}"></script>
+        <script src="{% static 'home/lib/counterup/counterup.min.js' %}"></script>
+        <script src="{% static 'home/lib/lightbox/js/lightbox.min.js' %}"></script>
+        <script src="{% static 'home/lib/owlcarousel/owl.carousel.min.js' %}"></script>
+        
+
+        <!-- Template Javascript -->
+        <script src="{% static 'home/js/main.js' %}"></script>
+        {% block script %}{% endblock %}
+        {% if user.is_authenticated %}
 
     <script type="text/javascript">
       $(document).ready(function(){
@@ -218,5 +368,6 @@
     });
 
     </script> 
-</body>
+    </body>
+
 </html>

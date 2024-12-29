@@ -32,10 +32,11 @@ def home_view(request):
     post_list = (follows_posts | user_posts).distinct().order_by('-date_posted')
     
     posts = paginate_queryset(request, post_list, 4)
-    
+    notifications = Notification.objects.filter(receiver=request.user)
     context = {
         'posts': posts,
-        'section': 'home'
+        'section': 'home',
+        'notifications': notifications,
     }
     return render(request, 'socialhub/home.html', context)
 
@@ -135,12 +136,13 @@ def search_view(request):
             Q(content__icontains=search_input)
         )
         users = CustomUser.objects.filter(username__iexact=search_input)
-        
+        notifications = Notification.objects.filter(receiver=request.user)
         context = {
             'posts': posts,
             'search_input': search_input,
             'result_posts': result_posts if result_posts.exists() else None,
             'users': users if users.exists() else None,
+            'notifications': notifications,
         }
         
         if not (result_posts.exists() or users.exists()):
@@ -251,6 +253,8 @@ def profile(request,username=None):
     post_count = post_list.count()
     page = request.GET.get('page', 1)
     paginator = Paginator(post_list, 4)
+    if request.user.is_authenticated:
+        is_following = user in request.user.profile.follows.all()
     try:
         posts = paginator.page(page)
     except PageNotAnInteger:
@@ -263,6 +267,7 @@ def profile(request,username=None):
         'posts':posts,
         'user_id':user,
         'post_count':post_count,
+        'is_following': is_following,
     }
     template_name = 'socialhub/profile.html'
 
