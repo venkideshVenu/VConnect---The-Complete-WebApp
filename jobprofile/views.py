@@ -2,10 +2,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from jobprofile.forms import ProfileForm, SkillForm
-
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
 from .models import Profile
 
 @login_required
@@ -32,9 +28,6 @@ def select_type(request):
             messages.error(request, 'Invalid account type selected')
 
     return render(request, 'jobs/select_type.html')
-
-
-
 
 @login_required
 def complete_profile(request):
@@ -71,7 +64,7 @@ def complete_profile(request):
             if all(getattr(profile, field, '').strip() for field in required_fields):
                 request.user.mark_profile_section_complete('profile', True)
                 messages.success(request, 'Profile completed successfully!')
-                return redirect('jobprofile:profile')
+                return redirect('profile')
             else:
                 messages.error(request, 'Please fill in all required fields.')
         else:

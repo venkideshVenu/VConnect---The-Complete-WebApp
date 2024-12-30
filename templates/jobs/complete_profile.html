@@ -1,247 +1,211 @@
 {% extends 'jobs/base.html' %}
 {% load static %}
-
 {% block body_block %}
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-.profile-page * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-.profile-container {
-    max-width: 600px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    font-family: 'Poppins', sans-serif;
-}
-
-.profile-title {
-    text-align: center;
-    margin-bottom: 2rem;
-    color: #2c3e50;
-}
-
-.profile-subtitle {
-    text-align: center;
-    margin-bottom: 1.5rem;
-    color: #666;
-    font-size: 0.9rem;
-}
-
-.profile-form {
-    display: grid;
-    gap: 1.5rem;
-}
-
-.profile-form-group {
-    display: flex;
-    flex-direction: column;
-}
-
-.profile-label {
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-    color: #34495e;
-}
-
-.required-field::after {
-    content: "*";
-    color: #e74c3c;
-    margin-left: 4px;
-}
-
-.profile-input {
-    padding: 0.75rem !important;
-    border: 1px solid #ddd !important;
-    border-radius: 5px !important;
-    font-size: 1rem !important;
-    transition: border-color 0.3s ease !important;
-    width: 100% !important;
-    background-color: #fff !important;
-}
-
-.profile-input:focus {
-    outline: none !important;
-    border-color: #3498db !important;
-    box-shadow: none !important;
-}
-
-textarea.profile-input {
-    resize: vertical !important;
-    min-height: 100px !important;
-}
-
-.profile-submit-btn {
-    background-color: #3498db !important;
-    color: #fff !important;
-    padding: 0.75rem !important;
-    border: none !important;
-    border-radius: 5px !important;
-    font-size: 1rem !important;
-    cursor: pointer !important;
-    transition: background-color 0.3s ease !important;
-    margin-top: 1rem !important;
-    width: 100% !important;
-}
-
-.profile-submit-btn:hover {
-    background-color: #2980b9 !important;
-}
-
-.profile-error {
-    color: #e74c3c;
-    font-size: 0.875rem;
-    margin-top: 0.25rem;
-}
-
-.profile-success {
-    background-color: #2ecc71;
-    color: white;
-    padding: 1rem;
-    border-radius: 5px;
-    margin-bottom: 1rem;
-}
-
-.section-divider {
-    border-top: 1px solid #eee;
-    margin: 2rem 0;
-    padding-top: 1rem;
-}
-
-@media (max-width: 768px) {
-    .profile-container {
-        margin: 1rem;
-        padding: 1rem;
-    }
-}
+   .profile-page * {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+   }
+   .profile-container {
+   max-width: 600px;
+   margin: 2rem auto;
+   padding: 2rem;
+   background-color: #fff;
+   border-radius: 10px;
+   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+   font-family: 'Poppins', sans-serif;
+   }
+   .profile-title {
+   text-align: center;
+   margin-bottom: 2rem;
+   color: #2c3e50;
+   }
+   .profile-subtitle {
+   text-align: center;
+   margin-bottom: 1.5rem;
+   color: #666;
+   font-size: 0.9rem;
+   }
+   .profile-form {
+   display: grid;
+   gap: 1.5rem;
+   }
+   .profile-form-group {
+   display: flex;
+   flex-direction: column;
+   }
+   .profile-label {
+   margin-bottom: 0.5rem;
+   font-weight: 500;
+   color: #34495e;
+   }
+   .required-field::after {
+   content: "*";
+   color: #e74c3c;
+   margin-left: 4px;
+   }
+   .profile-input {
+   padding: 0.75rem !important;
+   border: 1px solid #ddd !important;
+   border-radius: 5px !important;
+   font-size: 1rem !important;
+   transition: border-color 0.3s ease !important;
+   width: 100% !important;
+   background-color: #fff !important;
+   }
+   .profile-input:focus {
+   outline: none !important;
+   border-color: #3498db !important;
+   box-shadow: none !important;
+   }
+   textarea.profile-input {
+   resize: vertical !important;
+   min-height: 100px !important;
+   }
+   .profile-submit-btn {
+   background-color: #3498db !important;
+   color: #fff !important;
+   padding: 0.75rem !important;
+   border: none !important;
+   border-radius: 5px !important;
+   font-size: 1rem !important;
+   cursor: pointer !important;
+   transition: background-color 0.3s ease !important;
+   margin-top: 1rem !important;
+   width: 100% !important;
+   }
+   .profile-submit-btn:hover {
+   background-color: #2980b9 !important;
+   }
+   .profile-error {
+   color: #e74c3c;
+   font-size: 0.875rem;
+   margin-top: 0.25rem;
+   }
+   .profile-success {
+   background-color: #2ecc71;
+   color: white;
+   padding: 1rem;
+   border-radius: 5px;
+   margin-bottom: 1rem;
+   }
+   .section-divider {
+   border-top: 1px solid #eee;
+   margin: 2rem 0;
+   padding-top: 1rem;
+   }
+   @media (max-width: 768px) {
+   .profile-container {
+   margin: 1rem;
+   padding: 1rem;
+   }
+   }
 </style>
-
 <div class="profile-page">
-    <div class="profile-container">
-        <h1 class="profile-title">Complete Your Profile</h1>
-        <p class="profile-subtitle">You are registering as an {% if is_employer %}Employer{% else %}Employee{% endif %}</p>
-
-        {% if messages %}
-            {% for message in messages %}
-                <div class="{% if message.tags == 'error' %}profile-error{% else %}profile-success{% endif %}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
-
-        <form method="POST" class="profile-form">
-            {% csrf_token %}
-
-            <!-- Required Fields Section -->
-            <div class="profile-form-group">
-                <label class="profile-label required-field">Short Introduction</label>
-                {{ form.short_intro }}
-                {% if form.short_intro.errors %}
-                    <span class="profile-error">{{ form.short_intro.errors.0 }}</span>
-                {% endif %}
-            </div>
-
-            <div class="profile-form-group">
-                <label class="profile-label required-field">Location</label>
-                {{ form.location }}
-                {% if form.location.errors %}
-                    <span class="profile-error">{{ form.location.errors.0 }}</span>
-                {% endif %}
-            </div>
-
-            {% if is_employer %}
-            <div class="profile-form-group">
-                <label class="profile-label required-field">Company Name</label>
-                {{ form.company_name }}
-                {% if form.company_name.errors %}
-                    <span class="profile-error">{{ form.company_name.errors.0 }}</span>
-                {% endif %}
-            </div>
+   <div class="profile-container">
+      <h1 class="profile-title">Complete Your Profile</h1>
+      <p class="profile-subtitle">You are registering as an {% if is_employer %}Employer{% else %}Employee{% endif %}</p>
+      {% if messages %}
+      {% for message in messages %}
+      <div class="{% if message.tags == 'error' %}profile-error{% else %}profile-success{% endif %}">
+         {{ message }}
+      </div>
+      {% endfor %}
+      {% endif %}
+      <form method="POST" class="profile-form">
+         {% csrf_token %}
+         <!-- Required Fields Section -->
+         <div class="profile-form-group">
+            <label class="profile-label required-field">Short Introduction</label>
+            {{ form.short_intro }}
+            {% if form.short_intro.errors %}
+            <span class="profile-error">{{ form.short_intro.errors.0 }}</span>
             {% endif %}
-
-            <div class="profile-form-group">
-                <label class="profile-label">Education</label>
-                {{ form.education }}
-                {% if form.education.errors %}
-                    <span class="profile-error">{{ form.education.errors.0 }}</span>
-                {% endif %}
-            </div>
-
-            <!-- Optional Fields Section -->
-            <div class="section-divider"></div>
-            <h3>Additional Information</h3>
-
-            <div class="profile-form-group">
-                <label class="profile-label">Gender</label>
-                {{ form.gender }}
-                {% if form.gender.errors %}
-                    <span class="profile-error">{{ form.gender.errors.0 }}</span>
-                {% endif %}
-            </div>
-
-
-
-            <div class="profile-form-group">
-                <label class="profile-label">Bio</label>
-                {{ form.bio }}
-                {% if form.bio.errors %}
-                    <span class="profile-error">{{ form.bio.errors.0 }}</span>
-                {% endif %}
-            </div>
-
-            <!-- Social Links Section -->
-            <div class="section-divider"></div>
-            <h3>Social Links</h3>
-
-            <div class="profile-form-group">
-                <label class="profile-label">LinkedIn Profile</label>
-                {{ form.social_linkedin }}
-                {% if form.social_linkedin.errors %}
-                    <span class="profile-error">{{ form.social_linkedin.errors.0 }}</span>
-                {% endif %}
-            </div>
-
-            {% if not is_employer %}
-            <div class="profile-form-group">
-                <label class="profile-label">GitHub Profile</label>
-                {{ form.social_github }}
-                {% if form.social_github.errors %}
-                    <span class="profile-error">{{ form.social_github.errors.0 }}</span>
-                {% endif %}
-            </div>
+         </div>
+         <div class="profile-form-group">
+            <label class="profile-label required-field">Location</label>
+            {{ form.location }}
+            {% if form.location.errors %}
+            <span class="profile-error">{{ form.location.errors.0 }}</span>
             {% endif %}
-
-            <div class="profile-form-group">
-                <label class="profile-label">Twitter Profile</label>
-                {{ form.social_twitter }}
-                {% if form.social_twitter.errors %}
-                    <span class="profile-error">{{ form.social_twitter.errors.0 }}</span>
-                {% endif %}
-            </div>
-
-            <div class="profile-form-group">
-                <label class="profile-label">Personal Website</label>
-                {{ form.social_website }}
-                {% if form.social_website.errors %}
-                    <span class="profile-error">{{ form.social_website.errors.0 }}</span>
-                {% endif %}
-            </div>
-
-            <div class="profile-form-group">
-                <label class="profile-label">YouTube Channel</label>
-                {{ form.social_youtube }}
-                {% if form.social_youtube.errors %}
-                    <span class="profile-error">{{ form.social_youtube.errors.0 }}</span>
-                {% endif %}
-            </div>
-            
-            <button type="submit" class="profile-submit-btn">Save Profile</button>
-        </form>
-    </div>
+         </div>
+         {% if is_employer %}
+         <div class="profile-form-group">
+            <label class="profile-label required-field">Company Name</label>
+            {{ form.company_name }}
+            {% if form.company_name.errors %}
+            <span class="profile-error">{{ form.company_name.errors.0 }}</span>
+            {% endif %}
+         </div>
+         {% endif %}
+         <div class="profile-form-group">
+            <label class="profile-label">Education</label>
+            {{ form.education }}
+            {% if form.education.errors %}
+            <span class="profile-error">{{ form.education.errors.0 }}</span>
+            {% endif %}
+         </div>
+         <!-- Optional Fields Section -->
+         <div class="section-divider"></div>
+         <h3>Additional Information</h3>
+         <div class="profile-form-group">
+            <label class="profile-label">Gender</label>
+            {{ form.gender }}
+            {% if form.gender.errors %}
+            <span class="profile-error">{{ form.gender.errors.0 }}</span>
+            {% endif %}
+         </div>
+         <div class="profile-form-group">
+            <label class="profile-label">Bio</label>
+            {{ form.bio }}
+            {% if form.bio.errors %}
+            <span class="profile-error">{{ form.bio.errors.0 }}</span>
+            {% endif %}
+         </div>
+         <!-- Social Links Section -->
+         <div class="section-divider"></div>
+         <h3>Social Links</h3>
+         <div class="profile-form-group">
+            <label class="profile-label">LinkedIn Profile</label>
+            {{ form.social_linkedin }}
+            {% if form.social_linkedin.errors %}
+            <span class="profile-error">{{ form.social_linkedin.errors.0 }}</span>
+            {% endif %}
+         </div>
+         {% if not is_employer %}
+         <div class="profile-form-group">
+            <label class="profile-label">GitHub Profile</label>
+            {{ form.social_github }}
+            {% if form.social_github.errors %}
+            <span class="profile-error">{{ form.social_github.errors.0 }}</span>
+            {% endif %}
+         </div>
+         {% endif %}
+         <div class="profile-form-group">
+            <label class="profile-label">Twitter Profile</label>
+            {{ form.social_twitter }}
+            {% if form.social_twitter.errors %}
+            <span class="profile-error">{{ form.social_twitter.errors.0 }}</span>
+            {% endif %}
+         </div>
+         <div class="profile-form-group">
+            <label class="profile-label">Personal Website</label>
+            {{ form.social_website }}
+            {% if form.social_website.errors %}
+            <span class="profile-error">{{ form.social_website.errors.0 }}</span>
+            {% endif %}
+         </div>
+         <div class="profile-form-group">
+            <label class="profile-label">YouTube Channel</label>
+            {{ form.social_youtube }}
+            {% if form.social_youtube.errors %}
+            <span class="profile-error">{{ form.social_youtube.errors.0 }}</span>
+            {% endif %}
+         </div>
+         <button type="submit" class="profile-submit-btn">Save Profile</button>
+      </form>
+   </div>
 </div>
 {% endblock %}

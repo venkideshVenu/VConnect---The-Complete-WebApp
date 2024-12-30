@@ -1,22 +1,127 @@
 {% extends 'jobs/base.html' %}
 
 {% block body_block %}
-<div class="container mx-auto px-4 py-8">
-    <h2 class="text-2xl font-bold mb-6">Select Account Type</h2>
-    
-    <form method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="account-selection-container">
+    <h2 class="selection-heading">Choose Your Journey</h2>
+    <p class="selection-subtitle">Select the account type that best matches your needs</p>
+
+    <form method="POST" class="selection-form">
         {% csrf_token %}
-        <button type="submit" name="type" value="employee" 
-                class="p-6 border rounded-lg hover:shadow-lg transition-shadow text-left">
-            <h3 class="text-xl font-semibold mb-3">Job Seeker</h3>
-            <p>Looking for job opportunities? Create your profile as a job seeker.</p>
+        <button type="submit" name="type" value="employee" class="selection-card employee">
+            <div class="card-inner">
+                <span class="icon">👤</span>
+                <h3>Job Seeker</h3>
+                <p>Looking for your next opportunity? Create your profile to:</p>
+                <ul>
+                    <li>Apply to relevant jobs</li>
+                    <li>Showcase your skills</li>
+                    <li>Track applications</li>
+                </ul>
+            </div>
         </button>
         
-        <button type="submit" name="type" value="employer"
-                class="p-6 border rounded-lg hover:shadow-lg transition-shadow text-left">
-            <h3 class="text-xl font-semibold mb-3">Employer</h3>
-            <p>Want to post jobs and find talent? Create your profile as an employer.</p>
+        <button type="submit" name="type" value="employer" class="selection-card employer">
+            <div class="card-inner">
+                <span class="icon">🏢</span>
+                <h3>Employer</h3>
+                <p>Ready to build your team? Create your profile to:</p>
+                <ul>
+                    <li>Post job opportunities</li>
+                    <li>Review applications</li>
+                    <li>Manage your listings</li>
+                </ul>
+            </div>
         </button>
     </form>
 </div>
+
+<style>
+.account-selection-container {
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 0 1rem;
+}
+
+.selection-heading {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.selection-subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+.selection-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+    .selection-form {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.selection-card {
+    padding: 2rem;
+    border: 2px solid #e5e5e5;
+    border-radius: 12px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+    width: 100%;
+}
+
+.selection-card:hover {
+    border-color: #3b82f6;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.selection-card.employer:hover {
+    border-color: #8b5cf6;
+}
+
+.selection-card .icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.selection-card h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.selection-card p {
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.selection-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.selection-card li {
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.selection-card li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #22c55e;
+}
+</style>
 {% endblock %}

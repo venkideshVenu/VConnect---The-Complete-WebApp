@@ -64,7 +64,7 @@ def createJob(request):
         form = JobForm()
 
     context = {'form': form}
-    return render(request, 'jobs/create_job.html', context)
+    return render(request, 'jobs/job_form.html', context)
 
 @login_required
 def updateJob(request, pk):
@@ -94,7 +94,7 @@ def deleteJob(request, pk):
         return redirect('jobs:jobs')
 
     context = {'object': job}
-    return render(request, 'jobs/delete_template.html', context)
+    return render(request, 'jobs/delete_job.html', context)
 
 @login_required
 def applyJob(request, pk):

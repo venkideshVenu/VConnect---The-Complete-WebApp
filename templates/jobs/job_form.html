@@ -1,274 +1,235 @@
 {% extends 'jobs/base.html' %}
-
 {% block body_block %}
-
-
 <style>
-    .profile-page * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    
-    .profile-container {
-        max-width: 600px;
-        margin: 2rem auto;
-        padding: 2rem;
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        font-family: 'Poppins', sans-serif;
-    }
-    
-    .profile-title {
-        text-align: center;
-        margin-bottom: 2rem;
-        color: #2c3e50;
-    }
-    
-    .profile-subtitle {
-        text-align: center;
-        margin-bottom: 1.5rem;
-        color: #666;
-        font-size: 0.9rem;
-    }
-    
-    .profile-form {
-        display: grid;
-        gap: 1.5rem;
-    }
-    
-    .profile-form-group {
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .profile-label {
-        margin-bottom: 0.5rem;
-        font-weight: 500;
-        color: #34495e;
-    }
-    
-    .required-field::after {
-        content: "*";
-        color: #e74c3c;
-        margin-left: 4px;
-    }
-    
-    .profile-input {
-        padding: 0.75rem !important;
-        border: 1px solid #ddd !important;
-        border-radius: 5px !important;
-        font-size: 1rem !important;
-        transition: border-color 0.3s ease !important;
-        width: 100% !important;
-        background-color: #fff !important;
-    }
-    
-    .profile-input:focus {
-        outline: none !important;
-        border-color: #3498db !important;
-        box-shadow: none !important;
-    }
-    
-    textarea.profile-input {
-        resize: vertical !important;
-        min-height: 100px !important;
-    }
-    
-    .profile-submit-btn {
-        background-color: #3498db !important;
-        color: #fff !important;
-        padding: 0.75rem !important;
-        border: none !important;
-        border-radius: 5px !important;
-        font-size: 1rem !important;
-        cursor: pointer !important;
-        transition: background-color 0.3s ease !important;
-        margin-top: 1rem !important;
-        width: 100% !important;
-    }
-    
-    .profile-submit-btn:hover {
-        background-color: #2980b9 !important;
-    }
-    
-    .profile-error {
-        color: #e74c3c;
-        font-size: 0.875rem;
-        margin-top: 0.25rem;
-    }
-    
-    .profile-success {
-        background-color: #2ecc71;
-        color: white;
-        padding: 1rem;
-        border-radius: 5px;
-        margin-bottom: 1rem;
-    }
-    
-    .section-divider {
-        border-top: 1px solid #eee;
-        margin: 2rem 0;
-        padding-top: 1rem;
-    }
-    
-    @media (max-width: 768px) {
-        .profile-container {
-            margin: 1rem;
-            padding: 1rem;
-        }
-    }
-    </style>
+   .profile-page * {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+   }
+   .profile-container {
+   max-width: 600px;
+   margin: 2rem auto;
+   padding: 2rem;
+   background-color: #fff;
+   border-radius: 10px;
+   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+   font-family: 'Poppins', sans-serif;
+   }
+   .profile-title {
+   text-align: center;
+   margin-bottom: 2rem;
+   color: #2c3e50;
+   }
+   .profile-subtitle {
+   text-align: center;
+   margin-bottom: 1.5rem;
+   color: #666;
+   font-size: 0.9rem;
+   }
+   .profile-form {
+   display: grid;
+   gap: 1.5rem;
+   }
+   .profile-form-group {
+   display: flex;
+   flex-direction: column;
+   }
+   .profile-label {
+   margin-bottom: 0.5rem;
+   font-weight: 500;
+   color: #34495e;
+   }
+   .required-field::after {
+   content: "*";
+   color: #e74c3c;
+   margin-left: 4px;
+   }
+   .profile-input {
+   padding: 0.75rem !important;
+   border: 1px solid #ddd !important;
+   border-radius: 5px !important;
+   font-size: 1rem !important;
+   transition: border-color 0.3s ease !important;
+   width: 100% !important;
+   background-color: #fff !important;
+   }
+   .profile-input:focus {
+   outline: none !important;
+   border-color: #3498db !important;
+   box-shadow: none !important;
+   }
+   textarea.profile-input {
+   resize: vertical !important;
+   min-height: 100px !important;
+   }
+   .profile-submit-btn {
+   background-color: #3498db !important;
+   color: #fff !important;
+   padding: 0.75rem !important;
+   border: none !important;
+   border-radius: 5px !important;
+   font-size: 1rem !important;
+   cursor: pointer !important;
+   transition: background-color 0.3s ease !important;
+   margin-top: 1rem !important;
+   width: 100% !important;
+   }
+   .profile-submit-btn:hover {
+   background-color: #2980b9 !important;
+   }
+   .profile-error {
+   color: #e74c3c;
+   font-size: 0.875rem;
+   margin-top: 0.25rem;
+   }
+   .profile-success {
+   background-color: #2ecc71;
+   color: white;
+   padding: 1rem;
+   border-radius: 5px;
+   margin-bottom: 1rem;
+   }
+   .section-divider {
+   border-top: 1px solid #eee;
+   margin: 2rem 0;
+   padding-top: 1rem;
+   }
+   @media (max-width: 768px) {
+   .profile-container {
+   margin: 1rem;
+   padding: 1rem;
+   }
+   }
+</style>
 <main class="formPage my-xl">
-    <div class="profile-page">
-        <div class="profile-container">
-            <h1 class="profile-title">Post a New Job</h1>
-            <p class="profile-subtitle">Fill in the details below to create a job listing</p>
-
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="{% if message.tags == 'error' %}profile-error{% else %}profile-success{% endif %}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-
-            <form method="POST" enctype="multipart/form-data" class="profile-form">
-                {% csrf_token %}
-
-                <!-- Job Details Section -->
-                <div class="section">
-                    <h3 class="section-title">Job Details</h3>
-
-                    <div class="profile-form-group">
-                        <label class="profile-label required-field">Job Title</label>
-                        {{ form.title }}
-                        {% if form.title.errors %}
-                            <span class="profile-error">{{ form.title.errors.0 }}</span>
-                        {% endif %}
-                    </div>
-
-                    <div class="profile-form-group">
-                        <label class="profile-label">Description</label>
-                        {{ form.description }}
-                        {% if form.description.errors %}
-                            <span class="profile-error">{{ form.description.errors.0 }}</span>
-                        {% endif %}
-                    </div>
-
-                    <div class="profile-form-group">
-                        <label class="profile-label">Requirements</label>
-                        {{ form.requirements }}
-                        {% if form.requirements.errors %}
-                            <span class="profile-error">{{ form.requirements.errors.0 }}</span>
-                        {% endif %}
-                    </div>
-
-                    <div class="profile-form-group">
-                        <label class="profile-label">Responsibilities</label>
-                        {{ form.responsibilities }}
-                        {% if form.responsibilities.errors %}
-                            <span class="profile-error">{{ form.responsibilities.errors.0 }}</span>
-                        {% endif %}
-                    </div>
-                </div>
-
-                <!-- Company Information Section -->
-                <div class="section-divider"></div>
-                <div class="section">
-                    <h3 class="section-title">Company Information</h3>
-
-                    <div class="profile-form-group">
-                        <label class="profile-label required-field">Company Name</label>
-                        {{ form.company_name }}
-                        {% if form.company_name.errors %}
-                            <span class="profile-error">{{ form.company_name.errors.0 }}</span>
-                        {% endif %}
-                    </div>
-
-                    <div class="profile-form-group">
-                        <label class="profile-label">Company Description</label>
-                        {{ form.company_description }}
-                        {% if form.company_description.errors %}
-                            <span class="profile-error">{{ form.company_description.errors.0 }}</span>
-                        {% endif %}
-                    </div>
-
-                    <div class="profile-form-group">
-                        <label class="profile-label">Company Website</label>
-                        {{ form.company_website }}
-                        {% if form.company_website.errors %}
-                            <span class="profile-error">{{ form.company_website.errors.0 }}</span>
-                        {% endif %}
-                    </div>
-
-                    <div class="profile-form-group">
-                        <label class="profile-label">Company Email</label>
-                        {{ form.company_email }}
-                        {% if form.company_email.errors %}
-                            <span class="profile-error">{{ form.company_email.errors.0 }}</span>
-                        {% endif %}
-                    </div>
-
-                    <div class="profile-form-group">
-                        <label class="profile-label">Company Logo</label>
-                        {{ form.company_logo }}
-                        {% if form.company_logo.errors %}
-                            <span class="profile-error">{{ form.company_logo.errors.0 }}</span>
-                        {% endif %}
-                    </div>
-                </div>
-
-                <!-- Job Preferences Section -->
-                <div class="section-divider"></div>
-                <div class="section">
-                    <h3 class="section-title">Job Preferences</h3>
-
-                    <div class="profile-form-group">
-                        <label class="profile-label">Job Type</label>
-                        {{ form.type }}
-                        {% if form.type.errors %}
-                            <span class="profile-error">{{ form.type.errors.0 }}</span>
-                        {% endif %}
-                    </div>
-
-                    <div class="profile-form-group">
-                        <label class="profile-label">Salary Range</label>
-                        {{ form.salary_range }}
-                        {% if form.salary_range.errors %}
-                            <span class="profile-error">{{ form.salary_range.errors.0 }}</span>
-                        {% endif %}
-                    </div>
-
-                    <div class="profile-form-group">
-                        <label class="profile-label">Location</label>
-                        {{ form.location }}
-                        {% if form.location.errors %}
-                            <span class="profile-error">{{ form.location.errors.0 }}</span>
-                        {% endif %}
-                    </div>
-
-                    <div class="profile-form-group">
-                        <label class="profile-label">Application Deadline</label>
-                        {{ form.deadline }}
-                        {% if form.deadline.errors %}
-                            <span class="profile-error">{{ form.deadline.errors.0 }}</span>
-                        {% endif %}
-                    </div>
-
-                    <div class="profile-form-group">
-                        <label class="profile-label">Tags</label>
-                        {{ form.tags }}
-                        {% if form.tags.errors %}
-                            <span class="profile-error">{{ form.tags.errors.0 }}</span>
-                        {% endif %}
-                    </div>
-                </div>
-
-                <button type="submit" class="profile-submit-btn">Post Job</button>
-            </form>
-        </div>
-    </div>
+   <div class="profile-page">
+      <div class="profile-container">
+         <h1 class="profile-title">Post a New Job</h1>
+         <p class="profile-subtitle">Fill in the details below to create a job listing</p>
+         {% if messages %}
+         {% for message in messages %}
+         <div class="{% if message.tags == 'error' %}profile-error{% else %}profile-success{% endif %}">
+            {{ message }}
+         </div>
+         {% endfor %}
+         {% endif %}
+         <form method="POST" enctype="multipart/form-data" class="profile-form">
+            {% csrf_token %}
+            <!-- Job Details Section -->
+            <div class="section">
+               <h3 class="section-title">Job Details</h3>
+               <div class="profile-form-group">
+                  <label class="profile-label required-field">Job Title</label>
+                  {{ form.title }}
+                  {% if form.title.errors %}
+                  <span class="profile-error">{{ form.title.errors.0 }}</span>
+                  {% endif %}
+               </div>
+               <div class="profile-form-group">
+                  <label class="profile-label">Description</label>
+                  {{ form.description }}
+                  {% if form.description.errors %}
+                  <span class="profile-error">{{ form.description.errors.0 }}</span>
+                  {% endif %}
+               </div>
+               <div class="profile-form-group">
+                  <label class="profile-label">Requirements</label>
+                  {{ form.requirements }}
+                  {% if form.requirements.errors %}
+                  <span class="profile-error">{{ form.requirements.errors.0 }}</span>
+                  {% endif %}
+               </div>
+               <div class="profile-form-group">
+                  <label class="profile-label">Responsibilities</label>
+                  {{ form.responsibilities }}
+                  {% if form.responsibilities.errors %}
+                  <span class="profile-error">{{ form.responsibilities.errors.0 }}</span>
+                  {% endif %}
+               </div>
+            </div>
+            <!-- Company Information Section -->
+            <div class="section-divider"></div>
+            <div class="section">
+               <h3 class="section-title">Company Information</h3>
+               <div class="profile-form-group">
+                  <label class="profile-label required-field">Company Name</label>
+                  {{ form.company_name }}
+                  {% if form.company_name.errors %}
+                  <span class="profile-error">{{ form.company_name.errors.0 }}</span>
+                  {% endif %}
+               </div>
+               <div class="profile-form-group">
+                  <label class="profile-label">Company Description</label>
+                  {{ form.company_description }}
+                  {% if form.company_description.errors %}
+                  <span class="profile-error">{{ form.company_description.errors.0 }}</span>
+                  {% endif %}
+               </div>
+               <div class="profile-form-group">
+                  <label class="profile-label">Company Website</label>
+                  {{ form.company_website }}
+                  {% if form.company_website.errors %}
+                  <span class="profile-error">{{ form.company_website.errors.0 }}</span>
+                  {% endif %}
+               </div>
+               <div class="profile-form-group">
+                  <label class="profile-label">Company Email</label>
+                  {{ form.company_email }}
+                  {% if form.company_email.errors %}
+                  <span class="profile-error">{{ form.company_email.errors.0 }}</span>
+                  {% endif %}
+               </div>
+               <div class="profile-form-group">
+                  <label class="profile-label">Company Logo</label>
+                  {{ form.company_logo }}
+                  {% if form.company_logo.errors %}
+                  <span class="profile-error">{{ form.company_logo.errors.0 }}</span>
+                  {% endif %}
+               </div>
+            </div>
+            <!-- Job Preferences Section -->
+            <div class="section-divider"></div>
+            <div class="section">
+               <h3 class="section-title">Job Preferences</h3>
+               <div class="profile-form-group">
+                  <label class="profile-label">Job Type</label>
+                  {{ form.type }}
+                  {% if form.type.errors %}
+                  <span class="profile-error">{{ form.type.errors.0 }}</span>
+                  {% endif %}
+               </div>
+               <div class="profile-form-group">
+                  <label class="profile-label">Salary Range</label>
+                  {{ form.salary_range }}
+                  {% if form.salary_range.errors %}
+                  <span class="profile-error">{{ form.salary_range.errors.0 }}</span>
+                  {% endif %}
+               </div>
+               <div class="profile-form-group">
+                  <label class="profile-label">Location</label>
+                  {{ form.location }}
+                  {% if form.location.errors %}
+                  <span class="profile-error">{{ form.location.errors.0 }}</span>
+                  {% endif %}
+               </div>
+               <div class="profile-form-group">
+                  <label class="profile-label">Application Deadline</label>
+                  {{ form.deadline }}
+                  {% if form.deadline.errors %}
+                  <span class="profile-error">{{ form.deadline.errors.0 }}</span>
+                  {% endif %}
+               </div>
+               <div class="profile-form-group">
+                  <label class="profile-label">Tags</label>
+                  {{ form.tags }}
+                  {% if form.tags.errors %}
+                  <span class="profile-error">{{ form.tags.errors.0 }}</span>
+                  {% endif %}
+               </div>
+            </div>
+            <button type="submit" class="profile-submit-btn">Post Job</button>
+         </form>
+      </div>
+   </div>
 </main>
 {% endblock %}

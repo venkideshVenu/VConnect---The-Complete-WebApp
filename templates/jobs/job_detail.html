@@ -117,13 +117,22 @@
                         </li>
                         {% endif %}
                     </ul>
-
-                    {% if user.is_authenticated and not user.job_profile.is_employer %}
-                        {% if not already_applied %}
-                            <a href="{% url 'jobs:job-apply' job.id %}" class="btn btn-primary w-100">Apply Now</a>
-                        {% else %}
-                            <button class="btn btn-secondary w-100" disabled>Already Applied</button>
+                
+                    {% if user.is_authenticated %}
+                        {% if user.job_profile.is_employer %}
+                            <a class="btn btn-secondary w-30" href="{% url 'jobs:job-update' job.id %}">Edit</a>
+                            <a class="btn btn-primary w-30" href="{% url 'jobs:job-delete' job.id %}">Delete</a>
+                        {% elif not user.job_profile.is_employer %}
+                            {% if not already_applied %}
+                                <a href="{% url 'jobs:job-apply' job.id %}" class="btn btn-primary w-100">Apply Now</a>
+                            {% else %}
+                                <button class="btn btn-secondary w-100" disabled>Already Applied</button>
+                            {% endif %}
                         {% endif %}
+                    {% else %}
+                        <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary w-100">
+                            Please login to apply
+                        </a>
                     {% endif %}
                 </div>
             </div>

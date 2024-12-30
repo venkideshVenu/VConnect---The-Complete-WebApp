@@ -1,0 +1,179 @@
+{% extends 'jobs/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block body_block %}
+<main class="formPage my-xl">
+    <div class="content-box">
+        <div class="formWrapper">
+            <div class="delete-confirmation">
+                <div class="confirmation-header">
+                    <a class="back-button" href="{% url 'jobs:job' object.id %}">
+                        <i class="im im-angle-left"></i>
+                        <span>Back to Job</span>
+                    </a>
+                    <h2 class="delete-title">Delete Confirmation</h2>
+                </div>
+
+                <div class="confirmation-content">
+                    <div class="warning-icon">
+                        <i class="im im-warning"></i>
+                    </div>
+                    
+                    <div class="job-info">
+                        <h3>{{ job.title }}</h3>
+                        <p class="location"><i class="im im-location"></i> {{ job.location }}</p>
+                        <p class="posted-date">Posted on: {{ object.created|date:"F d, Y" }}</p>
+                    </div>
+
+                    <div class="warning-message">
+                        <p>Are you sure you want to delete this job posting?</p>
+                        <p class="warning-text">This action cannot be undone.</p>
+                    </div>
+
+                    <form method="POST" class="delete-form" action="{% url 'jobs:job-delete' object.id %}">
+                        {% csrf_token %}
+                        <div class="button-group">
+                            <a href="{% url 'jobs:job' object.id %}" class="btn btn--cancel">
+                                Cancel
+                            </a>
+                            <button type="submit" class="btn btn--delete">
+                                Delete Job
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<style>
+    .delete-confirmation {
+        padding: 2rem;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .confirmation-header {
+        margin-bottom: 2rem;
+        position: relative;
+    }
+
+    .back-button {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #666;
+        text-decoration: none;
+        margin-bottom: 1rem;
+        transition: color 0.3s ease;
+    }
+
+    .back-button:hover {
+        color: #333;
+    }
+
+    .delete-title {
+        font-size: 1.5rem;
+        color: #333;
+        margin-bottom: 1.5rem;
+    }
+
+    .confirmation-content {
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 2rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .warning-icon {
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .warning-icon i {
+        font-size: 3rem;
+        color: #dc3545;
+    }
+
+    .job-info {
+        text-align: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .job-info h3 {
+        font-size: 1.25rem;
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+
+    .job-info .location {
+        color: #666;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .job-info .posted-date {
+        color: #888;
+        font-size: 0.9rem;
+    }
+
+    .warning-message {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .warning-message p {
+        margin-bottom: 0.5rem;
+    }
+
+    .warning-text {
+        color: #dc3545;
+        font-size: 0.9rem;
+    }
+
+    .delete-form {
+        margin-top: 2rem;
+    }
+
+    .button-group {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn--cancel {
+        background-color: #f8f9fa;
+        color: #333;
+        border: 1px solid #ddd;
+    }
+
+    .btn--cancel:hover {
+        background-color: #e9ecef;
+    }
+
+    .btn--delete {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn--delete:hover {
+        background-color: #c82333;
+    }
+</style>
+{% endblock %}
