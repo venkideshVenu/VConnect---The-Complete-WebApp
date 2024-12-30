@@ -1,0 +1,248 @@
+{% extends "home/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+<!-- About Start -->
+<div class="container-fluid py-5">
+<div class="container">
+<!-- Hero Section -->
+<div class="row g-5 align-items-center mb-5">
+   <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+      <h4 class="text-primary mb-4">About Us</h4>
+      <h1 class="display-4 mb-4">Connecting Communities Through Integrated Services</h1>
+      <p class="mb-4">We're building a comprehensive platform that brings together essential services to enhance urban living, career growth, and community connection. From sustainable transportation to professional development, we're creating an ecosystem that serves modern urban needs.</p>
+      <div class="row g-4">
+         <div class="col-sm-6">
+            <div class="d-flex align-items-center">
+               <i class="fa fa-users fa-2x text-primary flex-shrink-0 me-3"></i>
+               <h6 class="mb-0">Active Community Members</h6>
+            </div>
+         </div>
+         <div class="col-sm-6">
+            <div class="d-flex align-items-center">
+               <i class="fa fa-check fa-2x text-primary flex-shrink-0 me-3"></i>
+               <h6 class="mb-0">Verified Service Quality</h6>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+      <img src="{% static 'images/aboutus.jpg' %}" class="img-fluid rounded" alt="About Us Image">
+   </div>
+</div>
+<!-- Services Overview -->
+<div class="row g-4 mb-5">
+   <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.1s">
+      <div class="h-100 bg-light rounded p-4">
+         <div class="d-flex align-items-center mb-4">
+            <div class="btn-lg-square rounded bg-primary me-3">
+               <i class="fa fa-briefcase text-white"></i>
+            </div>
+            <h4 class="mb-0">JobBoard</h4>
+         </div>
+         <p class="mb-4">Connecting talent with opportunities through our intelligent job matching platform. Find your next career move or discover top talent for your organization.</p>
+         <a class="btn btn-primary px-3" href="{% url 'jobs:index'  %}">Explore Jobs</a>
+      </div>
+   </div>
+   <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.3s">
+      <div class="h-100 bg-light rounded p-4">
+         <div class="d-flex align-items-center mb-4">
+            <div class="btn-lg-square rounded bg-primary me-3">
+               <i class="fa fa-bicycle text-white"></i>
+            </div>
+            <h4 class="mb-0">BikeShare</h4>
+         </div>
+         <p class="mb-4">Sustainable urban mobility made easy. Access our network of bikes across the city for convenient, eco-friendly transportation.</p>
+         <a class="btn btn-primary px-3" href="{% url 'bikeshare:index'  %}">Find Bikes</a>
+      </div>
+   </div>
+   <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.5s">
+      <div class="h-100 bg-light rounded p-4">
+         <div class="d-flex align-items-center mb-4">
+            <div class="btn-lg-square rounded bg-primary me-3">
+               <i class="fa fa-graduation-cap text-white"></i>
+            </div>
+            <h4 class="mb-0">LearnHub</h4>
+         </div>
+         <p class="mb-4">Advance your skills with our comprehensive learning platform. Access courses, workshops, and certification programs.</p>
+         <a class="btn btn-primary px-3" href="{% url 'learning_centre:home'  %}">Start Learning</a>
+      </div>
+   </div>
+</div>
+<!-- Statistics Section -->
+<div class="row g-5 align-items-center mb-5">
+   <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+      <img src="{% static 'images/statitics.png' %}" class="img-fluid rounded" alt="Impact Statistics">
+   </div>
+   <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+      <h2 class="mb-4">Our Impact in Numbers</h2>
+      <div class="row g-4 mb-4">
+         <div class="col-sm-6">
+            <div class="bg-light rounded p-4 text-center">
+               <h1 class="display-4 text-primary" data-toggle="counter-up">50</h1>
+               <p class="mb-0">Active Users</p>
+            </div>
+         </div>
+         <div class="col-sm-6">
+            <div class="bg-light rounded p-4 text-center">
+               <h1 class="display-4 text-primary" data-toggle="counter-up">5</h1>
+               <p class="mb-0">Job Placements</p>
+            </div>
+         </div>
+      </div>
+      <div class="row g-4">
+         <div class="col-sm-6">
+            <div class="bg-light rounded p-4 text-center">
+               <h1 class="display-4 text-primary" data-toggle="counter-up">100</h1>
+               <p class="mb-0">Bike Rides</p>
+            </div>
+         </div>
+         <div class="col-sm-6">
+            <div class="bg-light rounded p-4 text-center">
+               <h1 class="display-4 text-primary" data-toggle="counter-up">20</h1>
+               <p class="mb-0">Course Completions</p>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- FAQs Start -->
+<div class="container-fluid faq-section bg-light py-5">
+   <div class="container py-5">
+      <div class="row g-5 align-items-center">
+         <div class="col-xl-6 wow fadeInLeft" data-wow-delay="0.2s">
+            <div class="h-100">
+               <div class="mb-5">
+                  <h4 class="text-primary">Platform FAQs</h4>
+                  <h1 class="display-4 mb-0">Frequently Asked Questions</h1>
+               </div>
+               <div class="accordion" id="accordionExample">
+                  <div class="accordion-item">
+                     <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button border-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Q: How do I access the JobBoard and apply for positions?
+                        </button>
+                     </h2>
+                     <div id="collapseOne" class="accordion-collapse collapse show active" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div class="accordion-body rounded">
+                           A: Navigate to the JobBoard section where you can browse available positions, filter by category, and create job alerts. To apply, create a profile and upload your resume. You can track your applications and receive updates through your dashboard.
+                        </div>
+                     </div>
+                  </div>
+                  <div class="accordion-item">
+                     <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Q: How does the BikeShare system work?
+                        </button>
+                     </h2>
+                     <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                           A: Our BikeShare system allows you to rent bikes through our mobile app. Locate available bikes on the map, scan the QR code to unlock, and pay per minute of use. Return the bike to any designated station when finished. Monthly subscriptions are available for regular users.
+                        </div>
+                     </div>
+                  </div>
+                  <div class="accordion-item">
+                     <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Q: What resources are available in the LearnHub?
+                        </button>
+                     </h2>
+                     <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                           A: LearnHub offers online courses, tutorials, and workshops across various skills. Access video lectures, interactive assignments, and earn certificates. Connect with mentors and join study groups through our SocialHub integration.
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="col-xl-6 wow fadeInRight" data-wow-delay="0.4s">
+            <img src="img/carousel-2.png" class="img-fluid w-100" alt="">
+         </div>
+      </div>
+   </div>
+</div>
+<!-- FAQs End -->
+<!-- Testimonial Start -->
+<div class="container-fluid testimonial pb-5">
+   <div class="container pb-5">
+      <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+         <h4 class="text-primary">Testimonials</h4>
+         <h1 class="display-4 mb-4">Success Stories from Our Community</h1>
+         <p class="mb-0">Hear from members who have found jobs, learned new skills, connected with others, and improved their daily commute using our integrated platform services.</p>
+      </div>
+      <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.2s">
+         <div class="testimonial-item bg-light rounded">
+            <div class="row g-0">
+               <div class="col-4 col-lg-4 col-xl-3">
+                  <div class="h-100">
+                     <img src="{% static 'images/review1.jpg' %}" class="img-fluid h-100 rounded" style="object-fit: cover;" alt="Sarah Chen">
+                  </div>
+               </div>
+               <div class="col-8 col-lg-8 col-xl-9">
+                  <div class="d-flex flex-column my-auto text-start p-4">
+                     <h4 class="text-dark mb-0">Sarah Chen</h4>
+                     <p class="mb-3">Software Developer | JobBoard Success</p>
+                     <div class="d-flex text-primary mb-3">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                     </div>
+                     <p class="mb-0">"Through the JobBoard, I found my dream role at a tech startup. The platform's skills matching algorithm and LearnHub courses helped me prepare for interviews. Within two months, I had multiple offers!"</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="testimonial-item bg-light rounded">
+            <div class="row g-0">
+               <div class="col-4 col-lg-4 col-xl-3">
+                  <div class="h-100">
+                     <img src="{% static 'images/review2.jpg' %}" class="img-fluid h-100 rounded" style="object-fit: cover;" alt="Marcus Rodriguez">
+                  </div>
+               </div>
+               <div class="col-8 col-lg-8 col-xl-9">
+                  <div class="d-flex flex-column my-auto text-start p-4">
+                     <h4 class="text-dark mb-0">Marcus Rodriguez</h4>
+                     <p class="mb-3">Daily Commuter | BikeShare User</p>
+                     <div class="d-flex text-primary mb-3">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star text-body"></i>
+                     </div>
+                     <p class="mb-0">"BikeShare has transformed my daily commute. The app makes it easy to find and unlock bikes, and the new stations are perfectly placed. I've saved money on transport and gotten healthier too!"</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="testimonial-item bg-light rounded">
+            <div class="row g-0">
+               <div class="col-4 col-lg-4 col-xl-3">
+                  <div class="h-100">
+                     <img src="{% static 'images/review3.jpg' %}" class="img-fluid h-100 rounded" style="object-fit: cover;" alt="Emma Watson">
+                  </div>
+               </div>
+               <div class="col-8 col-lg-8 col-xl-9">
+                  <div class="d-flex flex-column my-auto text-start p-4">
+                     <h4 class="text-dark mb-0">Emma Watson</h4>
+                     <p class="mb-3">Marketing Student | LearnHub & SocialHub</p>
+                     <div class="d-flex text-primary mb-3">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                     </div>
+                     <p class="mb-0">"The combination of LearnHub courses and SocialHub networking has been incredible. I completed a digital marketing certification and connected with industry professionals who helped me land my first internship!"</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- Testimonial End -->
+{% endblock body_block %}

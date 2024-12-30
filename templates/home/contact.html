@@ -1,0 +1,92 @@
+{% extends "home/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+<!-- Contact Start -->
+<div class="container-fluid py-5">
+   <div class="container py-5">
+      <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.2s" style="max-width: 800px;">
+         <h4 class="text-primary">Contact Us</h4>
+         <h1 class="display-4 mb-4">Get in Touch with Our Team</h1>
+         <p class="mb-0">Have questions about our services? Reach out to us for support with JobBoard, SocialHub, LearnHub, BikeShare, or any other platform features.</p>
+      </div>
+      <div class="row g-5">
+         <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.2s">
+            <div class="row g-4 mb-5">
+               <div class="col-sm-6">
+                  <div class="d-flex align-items-center">
+                     <div class="bg-primary rounded d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <i class="fa fa-phone-alt text-white"></i>
+                     </div>
+                     <div class="ms-3">
+                        <h5 class="mb-2">Call Us</h5>
+                        <p class="mb-0">+1 (555) 123-4567</p>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-sm-6">
+                  <div class="d-flex align-items-center">
+                     <div class="bg-primary rounded d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <i class="fa fa-envelope text-white"></i>
+                     </div>
+                     <div class="ms-3">
+                        <h5 class="mb-2">Email Us</h5>
+                        <p class="mb-0">support@yourplatform.com</p>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-sm-6">
+                  <div class="d-flex align-items-center">
+                     <div class="bg-primary rounded d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <i class="fa fa-map-marker-alt text-white"></i>
+                     </div>
+                     <div class="ms-3">
+                        <h5 class="mb-2">Office Address</h5>
+                        <p class="mb-0">123 Platform Street, Tech City</p>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-sm-6">
+                  <div class="d-flex align-items-center">
+                     <div class="bg-primary rounded d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <i class="fa fa-clock text-white"></i>
+                     </div>
+                     <div class="ms-3">
+                        <h5 class="mb-2">Working Hours</h5>
+                        <p class="mb-0">Mon-Fri: 9am-6pm</p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.4s">
+            <div class="bg-light p-4">
+               <form method="post">
+                  {% csrf_token %}
+                  <div class="row g-3">
+                     <div class="col-md-6">
+                        {{ form.name|as_crispy_field }}
+                     </div>
+                     <div class="col-md-6">
+                        {{ form.email|as_crispy_field }}
+                     </div>
+                     <div class="col-12">
+                        {{ form.subject|as_crispy_field }}
+                     </div>
+                     <div class="col-12">
+                        {{ form.service|as_crispy_field }}
+                     </div>
+                     <div class="col-12">
+                        {{ form.message|as_crispy_field }}
+                     </div>
+                     <div class="col-12">
+                        <button class="btn btn-primary w-100 py-3" type="submit">Send Message</button>
+                     </div>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- Contact End -->{% endblock body_block %}
