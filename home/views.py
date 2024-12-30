@@ -7,7 +7,6 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .forms import ContactForm
 import os
-
 def get_home_page(request):
     cached_articles = cache.get('tech_news_articles')
     
