@@ -2,8 +2,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import UserRegistrationForm, UserLoginForm
-# core/views.py
-from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import update_session_auth_hash
+from .forms import UserUpdateForm, CustomPasswordChangeForm
+from .forms import CombinedProfileForm
+
 
 # User Registration View
 def register_view(request):
@@ -48,27 +51,6 @@ def logout_view(request):
     messages.success(request, 'You have been logged out successfully!')
     return redirect('login')  # Redirect to login page
 
-# User Dashboard View
-def dashboard(request):
-    if not request.user.is_authenticated:
-        messages.error(request, 'You need to log in first.')
-        return redirect('login')
-    return render(request, 'core/dashboard.html', {'user': request.user})
-
-
-
-
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import update_session_auth_hash
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from .forms import UserUpdateForm, CustomPasswordChangeForm
-from .forms import CombinedProfileForm
-
-# core/views.py
-
-# core/views.py
-
 @login_required
 def profile_view(request):
     """View for displaying user profile"""
@@ -97,8 +79,6 @@ def profile_update(request):
         'skills': request.user.job_profile.skill_set.all() if hasattr(request.user, 'job_profile') else None
     }
     return render(request, 'core/profile_update.html', context)
-
-
 
 @login_required
 def password_change(request):

@@ -1,23 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from news.models import TechArticle
 from news.services import NewsAPIService
 from django.core.cache import cache
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.core.mail import send_mail
-from django.conf import settings
-from .forms import ContactForm
-# Create your views here.
-
-
-from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
 from .forms import ContactForm
 import os
-
-
 
 def get_home_page(request):
     cached_articles = cache.get('tech_news_articles')
@@ -31,9 +20,6 @@ def get_home_page(request):
         articles = cached_articles
       
     return render(request, 'home/index.html', {'articles': articles})
-
-
-
 
 def contact_view(request):
     if request.method == 'POST':
@@ -55,7 +41,6 @@ def contact_view(request):
             Message:
             {message}
             """
-            
             try:
                 send_mail(
                     email_subject,

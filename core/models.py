@@ -10,7 +10,6 @@ class CustomUser(AbstractUser):
     is_verified = models.BooleanField(default=True)  # Default to True
     profile_completed = models.JSONField(default=dict, blank=True)
     profile_picture = models.ImageField(upload_to='profile_pics/', default='profile_pics/default.png', blank=True)
-    # Add fields for profile completion tracking
     profile_completed = models.JSONField(default=dict, blank=True)
     
     def mark_profile_section_complete(self, section, status=True):

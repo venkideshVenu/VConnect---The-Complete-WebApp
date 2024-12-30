@@ -1,199 +1,178 @@
 {% extends 'core/base.html' %}
-
 {% load static %}
-
 {% block body_block %}
 <div class="main">
-    <section class="signup">
-        <div class="container">
-            <div class="signup-content">
-                <div class="signup-form">
-                    <h2 class="form-title">Sign up</h2>
-                    
-                    {% if messages %}
-                        <div class="messages">
-                            {% for message in messages %}
-                                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-                                    {{ message }}
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-
-                    {% if form.errors %}
-                        <div class="alert alert-danger">
-                            Please correct the errors below.
-                        </div>
-                    {% endif %}
-
-                    <form method="POST" class="register-form" id="register-form" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        
-                        <!-- Profile Picture -->
-                        <div class="form-group">
-                            <div class="profile-picture-preview text-center mb-3">
-                                <img id="preview-image" src="{% static 'core/images/default-profile.png' %}" 
-                                     alt="Profile Preview" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
-                            </div>
-                            <label for="{{ form.profile_picture.id_for_label }}" class="profile-upload-label">
-                                <i class="zmdi zmdi-camera"></i>
-                            </label>
-                            {{ form.profile_picture }}
-                            {% if form.profile_picture.errors %}
-                                <div class="error-message text-danger">
-                                    {{ form.profile_picture.errors }}
-                                </div>
-                            {% endif %}
-                            <small class="form-text text-muted text-center">
-                                Click to upload profile picture (optional)
-                            </small>
-                        </div>
-
-                        <!-- First Name -->
-                        <div class="form-group">
-                            <label for="{{ form.first_name.id_for_label }}">
-                                <i class="zmdi zmdi-account material-icons-name"></i>
-                            </label>
-                            {{ form.first_name }}
-                            {% if form.first_name.errors %}
-                                <div class="error-message text-danger">
-                                    {{ form.first_name.errors }}
-                                </div>
-                            {% endif %}
-                        </div>
-
-                        <!-- Last Name -->
-                        <div class="form-group">
-                            <label for="{{ form.last_name.id_for_label }}">
-                                <i class="zmdi zmdi-account material-icons-name"></i>
-                            </label>
-                            {{ form.last_name }}
-                            {% if form.last_name.errors %}
-                                <div class="error-message text-danger">
-                                    {{ form.last_name.errors }}
-                                </div>
-                            {% endif %}
-                        </div>
-
-                        <!-- Username -->
-                        <div class="form-group">
-                            <label for="{{ form.username.id_for_label }}">
-                                <i class="zmdi zmdi-account material-icons-name"></i>
-                            </label>
-                            {{ form.username }}
-                            {% if form.username.errors %}
-                                <div class="error-message text-danger">
-                                    {{ form.username.errors }}
-                                </div>
-                            {% endif %}
-                        </div>
-
-                        <!-- Email -->
-                        <div class="form-group">
-                            <label for="{{ form.email.id_for_label }}">
-                                <i class="zmdi zmdi-email"></i>
-                            </label>
-                            {{ form.email }}
-                            {% if form.email.errors %}
-                                <div class="error-message text-danger">
-                                    {{ form.email.errors }}
-                                </div>
-                            {% endif %}
-                        </div>
-
-                        <!-- Password -->
-                        <div class="form-group">
-                            <label for="{{ form.password1.id_for_label }}">
-                                <i class="zmdi zmdi-lock"></i>
-                            </label>
-                            {{ form.password1 }}
-                            {% if form.password1.errors %}
-                                <div class="error-message text-danger">
-                                    {{ form.password1.errors }}
-                                </div>
-                            {% endif %}
-                        </div>
-
-                        <!-- Confirm Password -->
-                        <div class="form-group">
-                            <label for="{{ form.password2.id_for_label }}">
-                                <i class="zmdi zmdi-lock-outline"></i>
-                            </label>
-                            {{ form.password2 }}
-                            {% if form.password2.errors %}
-                                <div class="error-message text-danger">
-                                    {{ form.password2.errors }}
-                                </div>
-                            {% endif %}
-                        </div>
-
-                        <div class="form-group">
-                            <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" required />
-                            <label for="agree-term" class="label-agree-term">
-                                <span><span></span></span>I agree to all statements in
-                                <a href="#" class="term-service">Terms of Service</a>
-                            </label>
-                        </div>
-
-                        <div class="form-group form-button">
-                            <input type="submit" name="signup" id="signup" class="form-submit" value="Register" />
-                        </div>
-                    </form>
-
-                    <div class="social-login">
-                        <span class="social-label">Or register with</span>
-                        <ul class="socials">
-                            <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
-                            <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
-                            <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="signup-image">
-                    <figure>
-                        <img src="{% static 'core/images/signup-image.jpg' %}" alt="sign up image">
-                    </figure>
-                    <a href="{% url 'login' %}" class="signup-image-link">I am already a member</a>
-                </div>
+   <section class="signup">
+      <div class="container">
+         <div class="signup-content">
+            <div class="signup-form">
+               <h2 class="form-title">Sign up</h2>
+               {% if messages %}
+               <div class="messages">
+                  {% for message in messages %}
+                  <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                     {{ message }}
+                  </div>
+                  {% endfor %}
+               </div>
+               {% endif %}
+               {% if form.errors %}
+               <div class="alert alert-danger">
+                  Please correct the errors below.
+               </div>
+               {% endif %}
+               <form method="POST" class="register-form" id="register-form" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <!-- Profile Picture -->
+                  <div class="form-group">
+                     <div class="profile-picture-preview text-center mb-3">
+                        <img id="preview-image" src="{% static 'core/images/default-profile.png' %}" 
+                           alt="Profile Preview" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
+                     </div>
+                     <label for="{{ form.profile_picture.id_for_label }}" class="profile-upload-label">
+                     <i class="zmdi zmdi-camera"></i>
+                     </label>
+                     {{ form.profile_picture }}
+                     {% if form.profile_picture.errors %}
+                     <div class="error-message text-danger">
+                        {{ form.profile_picture.errors }}
+                     </div>
+                     {% endif %}
+                     <small class="form-text text-muted text-center">
+                     Click to upload profile picture (optional)
+                     </small>
+                  </div>
+                  <!-- First Name -->
+                  <div class="form-group">
+                     <label for="{{ form.first_name.id_for_label }}">
+                     <i class="zmdi zmdi-account material-icons-name"></i>
+                     </label>
+                     {{ form.first_name }}
+                     {% if form.first_name.errors %}
+                     <div class="error-message text-danger">
+                        {{ form.first_name.errors }}
+                     </div>
+                     {% endif %}
+                  </div>
+                  <!-- Last Name -->
+                  <div class="form-group">
+                     <label for="{{ form.last_name.id_for_label }}">
+                     <i class="zmdi zmdi-account material-icons-name"></i>
+                     </label>
+                     {{ form.last_name }}
+                     {% if form.last_name.errors %}
+                     <div class="error-message text-danger">
+                        {{ form.last_name.errors }}
+                     </div>
+                     {% endif %}
+                  </div>
+                  <!-- Username -->
+                  <div class="form-group">
+                     <label for="{{ form.username.id_for_label }}">
+                     <i class="zmdi zmdi-account material-icons-name"></i>
+                     </label>
+                     {{ form.username }}
+                     {% if form.username.errors %}
+                     <div class="error-message text-danger">
+                        {{ form.username.errors }}
+                     </div>
+                     {% endif %}
+                  </div>
+                  <!-- Email -->
+                  <div class="form-group">
+                     <label for="{{ form.email.id_for_label }}">
+                     <i class="zmdi zmdi-email"></i>
+                     </label>
+                     {{ form.email }}
+                     {% if form.email.errors %}
+                     <div class="error-message text-danger">
+                        {{ form.email.errors }}
+                     </div>
+                     {% endif %}
+                  </div>
+                  <!-- Password -->
+                  <div class="form-group">
+                     <label for="{{ form.password1.id_for_label }}">
+                     <i class="zmdi zmdi-lock"></i>
+                     </label>
+                     {{ form.password1 }}
+                     {% if form.password1.errors %}
+                     <div class="error-message text-danger">
+                        {{ form.password1.errors }}
+                     </div>
+                     {% endif %}
+                  </div>
+                  <!-- Confirm Password -->
+                  <div class="form-group">
+                     <label for="{{ form.password2.id_for_label }}">
+                     <i class="zmdi zmdi-lock-outline"></i>
+                     </label>
+                     {{ form.password2 }}
+                     {% if form.password2.errors %}
+                     <div class="error-message text-danger">
+                        {{ form.password2.errors }}
+                     </div>
+                     {% endif %}
+                  </div>
+                  <div class="form-group">
+                     <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" required />
+                     <label for="agree-term" class="label-agree-term">
+                     <span><span></span></span>I agree to all statements in
+                     <a href="#" class="term-service">Terms of Service</a>
+                     </label>
+                  </div>
+                  <div class="form-group form-button">
+                     <input type="submit" name="signup" id="signup" class="form-submit" value="Register" />
+                  </div>
+               </form>
+               <div class="social-login">
+                  <span class="social-label">Or register with</span>
+                  <ul class="socials">
+                     <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
+                     <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
+                     <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
+                  </ul>
+               </div>
             </div>
-        </div>
-    </section>
+            <div class="signup-image">
+               <figure>
+                  <img src="{% static 'core/images/signup-image.jpg' %}" alt="sign up image">
+               </figure>
+               <a href="{% url 'login' %}" class="signup-image-link">I am already a member</a>
+            </div>
+         </div>
+      </div>
+   </section>
 </div>
-
 <!-- Add this script at the bottom of the template -->
 <script>
-document.getElementById('{{ form.profile_picture.id_for_label }}').onchange = function(evt) {
-    const [file] = this.files;
-    if (file) {
-        document.getElementById('preview-image').src = URL.createObjectURL(file);
-    }
-};
+   document.getElementById('{{ form.profile_picture.id_for_label }}').onchange = function(evt) {
+       const [file] = this.files;
+       if (file) {
+           document.getElementById('preview-image').src = URL.createObjectURL(file);
+       }
+   };
 </script>
-
 <style>
-.profile-picture-preview {
-    margin-bottom: 15px;
-}
-
-.profile-upload-label {
-    cursor: pointer;
-    display: block;
-    text-align: center;
-}
-
-.profile-upload-label i {
-    font-size: 24px;
-    color: #666666;
-}
-
-input[type="file"] {
-    display: none;
-}
-
-.error-message {
-    color: #ff0000;
-    font-size: 12px;
-    margin-top: 5px;
-}
+   .profile-picture-preview {
+   margin-bottom: 15px;
+   }
+   .profile-upload-label {
+   cursor: pointer;
+   display: block;
+   text-align: center;
+   }
+   .profile-upload-label i {
+   font-size: 24px;
+   color: #666666;
+   }
+   input[type="file"] {
+   display: none;
+   }
+   .error-message {
+   color: #ff0000;
+   font-size: 12px;
+   margin-top: 5px;
+   }
 </style>
 {% endblock %}

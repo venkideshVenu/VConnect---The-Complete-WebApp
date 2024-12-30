@@ -1,8 +1,8 @@
-# core/forms.py
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.core.validators import validate_email
 from .models import CustomUser
+from jobprofile.models import Profile
 
 class UserRegistrationForm(UserCreationForm):
     first_name = forms.CharField(
@@ -86,9 +86,7 @@ class UserLoginForm(forms.Form):
 
 
 
-from django import forms
-from django.contrib.auth.forms import PasswordChangeForm
-from .models import CustomUser
+
 
 class CustomPasswordChangeForm(PasswordChangeForm):
     old_password = forms.CharField(
@@ -109,14 +107,6 @@ class CustomPasswordChangeForm(PasswordChangeForm):
             'placeholder': 'Confirm new password'
         })
     )
-
-
-
-
-
-from django import forms
-from django.contrib.auth.forms import PasswordChangeForm
-from .models import CustomUser
 
 class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField(
@@ -169,14 +159,6 @@ class UserUpdateForm(forms.ModelForm):
                 raise forms.ValidationError("Image file too large ( > 2MB )")
             return image
         return self.instance.profile_picture
-    
-
-
-# core/forms.py
-
-from django import forms
-from .models import CustomUser
-from jobprofile.models import Profile
 
 class CombinedProfileForm(forms.ModelForm):
     # CustomUser fields
