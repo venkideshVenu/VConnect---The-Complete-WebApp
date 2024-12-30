@@ -1,195 +1,175 @@
 {% extends "learn/base.html" %}
 {% load static %}
 {% block body_block %}
-
 <link href="{% static 'learn/css/main.css' %}" rel="stylesheet">
-    <!-- Hero Section -->
-    <section id="hero" class="hero section dark-background">
-      <img src="{% static 'learn/img/hero-bg.jpg' %}" alt="hero image" data-aos="fade-in">
-      <div class="container">
-        <h2 data-aos="fade-up" data-aos-delay="100">Expand Your Knowledge,<br>Build Your Future</h2>
-        <p data-aos="fade-up" data-aos-delay="200">Access expert-led courses in technology, business, arts, and more. Learn at your own pace, anywhere.</p>
-        <div class="d-flex mt-4" data-aos="fade-up" data-aos-delay="300">
-          {% if user.id is not none %}
-            <a href="{% url 'learning_centre:courses' %}" class="btn-get-started">Start Learning</a>
-          {% else %}
-          <a href="{% url 'login' %}" class="btn-get-started">Start Learning</a>
-          {% endif %}
-        </div>
+<!-- Hero Section -->
+<section id="hero" class="hero section dark-background">
+   <img src="{% static 'images/learnhero.png' %}" alt="hero image" data-aos="fade-in">
+   <div class="container">
+      <h2 data-aos="fade-up" data-aos-delay="100">Expand Your Knowledge,<br>Build Your Future</h2>
+      <p data-aos="fade-up" data-aos-delay="200">Access expert-led courses in technology, business, arts, and more. Learn at your own pace, anywhere.</p>
+      <div class="d-flex mt-4" data-aos="fade-up" data-aos-delay="300">
+         {% if user.id is not none %}
+         <a href="{% url 'learning_centre:courses' %}" class="btn-get-started">Start Learning</a>
+         {% else %}
+         <a href="{% url 'login' %}" class="btn-get-started">Start Learning</a>
+         {% endif %}
       </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="about section">
-      <div class="container">
-        <div class="row gy-4">
-          <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-up" data-aos-delay="100">
+   </div>
+</section>
+<!-- About Section -->
+<section id="about" class="about section">
+   <div class="container">
+      <div class="row gy-4">
+         <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-up" data-aos-delay="100">
             <img src="{% static 'learn/img/about.jpg' %}" class="img-fluid" alt="">
-          </div>
-          <div class="col-lg-6 order-2 order-lg-1 content" data-aos="fade-up" data-aos-delay="200">
+         </div>
+         <div class="col-lg-6 order-2 order-lg-1 content" data-aos="fade-up" data-aos-delay="200">
             <h3>Transform Your Life Through Quality Education</h3>
             <p class="fst-italic">
-              Our platform offers comprehensive learning experiences designed to help you achieve your educational and career goals.
+               Our platform offers comprehensive learning experiences designed to help you achieve your educational and career goals.
             </p>
             <ul>
-              <li><i class="bi bi-check-circle"></i> <span>Expert instructors with real-world experience in their fields</span></li>
-              <li><i class="bi bi-check-circle"></i> <span>Flexible learning schedule with 24/7 access to course materials</span></li>
-              <li><i class="bi bi-check-circle"></i> <span>Interactive learning experience with hands-on projects, quizzes, and peer discussions</span></li>
+               <li><i class="bi bi-check-circle"></i> <span>Expert instructors with real-world experience in their fields</span></li>
+               <li><i class="bi bi-check-circle"></i> <span>Flexible learning schedule with 24/7 access to course materials</span></li>
+               <li><i class="bi bi-check-circle"></i> <span>Interactive learning experience with hands-on projects, quizzes, and peer discussions</span></li>
             </ul>
             <a href="{% url 'learning_centre:about_learn' %}" class="read-more"><span>Discover More</span><i class="bi bi-arrow-right"></i></a>
-          </div>
-        </div>
+         </div>
       </div>
-    </section>
-
-    <!-- Counts Section -->
-    <section id="counts" class="section counts light-background">
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-        <div class="row gy-4">
-          <div class="col-lg-3 col-md-6">
+   </div>
+</section>
+<!-- Counts Section -->
+<section id="counts" class="section counts light-background">
+   <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <div class="row gy-4">
+         <div class="col-lg-3 col-md-6">
             <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="50000" data-purecounter-duration="1" class="purecounter"></span>
-              <p>Active Learners</p>
+               <span data-purecounter-start="0" data-purecounter-end="50000" data-purecounter-duration="1" class="purecounter">40</span>
+               <p>Active Learners</p>
             </div>
-          </div>
-
-          <div class="col-lg-3 col-md-6">
+         </div>
+         <div class="col-lg-3 col-md-6">
             <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="200" data-purecounter-duration="1" class="purecounter"></span>
-              <p>Expert Courses</p>
+               <span data-purecounter-start="0" data-purecounter-end="200" data-purecounter-duration="1" class="purecounter">20</span>
+               <p>Expert Courses</p>
             </div>
-          </div>
-
-          <div class="col-lg-3 col-md-6">
+         </div>
+         <div class="col-lg-3 col-md-6">
             <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="100" data-purecounter-duration="1" class="purecounter"></span>
-              <p>Live Workshops</p>
+               <span data-purecounter-start="0" data-purecounter-end="100" data-purecounter-duration="1" class="purecounter">6</span>
+               <p>Live Workshops</p>
             </div>
-          </div>
-
-          <div class="col-lg-3 col-md-6">
+         </div>
+         <div class="col-lg-3 col-md-6">
             <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="150" data-purecounter-duration="1" class="purecounter"></span>
-              <p>Expert Instructors</p>
+               <span data-purecounter-start="0" data-purecounter-end="150" data-purecounter-duration="1" class="purecounter">5</span>
+               <p>Expert Instructors</p>
             </div>
-          </div>
-        </div>
+         </div>
       </div>
-    </section>
-
-    <!-- Why Us Section -->
-    <section id="why-us" class="section why-us">
-      <div class="container">
-        <div class="row gy-4">
-          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+   </div>
+</section>
+<!-- Why Us Section -->
+<section id="why-us" class="section why-us">
+   <div class="container">
+      <div class="row gy-4">
+         <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
             <div class="why-box">
-              <h3>Why Choose Our Learning Platform?</h3>
-              <p>
-                We offer a comprehensive learning experience with cutting-edge courses, expert instructors, and a supportive community. Our platform is designed to help you achieve your learning goals through practical, hands-on education that fits your schedule.
-              </p>
-              <div class="text-center">
-                <a href="{% url 'learning_centre:about_learn' %}" class="more-btn"><span>Learn More</span> <i class="bi bi-chevron-right"></i></a>
-              </div>
+               <h3>Why Choose Our Learning Platform?</h3>
+               <p>
+                  We offer a comprehensive learning experience with cutting-edge courses, expert instructors, and a supportive community. Our platform is designed to help you achieve your learning goals through practical, hands-on education that fits your schedule.
+               </p>
+               <div class="text-center">
+                  <a href="{% url 'learning_centre:about_learn' %}" class="more-btn"><span>Learn More</span> <i class="bi bi-chevron-right"></i></a>
+               </div>
             </div>
-          </div>
-
-          <div class="col-lg-8 d-flex align-items-stretch">
+         </div>
+         <div class="col-lg-8 d-flex align-items-stretch">
             <div class="row gy-4" data-aos="fade-up" data-aos-delay="200">
-              <div class="col-xl-4">
-                <div class="icon-box d-flex flex-column justify-content-center align-items-center">
-                  <i class="bi bi-clipboard-data"></i>
-                  <h4>Interactive Learning</h4>
-                  <p>Engage with hands-on projects, quizzes, and real-world assignments</p>
-                </div>
-              </div>
-
-              <div class="col-xl-4" data-aos="fade-up" data-aos-delay="300">
-                <div class="icon-box d-flex flex-column justify-content-center align-items-center">
-                  <i class="bi bi-gem"></i>
-                  <h4>Quality Content</h4>
-                  <p>Carefully curated courses designed by industry experts and educators</p>
-                </div>
-              </div>
-
-              <div class="col-xl-4" data-aos="fade-up" data-aos-delay="400">
-                <div class="icon-box d-flex flex-column justify-content-center align-items-center">
-                  <i class="bi bi-inboxes"></i>
-                  <h4>Flexible Learning</h4>
-                  <p>Learn at your own pace with 24/7 access to course materials</p>
-                </div>
-              </div>
+               <div class="col-xl-4">
+                  <div class="icon-box d-flex flex-column justify-content-center align-items-center">
+                     <i class="bi bi-clipboard-data"></i>
+                     <h4>Interactive Learning</h4>
+                     <p>Engage with hands-on projects, quizzes, and real-world assignments</p>
+                  </div>
+               </div>
+               <div class="col-xl-4" data-aos="fade-up" data-aos-delay="300">
+                  <div class="icon-box d-flex flex-column justify-content-center align-items-center">
+                     <i class="bi bi-gem"></i>
+                     <h4>Quality Content</h4>
+                     <p>Carefully curated courses designed by industry experts and educators</p>
+                  </div>
+               </div>
+               <div class="col-xl-4" data-aos="fade-up" data-aos-delay="400">
+                  <div class="icon-box d-flex flex-column justify-content-center align-items-center">
+                     <i class="bi bi-inboxes"></i>
+                     <h4>Flexible Learning</h4>
+                     <p>Learn at your own pace with 24/7 access to course materials</p>
+                  </div>
+               </div>
             </div>
-          </div>
-        </div>
+         </div>
       </div>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features" class="features section">
-      <div class="container">
-        <div class="row gy-4">
-          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="100">
+   </div>
+</section>
+<!-- Features Section -->
+<section id="features" class="features section">
+   <div class="container">
+      <div class="row gy-4">
+         <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="100">
             <div class="features-item">
-              <i class="bi bi-mortarboard" style="color: #5fcf80;"></i>
-              <h3><a href="" class="stretched-link">Self-Paced Learning</a></h3>
+               <i class="bi bi-mortarboard" style="color: #5fcf80;"></i>
+               <h3><a href="" class="stretched-link">Self-Paced Learning</a></h3>
             </div>
-          </div>
-
-          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="200">
+         </div>
+         <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="200">
             <div class="features-item">
-              <i class="bi bi-people" style="color: #5578ff;"></i>
-              <h3><a href="" class="stretched-link">Expert Instructors</a></h3>
+               <i class="bi bi-people" style="color: #5578ff;"></i>
+               <h3><a href="" class="stretched-link">Expert Instructors</a></h3>
             </div>
-          </div>
-
-          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="300">
+         </div>
+         <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="300">
             <div class="features-item">
-              <i class="bi bi-camera-video" style="color: #e80368;"></i>
-              <h3><a href="" class="stretched-link">HD Video Lessons</a></h3>
+               <i class="bi bi-camera-video" style="color: #e80368;"></i>
+               <h3><a href="" class="stretched-link">HD Video Lessons</a></h3>
             </div>
-          </div>
-
-          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="600">
+         </div>
+         <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="600">
             <div class="features-item">
-              <i class="bi bi-calendar4-week" style="color: #ffa76e;"></i>
-              <h3><a href="" class="stretched-link">Regular Updates</a></h3>
+               <i class="bi bi-calendar4-week" style="color: #ffa76e;"></i>
+               <h3><a href="" class="stretched-link">Regular Updates</a></h3>
             </div>
-          </div>
-
-        </div>
+         </div>
       </div>
-    </section>
-
-    <!-- Courses Section -->
-    <section id="courses" class="courses section">
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Courses</h2>
-        <p>Top Courses</p>
-      </div>
-
-      <div class="container">
-        <div class="row">
-
-        {% for course in top_courses %}
-
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
+   </div>
+</section>
+<!-- Courses Section -->
+<section id="courses" class="courses section">
+   <div class="container section-title" data-aos="fade-up">
+      <h2>Courses</h2>
+      <p>Top Courses</p>
+   </div>
+   <div class="container">
+      <div class="row">
+         {% for course in top_courses %}
+         <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
             <div class="course-item">
-              <img src="{{ course.thumbnail.url }}" class="img-fluid" alt="Course Thumbnail">
-              <div class="course-content">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <p class="category">{{ course.category }}</p>
-                  <p class="price">Rs. {{ course.price }}</p>
-                </div>
-
-                <h3><a href="{% url 'courses:course-details' course.slug %}">{{ course.title }}</a></h3>
-                <p class="description">{{ course.short_description }}</p>
-                <div class="trainer d-flex justify-content-between align-items-center">
-                </div>
-              </div>
+               <img src="{{ course.thumbnail.url }}" class="img-fluid" alt="Course Thumbnail">
+               <div class="course-content">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                     <p class="category">{{ course.category }}</p>
+                     <p class="price">Rs. {{ course.price }}</p>
+                  </div>
+                  <h3><a href="{% url 'courses:course-details' course.slug %}">{{ course.title }}</a></h3>
+                  <p class="description">{{ course.short_description }}</p>
+                  <div class="trainer d-flex justify-content-between align-items-center">
+                  </div>
+               </div>
             </div>
-          </div>
-        {% endfor %}
-        </div>
+         </div>
+         {% endfor %}
       </div>
-    </section>
+   </div>
+</section>
 {% endblock body_block %}

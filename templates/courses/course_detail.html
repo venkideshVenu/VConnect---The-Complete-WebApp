@@ -2,273 +2,241 @@
 {% load static %}
 {% load humanize %}
 {% load total_minutes %}
-
 {% block body_block %}
 <link href="{% static 'learn/css/main.css' %}" rel="stylesheet">
 <link href="{% static 'learn/css/course-sidebar.css' %}" rel="stylesheet">
-
 <!-- Page Title -->
 <div class="page-title" data-aos="fade">
-    <div class="heading">
-        <div class="container">
-            <div class="row d-flex justify-content-center text-center">
-                <div class="col-lg-8">
-                    <h1>Course Details</h1>
-                    <p class="mb-0">{{ course.title }}</p>
-                </div>
+   <div class="heading">
+      <div class="container">
+         <div class="row d-flex justify-content-center text-center">
+            <div class="col-lg-8">
+               <h1>Course Details</h1>
+               <p class="mb-0">{{ course.title }}</p>
             </div>
-        </div>
-    </div>
-    <nav class="breadcrumbs">
-        <div class="container">
-            <ol>
-                <li><a href="index.html">Home</a></li>
-                <li class="current">Course Details</li>
-            </ol>
-        </div>
-    </nav>
+         </div>
+      </div>
+   </div>
+   <nav class="breadcrumbs">
+      <div class="container">
+         <ol>
+            <li><a href="{% url 'learning_centre:home'  %}">Home</a></li>
+            <li class="current">Course Details</li>
+         </ol>
+      </div>
+   </nav>
 </div>
-
 <!-- Courses Course Details Section -->
 <section id="courses-course-details" class="courses-course-details section">
-    <div class="container" data-aos="fade-up">
-        <div class="row">
-            <div class="col-lg-8">
-                <img src="{{ course.thumbnail.url }}" class="img-fluid" alt="">
-                <h3>{{ course.title }}</h3>
-                <p>{{ course.description}}</p>
-                
-                <!-- Course Info Boxes -->
-                <div class="course-info-boxes mt-4">
-                    <div class="course-info d-flex justify-content-between align-items-center">
-                        <h5>Category</h5>
-                        <p>{{ course.category }}</p>
-                    </div>
-                    <div class="course-info d-flex justify-content-between align-items-center">
-                        <h5>Trainer</h5>
-                        <p><a>{{ course.user }}</a></p>
-                    </div>
-                    <div class="course-info d-flex justify-content-between align-items-center">
-                        <h5>Language</h5>
-                        <p>{{ course.language }}</p>
-                    </div>
-                    <div class="course-info d-flex justify-content-between align-items-center">
-                        <h5>Level</h5>
-                        <p>{{ course.level }}</p>
-                    </div>
-                </div>
-
-                <!-- Course Details -->
-                <div class="course-details mt-4">
-                    <h3>Course Outcome</h3>
-                    <p>{{ course.outcome}}</p>
-
-                    <h3>Course Prerequisites</h3>
-                    <p>{{ course.requirements}}</p>
-
-                    <h3>{{ course.lessons.count}} Lessons in This Course</h3>
-                    <div class="lessons-list">
-                        {% for lesson in course.lessons.all %}
-                        <div class="lesson-item">
-                            <i class="fas fa-play-circle"></i>
-                            <p>{{ lesson.title }}</p>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
+   <div class="container" data-aos="fade-up">
+      <div class="row">
+         <div class="col-lg-8">
+            <img src="{{ course.thumbnail.url }}" class="img-fluid" alt="">
+            <h3>{{ course.title }}</h3>
+            <p>{{ course.description}}</p>
+            <!-- Course Info Boxes -->
+            <div class="course-info-boxes mt-4">
+               <div class="course-info d-flex justify-content-between align-items-center">
+                  <h5>Category</h5>
+                  <p>{{ course.category }}</p>
+               </div>
+               <div class="course-info d-flex justify-content-between align-items-center">
+                  <h5>Trainer</h5>
+                  <p><a>{{ course.user }}</a></p>
+               </div>
+               <div class="course-info d-flex justify-content-between align-items-center">
+                  <h5>Language</h5>
+                  <p>{{ course.language }}</p>
+               </div>
+               <div class="course-info d-flex justify-content-between align-items-center">
+                  <h5>Level</h5>
+                  <p>{{ course.level }}</p>
+               </div>
             </div>
-
-            <!-- Course Sidebar with Cart -->
-            <div class="col-lg-4">
-                <div class="course-sidebar natural">
-                    <div class="preview-video-box">
-                        <a href="#" data-toggle="modal" data-target="#CoursePreviewModal">
-                            <img src="{{ course.thumbnail.url }}" alt="" class="img-fluid">
-                            <span class="preview-text">Preview this course</span>
-                            <span class="play-btn"></span>
-                        </a>
-                    </div>
-                    <div class="course-sidebar-text-box">
-                        <div class="price">
-                            <span class="current-price">₹{{ course.price | floatformat:2 | intcomma }}</span>
-                            <input type="hidden" id="total_price_of_checking_out" value="{{ course.price | floatformat:2 }}">
-                        </div>
-
-                        <div class="buy-btns">
-                            {% if is_enrolled %}
-                                <button class="btn btn-success btn-block">Go to course</button>
-                            {% else %}
-                                {% if is_in_cart %}
-                                    <button class="btn btn-danger btn-block">Added to cart</button>
-                                {% else %}
-                                    <form action="{% url 'cart:cart_add' course.slug %}" method="post">
-                                        {% csrf_token %}
-                                        <input type="hidden" value="{{ course.id }}" name="course_id">
-                                        <input type="hidden" value="{{ course.title }}" name="name">
-                                        <input type="hidden" value="{{ course.price }}" name="price">
-                                        <input type="hidden" value="1" name="quantity">
-                                        <button class="btn btn-primary btn-block" type="submit">Add to cart</button>
-                                    </form>
-                                {% endif %}
-                            {% endif %}
-                        </div>
-
-                        <div class="includes">
-                            <div class="title"><b>Includes:</b></div>
-                            <ul class="includes-list">
-                                <li><i class="far fa-file-video"></i> On demand videos</li>
-                                <li><i class="far fa-file"></i> {{ course.lessons.count }} lessons</li>
-                                <li><i class="far fa-compass"></i> Full lifetime access</li>
-                                <li><i class="fas fa-mobile-alt"></i> Access on mobile and TV</li>
-                            </ul>
-                        </div>
-
-                        <div class="course-metadata mt-3">
-                            <div class="meta-item">
-                                <h5>Created On:</h5>
-                                <p>{{ course.created_at|date }}</p>
-                            </div>
-                            <div class="meta-item">
-                                <h5>Last Updated:</h5>
-                                <p>{{ course.updated_at|date }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <!-- Course Details -->
+            <div class="course-details mt-4">
+               <h3>Course Outcome</h3>
+               <p>{{ course.outcome}}</p>
+               <h3>Course Prerequisites</h3>
+               <p>{{ course.requirements}}</p>
+               <h3>{{ course.lessons.count}} Lessons in This Course</h3>
+               <div class="lessons-list">
+                  {% for lesson in course.lessons.all %}
+                  <div class="lesson-item">
+                     <i class="fas fa-play-circle"></i>
+                     <p>{{ lesson.title }}</p>
+                  </div>
+                  {% endfor %}
+               </div>
             </div>
-        </div>
-    </div>
+         </div>
+         <!-- Course Sidebar with Cart -->
+         <div class="col-lg-4">
+            <div class="course-sidebar natural">
+               <div class="preview-video-box">
+                  <a href="#" data-toggle="modal" data-target="#CoursePreviewModal">
+                  <img src="{{ course.thumbnail.url }}" alt="" class="img-fluid">
+                  <span class="preview-text">Preview this course</span>
+                  <span class="play-btn"></span>
+                  </a>
+               </div>
+               <div class="course-sidebar-text-box">
+                  <div class="price">
+                     <span class="current-price">₹{{ course.price | floatformat:2 | intcomma }}</span>
+                     <input type="hidden" id="total_price_of_checking_out" value="{{ course.price | floatformat:2 }}">
+                  </div>
+                  <div class="buy-btns">
+                     {% if is_enrolled %}
+                     <button class="btn btn-success btn-block">Go to course</button>
+                     {% else %}
+                     {% if is_in_cart %}
+                     <button class="btn btn-danger btn-block">Added to cart</button>
+                     {% else %}
+                     <form action="{% url 'cart:cart_add' course.slug %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" value="{{ course.id }}" name="course_id">
+                        <input type="hidden" value="{{ course.title }}" name="name">
+                        <input type="hidden" value="{{ course.price }}" name="price">
+                        <input type="hidden" value="1" name="quantity">
+                        <button class="btn btn-primary btn-block" type="submit">Add to cart</button>
+                     </form>
+                     {% endif %}
+                     {% endif %}
+                  </div>
+                  <div class="includes">
+                     <div class="title"><b>Includes:</b></div>
+                     <ul class="includes-list">
+                        <li><i class="far fa-file-video"></i> On demand videos</li>
+                        <li><i class="far fa-file"></i> {{ course.lessons.count }} lessons</li>
+                        <li><i class="far fa-compass"></i> Full lifetime access</li>
+                        <li><i class="fas fa-mobile-alt"></i> Access on mobile and TV</li>
+                     </ul>
+                  </div>
+                  <div class="course-metadata mt-3">
+                     <div class="meta-item">
+                        <h5>Created On:</h5>
+                        <p>{{ course.created_at|date }}</p>
+                     </div>
+                     <div class="meta-item">
+                        <h5>Last Updated:</h5>
+                        <p>{{ course.updated_at|date }}</p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
 </section>
-
 <style>
-
-    /* Course Sidebar Styles */
-.course-sidebar {
-    background: #f8f9fa;
-    border-radius: 5px;
-    padding: 20px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.1);
-}
-
-.preview-video-box {
-    position: relative;
-    margin-bottom: 20px;
-}
-
-.preview-video-box img {
-    border-radius: 5px;
-    width: 100%;
-}
-
-.preview-text {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    color: white;
-    background: rgba(0,0,0,0.7);
-    padding: 5px 10px;
-    border-radius: 3px;
-}
-
-.play-btn {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 50px;
-    height: 50px;
-    background: rgba(255,255,255,0.9);
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.play-btn::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 55%;
-    transform: translate(-50%, -50%);
-    border-left: 15px solid #333;
-    border-top: 10px solid transparent;
-    border-bottom: 10px solid transparent;
-}
-
-.course-sidebar-text-box {
-    padding: 20px;
-}
-
-.price {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-.buy-btns {
-    margin-bottom: 20px;
-}
-
-.buy-btns .btn {
-    width: 100%;
-    padding: 12px;
-    font-weight: 600;
-    margin-bottom: 10px;
-}
-
-.includes {
-    border-top: 1px solid #ddd;
-    padding-top: 20px;
-}
-
-.includes-list {
-    list-style: none;
-    padding: 0;
-    margin: 15px 0 0 0;
-}
-
-.includes-list li {
-    margin-bottom: 10px;
-    color: #666;
-}
-
-.includes-list li i {
-    margin-right: 10px;
-    color: #333;
-}
-
-.lesson-item {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-}
-
-.lesson-item i {
-    margin-right: 10px;
-    color: #666;
-}
-
-.course-metadata {
-    border-top: 1px solid #ddd;
-    padding-top: 15px;
-}
-
-.meta-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.meta-item h5 {
-    margin: 0;
-    font-size: 14px;
-    color: #666;
-}
-
-.meta-item p {
-    margin: 0;
-    font-size: 14px;
-}
+   /* Course Sidebar Styles */
+   .course-sidebar {
+   background: #f8f9fa;
+   border-radius: 5px;
+   padding: 20px;
+   box-shadow: 0 0 20px rgba(0,0,0,0.1);
+   }
+   .preview-video-box {
+   position: relative;
+   margin-bottom: 20px;
+   }
+   .preview-video-box img {
+   border-radius: 5px;
+   width: 100%;
+   }
+   .preview-text {
+   position: absolute;
+   bottom: 10px;
+   left: 10px;
+   color: white;
+   background: rgba(0,0,0,0.7);
+   padding: 5px 10px;
+   border-radius: 3px;
+   }
+   .play-btn {
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   width: 50px;
+   height: 50px;
+   background: rgba(255,255,255,0.9);
+   border-radius: 50%;
+   cursor: pointer;
+   }
+   .play-btn::after {
+   content: '';
+   position: absolute;
+   top: 50%;
+   left: 55%;
+   transform: translate(-50%, -50%);
+   border-left: 15px solid #333;
+   border-top: 10px solid transparent;
+   border-bottom: 10px solid transparent;
+   }
+   .course-sidebar-text-box {
+   padding: 20px;
+   }
+   .price {
+   font-size: 24px;
+   font-weight: bold;
+   color: #333;
+   margin-bottom: 20px;
+   }
+   .buy-btns {
+   margin-bottom: 20px;
+   }
+   .buy-btns .btn {
+   width: 100%;
+   padding: 12px;
+   font-weight: 600;
+   margin-bottom: 10px;
+   }
+   .includes {
+   border-top: 1px solid #ddd;
+   padding-top: 20px;
+   }
+   .includes-list {
+   list-style: none;
+   padding: 0;
+   margin: 15px 0 0 0;
+   }
+   .includes-list li {
+   margin-bottom: 10px;
+   color: #666;
+   }
+   .includes-list li i {
+   margin-right: 10px;
+   color: #333;
+   }
+   .lesson-item {
+   display: flex;
+   align-items: center;
+   padding: 10px;
+   border-bottom: 1px solid #eee;
+   }
+   .lesson-item i {
+   margin-right: 10px;
+   color: #666;
+   }
+   .course-metadata {
+   border-top: 1px solid #ddd;
+   padding-top: 15px;
+   }
+   .meta-item {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   margin-bottom: 10px;
+   }
+   .meta-item h5 {
+   margin: 0;
+   font-size: 14px;
+   color: #666;
+   }
+   .meta-item p {
+   margin: 0;
+   font-size: 14px;
+   }
 </style>
 {% endblock body_block %}
