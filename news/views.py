@@ -20,7 +20,7 @@ def tech_news_view(request):
 
 
 def old_tech_news_view(request):
-    articles = TechArticle.objects.order_by('-published_at')[:]
+    articles = TechArticle.objects.order_by('-published_at')[6:18]
     return render(request, 'news/old_news.html', {'articles': articles})
 
 
