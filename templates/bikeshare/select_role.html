@@ -1,60 +1,62 @@
 <!-- templates/bikeshare/select_role.html -->
 {% extends 'bikeshare/base.html' %}
 {% load static %}
-
 {% block body_block %}
-<div class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="">
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
                 <div class="">
-                    <h3 class="card-title mb-0">Select Your BikeShare Role</h3>
-                </div>
-                <div class="card-body">
-                    <form method="POST">
-                        {% csrf_token %}
-                        
-                        {% if messages %}
-                        <div class="messages mb-4">
-                            {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }}">
-                                {{ message }}
+                    <div class="">
+                        <h3 class="card-title mb-0">Select Your BikeShare Role</h3>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                            {% csrf_token %}
+                            {% if messages %}
+                                <div class="messages mb-4">
+                                    {% for message in messages %}<div class="alert alert-{{ message.tags }}">{{ message }}</div>{% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="role-selection">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input"
+                                           type="radio"
+                                           name="role"
+                                           id="customerRole"
+                                           value="Customer">
+                                    <label class="form-check-label" for="customerRole">
+                                        <h5>Customer</h5>
+                                        <p class="text-muted">Rent bikes and enjoy our bike-sharing service</p>
+                                    </label>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input"
+                                           type="radio"
+                                           name="role"
+                                           id="operatorRole"
+                                           value="Operator">
+                                    <label class="form-check-label" for="operatorRole">
+                                        <h5>Operator</h5>
+                                        <p class="text-muted">Maintain bikes and manage stations</p>
+                                    </label>
+                                </div>
+                                <div class="form-check mb-4">
+                                    <input class="form-check-input"
+                                           type="radio"
+                                           name="role"
+                                           id="managerRole"
+                                           value="Manager">
+                                    <label class="form-check-label" for="managerRole">
+                                        <h5>Manager</h5>
+                                        <p class="text-muted">Oversee operations and view analytics</p>
+                                    </label>
+                                </div>
                             </div>
-                            {% endfor %}
-                        </div>
-                        {% endif %}
-
-                        <div class="role-selection">
-                            <div class="form-check mb-3">
-                                <input class="form-check-input" type="radio" name="role" id="customerRole" value="Customer">
-                                <label class="form-check-label" for="customerRole">
-                                    <h5>Customer</h5>
-                                    <p class="text-muted">Rent bikes and enjoy our bike-sharing service</p>
-                                </label>
-                            </div>
-
-                            <div class="form-check mb-3">
-                                <input class="form-check-input" type="radio" name="role" id="operatorRole" value="Operator">
-                                <label class="form-check-label" for="operatorRole">
-                                    <h5>Operator</h5>
-                                    <p class="text-muted">Maintain bikes and manage stations</p>
-                                </label>
-                            </div>
-
-                            <div class="form-check mb-4">
-                                <input class="form-check-input" type="radio" name="role" id="managerRole" value="Manager">
-                                <label class="form-check-label" for="managerRole">
-                                    <h5>Manager</h5>
-                                    <p class="text-muted">Oversee operations and view analytics</p>
-                                </label>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary btn-lg w-100">Continue</button>
-                    </form>
+                            <button type="submit" class="btn btn-primary btn-lg w-100">Continue</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}

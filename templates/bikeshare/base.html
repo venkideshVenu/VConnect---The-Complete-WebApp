@@ -225,24 +225,26 @@
                     </div>
         
                     <div class="col-lg-4 col-md-6">
-                        <h5 class="footer-heading mb-3">For Riders</h5>
+                        <h5 class="footer-heading mb-3">Explore Services</h5>
                         <div class="row">
-                            <div class="col-6">
-                                <ul class="list-unstyled footer-links">
-                                    <li><a href="#" class="text-decoration-none mb-2 d-block">Rent a Bike</a></li>
-                                    <li><a href="#" class="text-decoration-none mb-2 d-block">Share a Bike</a></li> 
-                                    <li><a href="#" class="text-decoration-none mb-2 d-block">FAQ</a></li> 
-                                </ul>
-                            </div>
-                            <div class="col-6">
-                                <ul class="list-unstyled footer-links">
-                                    <li><a href="#" class="text-decoration-none mb-2 d-block">Pricing</a></li> 
-                                    <li><a href="#" class="text-decoration-none mb-2 d-block">Riding Tips</a></li> 
-                                    <li><a href="#" class="text-decoration-none mb-2 d-block">Safety Guidelines</a></li> 
-                                </ul>
-                            </div>
+                           <div class="col-6">
+                              <ul class="list-unstyled footer-links">
+                                 <li><a href="{% url 'jobs:index' %}" class="text-decoration-none mb-2 d-block">Job Board</a></li>
+                                 <li><a href="{% url 'learning_centre:home' %}" class="text-decoration-none mb-2 d-block">LearnHub</a></li>
+                                 <li><a href="{% url 'socialhub:home' %}" class="text-decoration-none mb-2 d-block">SocialHub</a></li>
+                                 <li><a href="{% url 'chat:chat_list' %}" class="text-decoration-none mb-2 d-block">Chat</a></li>
+                              </ul>
+                           </div>
+                           <div class="col-6">
+                              <ul class="list-unstyled footer-links">
+                                 <li><a href="{% url 'bikeshare:index' %}" class="text-decoration-none mb-2 d-block">RideShare</a></li>
+                                 <li><a href="{% url 'socialhub:home' %}" class="text-decoration-none mb-2 d-block">SocialHub</a></li>
+                                 <li><a href="{% url 'tasks:project_list' %}" class="text-decoration-none mb-2 d-block">To-do Lists</a></li>
+                                 <li><a href="{% url 'profile' %}" class="text-decoration-none mb-2 d-block">My Profile</a></li>
+                              </ul>
+                           </div>
                         </div>
-                    </div>
+                     </div>
                 </div>
             </div>
             <div class="container mt-4">

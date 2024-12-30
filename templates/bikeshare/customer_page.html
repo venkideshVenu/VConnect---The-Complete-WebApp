@@ -1,180 +1,171 @@
 {% extends 'bikeshare/base.html' %}
-
 {% block body_block %}
 <div class="container py-4">
-    <!-- User Details Card -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-0"><i class="fas fa-user me-2"></i>Your Details</h5>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Username</th>
-                            <th>Email Address</th>
-                            <th>Hires in Progress</th>
-                            <th>Wallet balance</th>
-                            <th>Amount Owed</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{ request.user.username }}</td>
-                            <td>{{ request.user.email }}</td>
-                            <td><span class="badge bg-info">{{ request.user.bikeshare_profile.hires_in_progress }}</span></td>
-                            <td><span class="badge bg-success">₹{{ request.user.bikeshare_profile.wallet_balance }}</span></td>
-                            <td><span class="badge bg-warning">₹{{ request.user.bikeshare_profile.amount_owed }}</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="text-center mt-3">
-                <a href="{% url 'bikeshare:top-up' %}" class="btn btn-success me-2">
-                    <i class="fas fa-plus-circle me-2"></i>Top Up Balance
-                </a>
-                <a href="{% url 'bikeshare:pay-balance' %}" class="btn btn-warning">
-                    <i class="fas fa-credit-card me-2"></i>Pay Balance
-                </a>
-            </div>
-        </div>
-    </div>
-
-    {% if repair_message %}
-    <div class="alert alert-info text-center" role="alert">
-        {{ repair_message }}
-    </div>
-    {% endif %}
-
-    {% if request.user.bikeshare_profile.hires_in_progress > 0 %}
-    <!-- Current Hires Card -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-success text-white">
-            <h5 class="mb-0"><i class="fas fa-bicycle me-2"></i>Your Current Hires</h5>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Bike ID</th>
-                            <th>Start Station</th>
-                            <th>Start Time</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% for order in customers_orders %}
-                        {% if not order.is_complete and order.user.pk == request.user.id %}
-                        <tr>
-                            <td>
-                                {% if not order.bike.is_faulty %}
-                                    {{ order.bike.id }}
-                                {% else %}
-                                    <span class="text-danger">{{ order.bike.id }} (Faulty)</span>
-                                {% endif %}
-                            </td>
-                            <td>{{ order.start_station }}</td>
-                            <td>{{ order.start_time }}</td>
-                            <td>
-                                <form action="{% url 'bikeshare:return_bike' order.id%}" method="post" class="d-inline">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-primary btn-sm">
-                                        <i class="fas fa-undo me-1"></i>Return Bike
-                                    </button>
-                                </form>
-                                
-                                {% if not order.bike.is_faulty %}
-                                <form action="{% url 'bikeshare:report_faulty' order.id %}" method="post" class="d-inline">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-danger btn-sm">
-                                        <i class="fas fa-exclamation-triangle me-1"></i>Report Faulty
-                                    </button>
-                                </form>
-                                {% endif %}
-                            </td>
-                        </tr>
+   <!-- User Details Card -->
+   <div class="card shadow-sm mb-4">
+      <div class="card-header bg-primary text-white">
+         <h5 class="mb-0"><i class="fas fa-user me-2"></i>Your Details</h5>
+      </div>
+      <div class="card-body">
+         <div class="table-responsive">
+            <table class="table table-hover">
+               <thead class="table-light">
+                  <tr>
+                     <th>Username</th>
+                     <th>Email Address</th>
+                     <th>Hires in Progress</th>
+                     <th>Wallet balance</th>
+                     <th>Amount Owed</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td>{{ request.user.username }}</td>
+                     <td>{{ request.user.email }}</td>
+                     <td><span class="badge bg-info">{{ request.user.bikeshare_profile.hires_in_progress }}</span></td>
+                     <td><span class="badge bg-success">₹{{ request.user.bikeshare_profile.wallet_balance }}</span></td>
+                     <td><span class="badge bg-warning">₹{{ request.user.bikeshare_profile.amount_owed }}</span></td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+         <div class="text-center mt-3">
+            <a href="{% url 'bikeshare:top-up' %}" class="btn btn-success me-2">
+            <i class="fas fa-plus-circle me-2"></i>Top Up Balance
+            </a>
+            <a href="{% url 'bikeshare:pay-balance' %}" class="btn btn-warning">
+            <i class="fas fa-credit-card me-2"></i>Pay Balance
+            </a>
+         </div>
+      </div>
+   </div>
+   {% if repair_message %}
+   <div class="alert alert-info text-center" role="alert">
+      {{ repair_message }}
+   </div>
+   {% endif %}
+   {% if request.user.bikeshare_profile.hires_in_progress > 0 %}
+   <!-- Current Hires Card -->
+   <div class="card shadow-sm mb-4">
+      <div class="card-header bg-success text-white">
+         <h5 class="mb-0"><i class="fas fa-bicycle me-2"></i>Your Current Hires</h5>
+      </div>
+      <div class="card-body">
+         <div class="table-responsive">
+            <table class="table table-striped">
+               <thead>
+                  <tr>
+                     <th>Bike ID</th>
+                     <th>Start Station</th>
+                     <th>Start Time</th>
+                     <th>Actions</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  {% for order in customers_orders %}
+                  {% if not order.is_complete and order.user.pk == request.user.id %}
+                  <tr>
+                     <td>
+                        {% if not order.bike.is_faulty %}
+                        {{ order.bike.id }}
+                        {% else %}
+                        <span class="text-danger">{{ order.bike.id }} (Faulty)</span>
                         {% endif %}
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
-    <!-- Map Card -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-info text-white">
-            <h5 class="mb-0"><i class="fas fa-map-marker-alt me-2"></i>Station Locations</h5>
-        </div>
-        <div class="card-body">
-            {% include 'bikeshare/city_map.html' %}
-        </div>
-    </div>
-
-    <!-- Rent a Bike Card -->
-    <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">
-                <i class="fas fa-bicycle me-2"></i>Rent a Bike
-                {% if request.user.amount_owed >= 30.00 %}
-                    <small class="text-warning">- Please repay your balance before renting another bike.</small>
-                {% elif request.user.hires_in_progress > 3 %}
-                    <small class="text-warning">- Please return one or more bikes before renting another.</small>
-                {% endif %}
-            </h5>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Station Name</th>
-                            <th>Available Bikes</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for station in all_stations %}
-                        <tr>
-                            <td>{{ station.station_name }}</td>
-                            <td><span class="badge bg-info">{{ station.number_of_bikes }}</span></td>
-                            <td>
-                                <form action="{% url 'bikeshare:rent_bike' station.id %}" method="post" class="d-inline">
-                                    {% csrf_token %}
-                                    <!-- Hidden input to pass user ID -->
-                                    <input type="hidden" name="user_id" value="{{ request.user.id }}">
-                                    
-                                    {% if request.user.amount_owed >= 30.00 or request.user.hires_in_progress > 3 %}
-                                        {% if station.number_of_bikes > 0 %}
-                                            <button  type="submit" class="btn btn-secondary btn-sm" disabled>
-                                                <i class="fas fa-lock me-1"></i>Rent Bike
-                                            </button>
-                                        {% else %}
-                                            <span class="text-muted">No bikes available</span>
-                                        {% endif %}
-                                    {% else %}
-                                        {% if station.number_of_bikes > 0 %}
-                                            <button type="submit" class="btn btn-success btn-sm">
-                                                <i class="fas fa-bicycle me-1"></i>Rent Bike
-                                            </button>
-                                        {% else %}
-                                            <span class="text-muted">No bikes available</span>
-                                        {% endif %}
-                                    {% endif %}
-                                </form>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                        
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+                     </td>
+                     <td>{{ order.start_station }}</td>
+                     <td>{{ order.start_time }}</td>
+                     <td>
+                        <form action="{% url 'bikeshare:return_bike' order.id%}" method="post" class="d-inline">
+                           {% csrf_token %}
+                           <button type="submit" class="btn btn-primary btn-sm">
+                           <i class="fas fa-undo me-1"></i>Return Bike
+                           </button>
+                        </form>
+                        {% if not order.bike.is_faulty %}
+                        <form action="{% url 'bikeshare:report_faulty' order.id %}" method="post" class="d-inline">
+                           {% csrf_token %}
+                           <button type="submit" class="btn btn-danger btn-sm">
+                           <i class="fas fa-exclamation-triangle me-1"></i>Report Faulty
+                           </button>
+                        </form>
+                        {% endif %}
+                     </td>
+                  </tr>
+                  {% endif %}
+                  {% endfor %}
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </div>
+   {% endif %}
+   <!-- Map Card -->
+   <div class="card shadow-sm mb-4">
+      <div class="card-header bg-info text-white">
+         <h5 class="mb-0"><i class="fas fa-map-marker-alt me-2"></i>Station Locations</h5>
+      </div>
+      <div class="card-body">
+         {% include 'bikeshare/city_map.html' %}
+      </div>
+   </div>
+   <!-- Rent a Bike Card -->
+   <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+         <h5 class="mb-0">
+            <i class="fas fa-bicycle me-2"></i>Rent a Bike
+            {% if request.user.amount_owed >= 30.00 %}
+            <small class="text-warning">- Please repay your balance before renting another bike.</small>
+            {% elif request.user.hires_in_progress > 3 %}
+            <small class="text-warning">- Please return one or more bikes before renting another.</small>
+            {% endif %}
+         </h5>
+      </div>
+      <div class="card-body">
+         <div class="table-responsive">
+            <table class="table table-hover">
+               <thead class="table-light">
+                  <tr>
+                     <th>Station Name</th>
+                     <th>Available Bikes</th>
+                     <th>Action</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  {% for station in all_stations %}
+                  <tr>
+                     <td>{{ station.station_name }}</td>
+                     <td><span class="badge bg-info">{{ station.number_of_bikes }}</span></td>
+                     <td>
+                        <form action="{% url 'bikeshare:rent_bike' station.id %}" method="post" class="d-inline">
+                           {% csrf_token %}
+                           <!-- Hidden input to pass user ID -->
+                           <input type="hidden" name="user_id" value="{{ request.user.id }}">
+                           {% if request.user.amount_owed >= 30.00 or request.user.hires_in_progress > 3 %}
+                           {% if station.number_of_bikes > 0 %}
+                           <button  type="submit" class="btn btn-secondary btn-sm" disabled>
+                           <i class="fas fa-lock me-1"></i>Rent Bike
+                           </button>
+                           {% else %}
+                           <span class="text-muted">No bikes available</span>
+                           {% endif %}
+                           {% else %}
+                           {% if station.number_of_bikes > 0 %}
+                           <button type="submit" class="btn btn-success btn-sm">
+                           <i class="fas fa-bicycle me-1"></i>Rent Bike
+                           </button>
+                           {% else %}
+                           <span class="text-muted">No bikes available</span>
+                           {% endif %}
+                           {% endif %}
+                        </form>
+                     </td>
+                  </tr>
+                  {% endfor %}
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </div>
 </div>
 {% endblock %}
 </html>

@@ -1,98 +1,93 @@
 {% extends 'bikeshare/base.html' %}
-
 {% block body_block %}
-<div class="container py-4">
-    <!-- Profit Section -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    {% if total_Profit > 0.0 %}
-                        <h3 class="card-title text-center mb-4">Station Profit Contribution</h3>
+    <div class="container py-4">
+        <!-- Profit Section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        {% if total_Profit > 0.0 %}
+                            <h3 class="card-title text-center mb-4">Station Profit Contribution</h3>
+                            <div class="text-center">
+                                <img src="data:image/png;base64, {{ station_profit }}"
+                                     alt="Profit per Station - Pie Chart : Unavailable"
+                                     class="img-fluid rounded">
+                            </div>
+                        {% else %}
+                            <div class="alert alert-warning text-center">
+                                <h4 class="mb-0">Business in Loss: ₹{{ total_Profit }}</h4>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Route Frequency Section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title text-center mb-4">Route Frequency Distribution</h3>
                         <div class="text-center">
-                            <img src="data:image/png;base64, {{ station_profit }}" 
-                                 alt="Profit per Station - Pie Chart : Unavailable"
+                            <img src="data:image/png;base64, {{ route_frequency }}"
+                                 alt="Route Frequencies - Horizontal bar graph : Unavailable"
                                  class="img-fluid rounded">
                         </div>
-                    {% else %}
-                        <div class="alert alert-warning text-center">
-                            <h4 class="mb-0">Business in Loss: ₹{{ total_Profit }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Station Bike Count Section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title text-center mb-4">Station Bike Count</h3>
+                        <div class="text-center">
+                            <img src="data:image/png;base64, {{ station_bike_count }}"
+                                 alt="Station Bike Count - Bar Graph : Unavailable"
+                                 class="img-fluid rounded">
                         </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Route Frequency Section -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h3 class="card-title text-center mb-4">Route Frequency Distribution</h3>
-                    <div class="text-center">
-                        <img src="data:image/png;base64, {{ route_frequency }}" 
-                             alt="Route Frequencies - Horizontal bar graph : Unavailable"
-                             class="img-fluid rounded">
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- Station Bike Count Section -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h3 class="card-title text-center mb-4">Station Bike Count</h3>
-                    <div class="text-center">
-                        <img src="data:image/png;base64, {{ station_bike_count }}" 
-                             alt="Station Bike Count - Bar Graph : Unavailable"
-                             class="img-fluid rounded">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Star Users Section -->
-    <div class="row">
-        <div class="col-12">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h3 class="card-title text-center mb-4">Star Users</h3>
-                    {% if star_users %}
-                        <div class="table-responsive">
-                            <table class="table table-hover table-striped">
-                                <thead class="table-primary">
-                                    <tr>
-                                        <th class="text-center" style="color: #4B0082">USER</th>
-                                        <th class="text-center" style="color: #4B0082">Number of Rides</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for user in star_users %}
+        <!-- Star Users Section -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title text-center mb-4">Star Users</h3>
+                        {% if star_users %}
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped">
+                                    <thead class="table-primary">
                                         <tr>
-                                            <td class="text-center">{{ user.user__username }}</td>
-                                            <td class="text-center">{{ user.usages }}</td>
+                                            <th class="text-center" style="color: #4B0082">USER</th>
+                                            <th class="text-center" style="color: #4B0082">Number of Rides</th>
                                         </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    {% else %}
-                        <div class="alert alert-info text-center">
-                            <h5 class="mb-0">Star Users: Unavailable</h5>
-                        </div>
-                    {% endif %}
+                                    </thead>
+                                    <tbody>
+                                        {% for user in star_users %}
+                                            <tr>
+                                                <td class="text-center">{{ user.user__username }}</td>
+                                                <td class="text-center">{{ user.usages }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-info text-center">
+                                <h5 class="mb-0">Star Users: Unavailable</h5>
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-<style>
+    <style>
     .card {
         transition: transform 0.2s;
     }
@@ -107,5 +102,5 @@
         max-width: 100%;
         height: auto;
     }
-</style>
+    </style>
 {% endblock %}

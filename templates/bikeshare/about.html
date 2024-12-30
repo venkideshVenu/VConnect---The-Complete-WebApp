@@ -1,142 +1,134 @@
 {% extends 'bikeshare/base.html' %}
-
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
 {% block body_block %}
 <div class="bs-container container py-5">
-    <h2 class="bs-heading text-center mb-4">
-        About BikeShare
-    </h2>
-    <p class="bs-text-muted text-center mb-5">
-        Welcome to BikeShare, your eco-friendly transportation solution. Discover the convenience of our bike-sharing platform!
-    </p>
-
-    <div class="bs-section">
-        <h4 class="bs-subheading">
-            Renting a Bike
-        </h4>
-        <p>Rent a bike from any of our stations at ₹15 per hour or ₹100 for a full day. Start your journey by selecting a bike from one of our conveniently located stations.</p>
-        <p class="bs-text-danger">
-            <strong>Note:</strong> You can rent up to 4 bikes at once. Clear any outstanding charges over ₹30 before renting a new bike.
-        </p>
-    </div>
-
-    <div class="bs-section">
-        <h4 class="bs-subheading">
-            Returning a Bike
-        </h4>
-        <p>When you're done, simply return the bike to any station. Your rental fee will be calculated based on your usage time.</p>
-        <p class="bs-text-danger">
-            <strong>Note:</strong> A ₹15 repair fee applies for any damaged bikes returned.
-        </p>
-    </div>
-
-    <div class="bs-section">
-        <h4 class="bs-subheading">
-            Payments
-        </h4>
-        <p>Top up your wallet with any amount up to ₹100 using your card. Rental charges are automatically deducted when you complete your ride.</p>
-        <p>Easily monitor your wallet balance and transaction history through your personalized dashboard.</p>
-    </div>
-
-    <div class="bs-section">
-        <h4 class="bs-subheading">
-            Our Locations
-        </h4>
-        <p>We have {{ locations.count }} stations across the city for your convenience. Explore our network:</p>
-        <ul class="list-group mt-3">
-            {% for location in locations %}
-                <li class="bs-list-item list-group-item">{{ location }}</li>
-            {% endfor %}
-        </ul>
-    </div>
+   <h2 class="bs-heading text-center mb-4">
+      About BikeShare
+   </h2>
+   <p class="bs-text-muted text-center mb-5">
+      Welcome to BikeShare, your eco-friendly transportation solution. Discover the convenience of our bike-sharing platform!
+   </p>
+   <div class="bs-section">
+      <h4 class="bs-subheading">
+         Renting a Bike
+      </h4>
+      <p>Rent a bike from any of our stations at ₹15 per hour or ₹100 for a full day. Start your journey by selecting a bike from one of our conveniently located stations.</p>
+      <p class="bs-text-danger">
+         <strong>Note:</strong> You can rent up to 4 bikes at once. Clear any outstanding charges over ₹30 before renting a new bike.
+      </p>
+   </div>
+   <div class="bs-section">
+      <h4 class="bs-subheading">
+         Returning a Bike
+      </h4>
+      <p>When you're done, simply return the bike to any station. Your rental fee will be calculated based on your usage time.</p>
+      <p class="bs-text-danger">
+         <strong>Note:</strong> A ₹15 repair fee applies for any damaged bikes returned.
+      </p>
+   </div>
+   <div class="bs-section">
+      <h4 class="bs-subheading">
+         Payments
+      </h4>
+      <p>Top up your wallet with any amount up to ₹100 using your card. Rental charges are automatically deducted when you complete your ride.</p>
+      <p>Easily monitor your wallet balance and transaction history through your personalized dashboard.</p>
+   </div>
+   <div class="bs-section">
+      <h4 class="bs-subheading">
+         Our Locations
+      </h4>
+      <p>We have {{ locations.count }} stations across the city for your convenience. Explore our network:</p>
+      <ul class="list-group mt-3">
+         {% for location in locations %}
+         <li class="bs-list-item list-group-item">{{ location }}</li>
+         {% endfor %}
+      </ul>
+   </div>
 </div>
-
 <style>
-    .section {
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      padding: 2rem;
-      margin-bottom: 2rem;
-      transition: transform 0.3s ease;
-    }
-    .section:hover {
-      transform: translateY(-5px);
-    }
-    h2 {
-      color: #2c3e50;
-      font-weight: 600;
-    }
-    h4 {
-      color: #34495e;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-    .material-icons {
-      margin-right: 0.5rem;
-    }
-    .text-muted {
-      color: #7f8c8d !important;
-    }
-    .list-group-item {
-      border: none;
-      background-color: #ecf0f1;
-      margin-bottom: 0.5rem;
-      border-radius: 4px;
-    }
-    .text-danger {
-      background-color: #fff5f5;
-      border-left: 4px solid #e74c3c;
-      padding: 0.5rem 1rem;
-      margin-top: 1rem;
-    }
-    .bs-container {
-    max-width: 800px;
-  }
-  .bs-section {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 2rem;
-    margin-bottom: 2rem;
-    transition: transform 0.3s ease;
-  }
-  .bs-section:hover {
-    transform: translateY(-5px);
-  }
-  .bs-heading {
-    color: #2c3e50;
-    font-weight: 600;
-  }
-  .bs-subheading {
-    color: #34495e;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
-  }
-  .bs-icon {
-    margin-right: 0.5rem;
-  }
-  .bs-text-muted {
-    color: #7f8c8d !important;
-  }
-  .bs-list-item {
-    border: none;
-    background-color: #ecf0f1;
-    margin-bottom: 0.5rem;
-    border-radius: 4px;
-  }
-  .bs-text-danger {
-    background-color: #fff5f5;
-    border-left: 4px solid #e74c3c;
-    padding: 0.5rem 1rem;
-    margin-top: 1rem;
-  }
-  </style>
+   .section {
+   background-color: #fff;
+   border-radius: 8px;
+   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+   padding: 2rem;
+   margin-bottom: 2rem;
+   transition: transform 0.3s ease;
+   }
+   .section:hover {
+   transform: translateY(-5px);
+   }
+   h2 {
+   color: #2c3e50;
+   font-weight: 600;
+   }
+   h4 {
+   color: #34495e;
+   font-weight: 600;
+   display: flex;
+   align-items: center;
+   margin-bottom: 1rem;
+   }
+   .material-icons {
+   margin-right: 0.5rem;
+   }
+   .text-muted {
+   color: #7f8c8d !important;
+   }
+   .list-group-item {
+   border: none;
+   background-color: #ecf0f1;
+   margin-bottom: 0.5rem;
+   border-radius: 4px;
+   }
+   .text-danger {
+   background-color: #fff5f5;
+   border-left: 4px solid #e74c3c;
+   padding: 0.5rem 1rem;
+   margin-top: 1rem;
+   }
+   .bs-container {
+   max-width: 800px;
+   }
+   .bs-section {
+   background-color: #fff;
+   border-radius: 8px;
+   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+   padding: 2rem;
+   margin-bottom: 2rem;
+   transition: transform 0.3s ease;
+   }
+   .bs-section:hover {
+   transform: translateY(-5px);
+   }
+   .bs-heading {
+   color: #2c3e50;
+   font-weight: 600;
+   }
+   .bs-subheading {
+   color: #34495e;
+   font-weight: 600;
+   display: flex;
+   align-items: center;
+   margin-bottom: 1rem;
+   }
+   .bs-icon {
+   margin-right: 0.5rem;
+   }
+   .bs-text-muted {
+   color: #7f8c8d !important;
+   }
+   .bs-list-item {
+   border: none;
+   background-color: #ecf0f1;
+   margin-bottom: 0.5rem;
+   border-radius: 4px;
+   }
+   .bs-text-danger {
+   background-color: #fff5f5;
+   border-left: 4px solid #e74c3c;
+   padding: 0.5rem 1rem;
+   margin-top: 1rem;
+   }
+</style>
 {% endblock %}
-

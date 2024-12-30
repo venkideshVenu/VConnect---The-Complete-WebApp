@@ -1,69 +1,65 @@
 {% extends 'bikeshare/base.html' %}
-
 {% block body_block %}
-<div class="container py-4">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-header text-white text-center" style="background-color: #ff6f2c;">
-                    <h4 class="mb-0">Move Bike</h4>
-                </div>
-                <div class="card-body">
-                    <div class="bike-details text-center mb-4">
-                        <div class="row g-3">
-                            <div class="col-sm-4">
-                                <div class="detail-item">
-                                    <span class="text-muted d-block">Bike ID</span>
-                                    <strong>{{ bike.id }}</strong>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="detail-item">
-                                    <span class="text-muted d-block">Condition</span>
-                                    <span class="badge" style="background-color: #008751;">{{ bike.condition }}</span>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="detail-item">
-                                    <span class="text-muted d-block">Current Location</span>
-                                    <strong>{{ bike.station }}</strong>
-                                </div>
-                            </div>
-                        </div>
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-header text-white text-center"
+                         style="background-color: #ff6f2c">
+                        <h4 class="mb-0">Move Bike</h4>
                     </div>
-
-                    {% if msg %}
-                        <div class="alert alert-info text-center mb-4">
-                            {{ msg }}
+                    <div class="card-body">
+                        <div class="bike-details text-center mb-4">
+                            <div class="row g-3">
+                                <div class="col-sm-4">
+                                    <div class="detail-item">
+                                        <span class="text-muted d-block">Bike ID</span>
+                                        <strong>{{ bike.id }}</strong>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="detail-item">
+                                        <span class="text-muted d-block">Condition</span>
+                                        <span class="badge" style="background-color: #008751;">{{ bike.condition }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="detail-item">
+                                        <span class="text-muted d-block">Current Location</span>
+                                        <strong>{{ bike.station }}</strong>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    {% endif %}
-
-                    <form method="post" name="movebikeform" action="{% url 'bikeshare:move_bike' bike.id %}" 
-                          enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            <label class="form-label">Station Location</label>
-                            <!-- First dropdown -->
-                            <select class="form-select mb-2" name="location_main" required>
-                                {% for field in form.visible_fields %}
-                                    <option value="{{ field }}"></option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn text-white" style="background-color: #ff6f2c;">
-                                <i class="bi bi-bicycle me-2"></i>Move Bike
-                            </button>
-                            <button type="button" class="btn btn-outline-info" 
-                                    onclick="location.href='{% url 'bikeshare:bikeshare-operator' %}'">
-                                <i class="bi bi-arrow-left me-2"></i>Return
-                            </button>
-                        </div>
-                    </form>
+                        {% if msg %}<div class="alert alert-info text-center mb-4">{{ msg }}</div>{% endif %}
+                        <form method="post"
+                              name="movebikeform"
+                              action="{% url 'bikeshare:move_bike' bike.id %}"
+                              enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label class="form-label">Station Location</label>
+                                <!-- First dropdown -->
+                                <select class="form-select mb-2" name="location_main" required>
+                                    {% for field in form.visible_fields %}<option value="{{ field }}"></option>{% endfor %}
+                                </select>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button type="submit"
+                                        class="btn text-white"
+                                        style="background-color: #ff6f2c">
+                                    <i class="bi bi-bicycle me-2"></i>Move Bike
+                                </button>
+                                <button type="button"
+                                        class="btn btn-outline-info"
+                                        onclick="location.href='{% url 'bikeshare:bikeshare-operator' %}'">
+                                    <i class="bi bi-arrow-left me-2"></i>Return
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
