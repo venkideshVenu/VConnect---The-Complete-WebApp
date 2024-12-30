@@ -1,145 +1,153 @@
 {% extends "socialhub/base.html" %}
 {% load static %}
-
 {% block body_block %}
-<div class="container py-4">
-  <div class="card shadow-sm">
-    <div class="card-header bg-white">
-      <div class="d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">
-          <i class="fas fa-comments me-2"></i>Your Chats
-        </h5>
-        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#createGroupModal">
-          <i class="fas fa-users me-2"></i>Create Group
-        </button>
-      </div>
-    </div>
-
-    <div class="card-body p-0">
-      <div class="list-group list-group-flush">
-        {% for chat_room in chat_rooms %}
-          {% if chat_room.is_group_chat %}
-            <a href="{% url 'chat:group_chat' chat_room.room_name %}" 
-               class="list-group-item list-group-item-action">
-              <div class="d-flex align-items-center">
-                <div class="position-relative">
-                  <img src="{% static 'socialhub/img/chat.png' %}" 
-                       class="rounded-circle me-3"
-                       alt="Group" 
-                       style="width: 48px; height: 48px; object-fit: cover;">
-                  <span class="position-absolute bottom-0 end-0 p-1 bg-success border border-light rounded-circle">
-                    <span class="visually-hidden">Group</span>
-                  </span>
+    <div class="container py-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="fas fa-comments me-2"></i>Your Chats
+                    </h5>
+                    <button class="btn btn-primary btn-sm"
+                            data-toggle="modal"
+                            data-target="#createGroupModal">
+                        <i class="fas fa-users me-2"></i>Create Group
+                    </button>
                 </div>
-                <div class="flex-grow-1">
-                  <h6 class="mb-1">{{ chat_room.group_name }}</h6>
-                  <small class="text-muted">
-                    <i class="fas fa-users me-1"></i>
-                    {{ chat_room.participants.count }} members
-                  </small>
-                </div>
-              </div>
-            </a>
-          {% else %}
-            {% for participant in chat_room.participants.all %}
-              {% if participant.username != request.user.username %}
-                <a href="{% url 'chat:chat' participant.username %}" 
-                   class="list-group-item list-group-item-action">
-                  <div class="d-flex align-items-center">
-                    <div class="position-relative">
-                      <img src="{{ participant.profile_picture.url }}" 
-                           class="rounded-circle me-3"
-                           alt="Profile" 
-                           style="width: 48px; height: 48px; object-fit: cover;">
-                      <span class="position-absolute bottom-0 end-0 p-1 bg-success border border-light rounded-circle">
-                        <span class="visually-hidden">Online</span>
-                      </span>
-                    </div>
-                    <div>
-                      <h6 class="mb-1">{{ participant.username }}</h6>
-                      <small class="text-muted">Click to chat</small>
-                    </div>
-                  </div>
-                </a>
-              {% endif %}
-            {% endfor %}
-          {% endif %}
-        {% empty %}
-          <div class="text-center py-5">
-            <i class="fas fa-comments fa-3x text-muted mb-3"></i>
-            <p class="text-muted">No chats yet. Start a conversation!</p>
-          </div>
-        {% endfor %}
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Create Group Modal -->
-<div class="modal fade" id="createGroupModal" tabindex="-1" role="dialog" aria-labelledby="createGroupModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="createGroupModalLabel">
-          <i class="fas fa-users me-2"></i>Create New Group
-        </h5>
-        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-      </div>
-      
-      <div class="modal-body">
-        <form id="createGroupForm" method="post" action="">
-          {% csrf_token %}
-          
-          <div class="mb-3">
-            <label for="groupName" class="form-label">Group Name</label>
-            <div class="input-group">
-              <span class="input-group-text">
-                <i class="fas fa-users"></i>
-              </span>
-              <input type="text" 
-                     class="form-control" 
-                     id="groupName" 
-                     name="group_name" 
-                     placeholder="Enter group name"
-                     required>
             </div>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Select Participants</label>
-            <div class="participant-list" style="max-height: 200px; overflow-y: auto;">
-              {% for participant in all_participants %}
-                <div class="form-check d-flex align-items-center py-2 border-bottom">
-                  <input type="checkbox" 
-                         class="form-check-input me-3" 
-                         id="{{ participant.username }}" 
-                         name="participants" 
-                         value="{{ participant.username }}">
-                  <label class="form-check-label d-flex align-items-center" 
-                         for="{{ participant.username }}">
-                    <img src="{{ participant.profile_picture.url }}" 
-                         class="rounded-circle me-2"
-                         alt="Profile" 
-                         style="width: 32px; height: 32px; object-fit: cover;">
-                    {{ participant.username }}
-                  </label>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    {% for chat_room in chat_rooms %}
+                        {% if chat_room.is_group_chat %}
+                            <a href="{% url 'chat:group_chat' chat_room.room_name %}"
+                               class="list-group-item list-group-item-action">
+                                <div class="d-flex align-items-center">
+                                    <div class="position-relative">
+                                        <img src="{% static 'socialhub/img/chat.png' %}"
+                                             class="rounded-circle me-3"
+                                             alt="Group"
+                                             style="width: 48px;
+                                                    height: 48px;
+                                                    object-fit: cover">
+                                        <span class="position-absolute bottom-0 end-0 p-1 bg-success border border-light rounded-circle">
+                                            <span class="visually-hidden">Group</span>
+                                        </span>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-1">{{ chat_room.group_name }}</h6>
+                                        <small class="text-muted">
+                                            <i class="fas fa-users me-1"></i>
+                                            {{ chat_room.participants.count }} members
+                                        </small>
+                                    </div>
+                                </div>
+                            </a>
+                        {% else %}
+                            {% for participant in chat_room.participants.all %}
+                                {% if participant.username != request.user.username %}
+                                    <a href="{% url 'chat:chat' participant.username %}"
+                                       class="list-group-item list-group-item-action">
+                                        <div class="d-flex align-items-center">
+                                            <div class="position-relative">
+                                                <img src="{{ participant.profile_picture.url }}"
+                                                     class="rounded-circle me-3"
+                                                     alt="Profile"
+                                                     style="width: 48px;
+                                                            height: 48px;
+                                                            object-fit: cover">
+                                                <span class="position-absolute bottom-0 end-0 p-1 bg-success border border-light rounded-circle">
+                                                    <span class="visually-hidden">Online</span>
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-1">{{ participant.username }}</h6>
+                                                <small class="text-muted">Click to chat</small>
+                                            </div>
+                                        </div>
+                                    </a>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% empty %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-comments fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">No chats yet. Start a conversation!</p>
+                        </div>
+                    {% endfor %}
                 </div>
-              {% endfor %}
             </div>
-          </div>
-
-          <div class="d-grid">
-            <button type="submit" class="btn btn-primary">
-              <i class="fas fa-plus-circle me-2"></i>Create Group
-            </button>
-          </div>
-        </form>
-      </div>
+        </div>
     </div>
-  </div>
-</div>
-
-<style>
+    <!-- Create Group Modal -->
+    <div class="modal fade"
+         id="createGroupModal"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="createGroupModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createGroupModalLabel">
+                        <i class="fas fa-users me-2"></i>Create New Group
+                    </h5>
+                    <button type="button"
+                            class="btn-close"
+                            data-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="createGroupForm" method="post" action="">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="groupName" class="form-label">Group Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-users"></i>
+                                </span>
+                                <input type="text"
+                                       class="form-control"
+                                       id="groupName"
+                                       name="group_name"
+                                       placeholder="Enter group name"
+                                       required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Select Participants</label>
+                            <div class="participant-list" style="max-height: 200px; overflow-y: auto;">
+                                {% for participant in all_participants %}
+                                    <div class="form-check d-flex align-items-center py-2 border-bottom">
+                                        <input type="checkbox"
+                                               class="form-check-input me-3"
+                                               id="{{ participant.username }}"
+                                               name="participants"
+                                               value="{{ participant.username }}">
+                                        <label class="form-check-label d-flex align-items-center"
+                                               for="{{ participant.username }}">
+                                            <img src="{{ participant.profile_picture.url }}"
+                                                 class="rounded-circle me-2"
+                                                 alt="Profile"
+                                                 style="width: 32px;
+                                                        height: 32px;
+                                                        object-fit: cover">
+                                            {{ participant.username }}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus-circle me-2"></i>Create Group
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
 .list-group-item-action:hover {
   background-color: rgba(0, 0, 0, 0.02);
 }
@@ -166,5 +174,5 @@
   padding: 0.5rem;
   margin: -0.5rem -0.5rem -0.5rem auto;
 }
-</style>
+    </style>
 {% endblock %}

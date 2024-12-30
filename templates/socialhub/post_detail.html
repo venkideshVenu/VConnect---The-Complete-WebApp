@@ -1,8 +1,7 @@
-{% extends "socialhub/base.html" %} 
+{% extends "socialhub/base.html" %}
 {% load crispy_forms_tags %}
 {% block body_block %}
-
-<style>
+    <style>
 .post-detail-container {
     max-width: 800px;
     margin: 2rem auto;
@@ -215,176 +214,279 @@
     background: #e9ecef;
     text-decoration: none;
 }
-</style>
-
-<div class="post-detail-container">
-    <div class="post-header">
-        <div class="post-meta">
-            <div class="author-info">
-                <a href="{% url 'socialhub:profile' post.author.username %}" class="link-style-none">
-                    <img class="comment-author-image" src="{{ post.author.profile_picture.url}}" alt="{{ post.author }}">
-                </a>
-                <div>
-                    <a href="{% url 'socialhub:profile' post.author.username %}" class="link-style-none">
-                        <span class="comment-author">{{ post.author }}</span>
+    </style>
+    <div class="post-detail-container">
+        <div class="post-header">
+            <div class="post-meta">
+                <div class="author-info">
+                    <a href="{% url 'socialhub:profile' post.author.username %}"
+                       class="link-style-none">
+                        <img class="comment-author-image"
+                             src="{{ post.author.profile_picture.url }}"
+                             alt="{{ post.author }}">
                     </a>
-                    <div class="post-date">{{ post.date_posted|date:"F d, Y" }}</div>
+                    <div>
+                        <a href="{% url 'socialhub:profile' post.author.username %}"
+                           class="link-style-none">
+                            <span class="comment-author">{{ post.author }}</span>
+                        </a>
+                        <div class="post-date">{{ post.date_posted|date:"F d, Y" }}</div>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="post-actions">
-                {% if post.author == user %}
-                    <a class="btn btn-outline-secondary btn-sm" href="{% url 'socialhub:post-update' post.id %}">Update</a>
-                    <a class="btn btn-outline-danger btn-sm" href="{% url 'socialhub:post-delete' post.id %}">Delete</a>
-                {% elif user.is_authenticated %}
-                    <a data-target="#ReportModalCenter" data-toggle="modal" class="report-dots">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="1"></circle>
-                            <circle cx="19" cy="12" r="1"></circle>
-                            <circle cx="5" cy="12" r="1"></circle>
-                        </svg>
-                    </a>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-
-    <div class="post-content-container">
-        <h1 class="post-title">{{ post.title }}</h1>
-        
-        <div class="post-image-container">
-            <img class="post-image" src="{{post.image.url}}" alt="{{ post.title }}">
-        </div>
-        
-        <div class="post-text">{{ post.content }}</div>
-    </div>
-
-    <div class="engagement-section">
-        <button class="like-button" name="{{post.id}}" id="like{{post.id}}">
-            <span id="like-count">{{post.likes.count}}</span>
-            <span id="like-count-2" style="display: none;"></span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
-            </svg>
-            <span>Likes</span>
-        </button>
-
-        <button class="share-button" data-target="#ShareModalCenter" data-toggle="modal">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="18" cy="5" r="3"></circle>
-                <circle cx="6" cy="12" r="3"></circle>
-                <circle cx="18" cy="19" r="3"></circle>
-                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-            </svg>
-            <span>Share</span>
-        </button>
-    </div>
-
-    <div class="comments-section">
-        <div class="comments-header">{{comments.count}} Comments</div>
-        
-        {% if user.is_authenticated %}
-        <div class="comment-form">
-            <form method="POST">
-                {% csrf_token %}
-                {{form|crispy}}
-                <button type="submit" class="btn btn-primary">Post Comment</button>
-            </form>
-        </div>
-        {% endif %}
-
-        {% for comment in comments %}
-        <div class="comment">
-            <a href="{% url 'socialhub:profile' comment.author.username %}" class="link-style-none">
-                <img class="comment-author-image" src="{{comment.author.profile.image.url}}" alt="{{ comment.author }}">
-            </a>
-            <div class="comment-content">
-                <div>
-                    <span class="comment-author">{{ comment.author }}</span>
-                    <span class="comment-date">{{comment.date_posted}}</span>
-                </div>
-                <div class="comment-text">{{ comment.comment }}</div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-</div>
-
-<!-- Report Modal -->
-<div class="modal fade" id="ReportModalCenter" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Report Post</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="{% url 'socialhub:report-user' %}" method="POST" id="report-form" name="{{post.id}}">
-                    {% csrf_token %}
-                    {{report_form|crispy}}
-                    <button type="submit" class="btn btn-primary">Report</button>
-                </form>
-                <p id="report-message" style="display: none;">Your response has been reported.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Share Modal -->
-<div class="modal fade" id="ShareModalCenter" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Share</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="share-links">
-                    <a href="{{post.twitter_share_url}}" target="_blank" class="share-link">
-                        Share on Twitter
-                    </a>
-                    <a href="{{post.facebook_share_url}}" target="_blank" class="share-link">
-                        Share on Facebook
-                    </a>
-                    <a href="{{post.whatsapp_share_url}}" target="_blank" class="share-link">
-                        Share on WhatsApp
-                    </a>
+                <div class="post-actions">
+                    {% if post.author == user %}
+                        <a class="btn btn-outline-secondary btn-sm"
+                           href="{% url 'socialhub:post-update' post.id %}">Update</a>
+                        <a class="btn btn-outline-danger btn-sm"
+                           href="{% url 'socialhub:post-delete' post.id %}">Delete</a>
+                    {% elif user.is_authenticated %}
+                        <a data-target="#ReportModalCenter"
+                           data-toggle="modal"
+                           class="report-dots">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 width="24"
+                                 height="24"
+                                 viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="2"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="1"></circle>
+                                <circle cx="19" cy="12" r="1"></circle>
+                                <circle cx="5" cy="12" r="1"></circle>
+                            </svg>
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
+        <div class="post-content-container">
+            <h1 class="post-title">{{ post.title }}</h1>
+            <div class="post-image-container">
+                <img class="post-image" src="{{ post.image.url }}" alt="{{ post.title }}">
+            </div>
+            <div class="post-text">{{ post.content }}</div>
+        </div>
+        <div class="engagement-section">
+            <button class="like-button" name="{{ post.id }}" id="like{{ post.id }}">
+                <span id="like-count">{{ post.likes.count }}</span>
+                <span id="like-count-2" style="display: none;"></span>
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     width="24"
+                     height="24"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+                    <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3">
+                    </path>
+                </svg>
+                <span>Likes</span>
+            </button>
+            <button class="share-button"
+                    data-target="#ShareModalCenter"
+                    data-toggle="modal">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     width="24"
+                     height="24"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+                    <circle cx="18" cy="5" r="3"></circle>
+                    <circle cx="6" cy="12" r="3"></circle>
+                    <circle cx="18" cy="19" r="3"></circle>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                </svg>
+                <span>Share</span>
+            </button>
+        </div>
+        <div class="comments-section">
+            <div class="comments-header">{{ comments.count }} Comments</div>
+            {% if user.is_authenticated %}
+                <div class="comment-form">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <button type="submit" class="btn btn-primary">Post Comment</button>
+                    </form>
+                </div>
+            {% endif %}
+            {% for comment in comments %}
+                <div class="comment">
+                    <a href="{% url 'socialhub:profile' comment.author.username %}"
+                       class="link-style-none">
+                        <img class="comment-author-image"
+                             src="{{ comment.author.profile_picture.url }}"
+                             alt="{{ comment.author }}">
+                    </a>
+                    <div class="comment-content">
+                        <div>
+                            <span class="comment-author">{{ comment.author }}</span>
+                            <span class="comment-date">{{ comment.date_posted }}</span>
+                        </div>
+                        <div class="comment-text">{{ comment.comment }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
-</div>
-
+    <!-- Report Modal -->
+    <div class="modal fade"
+         id="ReportModalCenter"
+         tabindex="-1"
+         role="dialog"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Report Post</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'socialhub:report-user' %}"
+                          method="POST"
+                          id="report-form"
+                          name="{{ post.id }}">
+                        {% csrf_token %}
+                        {{ report_form|crispy }}
+                        <button type="submit" class="btn btn-primary">Report</button>
+                    </form>
+                    <p id="report-message" style="display: none;">Your response has been reported.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Share Modal -->
+    <div class="modal fade"
+         id="ShareModalCenter"
+         tabindex="-1"
+         role="dialog"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Share</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="share-links">
+                        <a href="{{ post.twitter_share_url }}"
+                           target="_blank"
+                           class="share-link">Share on Twitter</a>
+                        <a href="{{ post.facebook_share_url }}"
+                           target="_blank"
+                           class="share-link">Share on Facebook</a>
+                        <a href="{{ post.whatsapp_share_url }}"
+                           target="_blank"
+                           class="share-link">Share on WhatsApp</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock body_block %}
-
 {% block script %}
-<script>
-$(document).ready(function() {
-    $('#report-form').on('submit', function(event) {
-        event.preventDefault();
-        $.ajax({
-            url: "{% url 'socialhub:report-user' %}",
-            type: "POST",
-            data: {
-                'reason': $('#id_reason').val(),
-                'pk': $(this).attr('name'),
-                'csrfmiddlewaretoken': '{{ csrf_token }}'
-            },
-            success: function(response) {
-                $('#report-form').hide();
-                $('#report-message').show();
-            },
-            error: function(rs, e) {
-                $('#report-form').hide();
-                $('#report-message').show();
-            },
-        });
+    {% if user in post.likes.all %}
+        <script>
+    $(document).ready(function () {
+      $('#unliked').hide()
+    });
+        </script>
+    {% else %}
+        <script type="text/javascript">
+    $(document).ready(function () {
+      $('#liked').hide()
+    });
+        </script>
+    {% endif %}
+    <script>
+$(document).ready(function () {
+$('.like').click(function(event){
+      event.preventDefault();
+      $.ajax({
+               type: "POST",
+               url: "{% url 'socialhub:like' %}",
+               data: {'pk': $(this).attr('name'), 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+               dataType: "json",
+               success: function(response) {
+                      if (response.like) {
+                        $('#liked').show();
+                        $('#unliked').hide();
+                        $('#like-count').text(response.likes_count);
+
+                      } else {
+                        $('#liked').hide();
+                        $('#unliked').show();
+                        $('#like-count').text(response.likes_count);
+                      }
+                },
+
+                error: function(rs, e) {
+                       alert('Poor network try again or refresh the page.');
+
+
+                }
+          }); 
     });
 });
-</script>
+    </script>
+    <script type="text/javascript">
+$(document).ready(function () {
+
+$('#report-form').on('submit',function(event){
+
+    event.preventDefault();
+    $.ajax({
+      url: "{% url 'socialhub:report-user' %}",
+      type: "POST",
+      data: {'reason':$('#id_reason').val(),'pk': $(this).attr('name'),'csrfmiddlewaretoken': '{{ csrf_token }}'},
+      success: function(response) {
+            
+              $('#report-form').hide();
+              $('#report-message').show();
+
+          },
+      error: function(rs, e) {
+            $('#report-form').hide();
+            $('#report-message').show();
+          },
+    })
+    
+});
+
+
+});
+  
+    </script>
+    <script type="text/javascript">
+  $(document).ready(function(){
+    $(".article-content").each(function(data){
+      var UserReg = /(^|\s)@([\w\d-]+)/g
+      var NewText = $(this).html().match(UserReg, "$1<a href='/$2/'>@$2</a>")
+      var NewText = $(this).html().replace(UserReg, "$1<a href='/$2/'>@$2</a>")
+      $(this).html(NewText)
+    })
+  })
+    </script>
+    <script type="text/javascript">
+  $(document).ready(function(){
+    $(".article-content").each(function(data){
+      var LinkReg = /(https?:\/\/[^\s]+)/g;
+      var LinkText = $(this).html().match(LinkReg)
+      var LinkText = $(this).html().replace(LinkReg, "<a href="+LinkText+">"+LinkText+"</a>")
+      $(this).html(LinkText)
+    })
+  })
+    </script>
 {% endblock %}

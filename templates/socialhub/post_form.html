@@ -1,82 +1,207 @@
 {% extends "socialhub/base.html" %}
 {% load crispy_forms_tags %}
- {% block title %}
-   <title>Add post * @{{request.user.username}} -  nccbuddy.com</title> 
- {% endblock %}
-{% block content %}
 
+{% block title %}
+<title>Add post * @{{request.user.username}} - nccbuddy.com</title>
+{% endblock %}
+
+{% block body_block %}
+<div class="post-create-container">
+   <div class="content-section">
+       <form action="{% url 'socialhub:post-create' %}" method="POST" id="post-form" class="post-form">
+           {% csrf_token %}
+           <fieldset class="form-group">
+               <legend class="form-title">Create New Post</legend>
+               {{form | crispy}}
+           </fieldset>
+           <div class="form-actions">
+               <button class="btn-post" type="submit" id="form-submit">Post</button>
+           </div>
+       </form>
+
+       <div class="loading-bar">
+           <div class="progress">
+               <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+           </div>
+           <div class="quote-container">
+               <blockquote>
+                   <p>"If death strikes before I prove my blood, I swear I'll kill Death."</p>
+                   <footer>-Capt Manoj Kumar Pandey PVC 1/11 Gurkha Rifles</footer>
+               </blockquote>
+           </div>
+       </div>
+   </div>
+</div>
+
+<style>
+.post-create-container {
+   max-width: 800px;
+   margin: 2rem auto;
+   padding: 0 1rem;
+}
+
+.content-section {
+   background: #fff;
+   border-radius: 8px;
+   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+   padding: 2rem;
+}
+
+.form-title {
+   font-size: 1.5rem;
+   font-weight: 600;
+   color: #2c3e50;
+   padding-bottom: 1rem;
+   border-bottom: 2px solid #eee;
+   margin-bottom: 2rem;
+}
+
+.post-form {
+   margin-bottom: 2rem;
+}
+
+.form-actions {
+   display: flex;
+   justify-content: flex-end;
+   margin-top: 2rem;
+}
+
+.btn-post {
+   background-color: #3498db;
+   color: white;
+   border: none;
+   padding: 0.75rem 2rem;
+   border-radius: 4px;
+   font-weight: 500;
+   cursor: pointer;
+   transition: background-color 0.3s ease;
+}
+
+.btn-post:hover {
+   background-color: #2980b9;
+}
+
+.loading-bar {
+   display: none;
+}
+
+.progress {
+   height: 0.75rem;
+   background: #eee;
+   border-radius: 1rem;
+   overflow: hidden;
+   margin-bottom: 2rem;
+}
+
+.progress-bar {
+   background: linear-gradient(90deg, #2ecc71, #27ae60);
+   height: 100%;
+   border-radius: 1rem;
+   transition: width 0.3s ease;
+   color: white;
+   text-align: center;
+   font-size: 0.75rem;
+   line-height: 0.75rem;
+}
+
+.quote-container {
+   margin-top: 3rem;
+   padding: 1.5rem;
+   background: #f8f9fa;
+   border-left: 4px solid #3498db;
+   border-radius: 4px;
+}
+
+blockquote {
+   margin: 0;
+}
+
+blockquote p {
+   font-style: italic;
+   color: #34495e;
+   margin-bottom: 0.5rem;
+}
+
+blockquote footer {
+   color: #7f8c8d;
+   font-size: 0.9rem;
+   text-align: right;
+}
+
+.post-img-update {
+   max-width: 100%;
+   height: auto;
+   border-radius: 4px;
+   margin: 1rem 0;
+}
+
+@media (max-width: 768px) {
+   .content-section {
+       padding: 1rem;
+   }
+   
+   .btn-post {
+       width: 100%;
+   }
+}
 </style>
-    <div class="content-section">
-        <form action="{% url 'socialhub:post-create' %}" method="POST" id="post-form">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Add Post</legend>
-                {{form | crispy}}
-            </fieldset>
-            <div class="form-group" style="display: flex;justify-content: flex-end;">
-                <button class="btn btn-info btn-sm" type="submit" id="form-submit" style="padding: 5px 25px">Post</button>
-            </div>
-        </form>
-        <div class="loading-bar" style="display: none;">
-            <div class="progress">
-                <div id="progress-bar" class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" aria-valuenow="0"aria-valuemin="0" aria-valuemax="100" style="width: 0%">0%</div>
-            </div>
-             <div><br><br>
-                <p>"If death strikes before I prove my blood, I swear I’ll kill Death."</p>
-                <p style="text-align: right;">-Capt Manoj Kumar Pandey PVC 1/11 Gurkha Rifles</p>
-            </div>
-        </div>
-           
-    </div>
-{% endblock content %}
+{% endblock %}
 
 {% block script %}
 <script>
-    $('#post-form').on('submit', function(event){
-        event.preventDefault();
-        $form = $(this)
-        var formData = new FormData(this);
-        $.ajax({
-            xhr : function(){   
-                var xhr = new window.XMLHttpRequest();
-                xhr.upload.addEventListener('progress',function(event){
-                    if (event.lengthComputable){
-
-                        var percent = Math.round((event.loaded/event.total)*100);
-                        $('.loading-bar').show();
-                        $('#post-form').hide();
-                        $('#progress-bar').attr('aria-valuenow',percent).css('width',percent+'%').text(percent+'%')
-                    }
-                });
-                return xhr;
-            },
-            url : "{% url 'socialhub:post-create' %}", 
-            type : "POST", 
-            data: formData,
-            processData: false,
-            contentType: false,
-            success : function(json) {
-              window.location.href=(json.url);
-            },
-
-            error : function(xhr,errmsg,err) {
-            }
+    $(document).ready(function() {
+        $('#post-form').on('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            
+            $.ajax({
+                xhr: function() {
+                    const xhr = new window.XMLHttpRequest();
+                    xhr.upload.addEventListener('progress', function(event) {
+                        if (event.lengthComputable) {
+                            const percent = Math.round((event.loaded/event.total) * 100);
+                            $('.loading-bar').removeClass('d-none');
+                            $('#post-form').addClass('d-none');
+                            $('#progress-bar').attr('aria-valuenow', percent)
+                                            .css('width', percent + '%')
+                                            .text(percent + '%');
+                        }
+                    });
+                    return xhr;
+                },
+                url: "{% url 'socialhub:post-create' %}",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    window.location.href = response.url;
+                },
+                error: function(xhr) {
+                    $('.loading-bar').addClass('d-none');
+                    $('#post-form').removeClass('d-none');
+                    $('#error-message').removeClass('d-none')
+                        .text(xhr.responseJSON?.error || 'An error occurred. Please try again.');
+                }
+            });
         });
+    
+        // Image preview setup
+        const setupImagePreview = () => {
+            const imageDiv = $('#div_id_image').children('div').addClass('currentPhoto');
+            imageDiv.children('a').hide();
+            imageDiv.contents().filter((_, el) => el.nodeType === Node.TEXT_NODE).remove();
+            
+            {% if post.image_thumbnail_detail %}
+            const img = $('<img>', {
+                src: '{{ post.image_thumbnail_detail.url }}',
+                class: 'post-img-update'
+            });
+            imageDiv.prepend('<br>Change Image').prepend(img);
+            {% endif %}
+        };
+    
+        setupImagePreview();
     });
-   
-</script>
-<script type="text/javascript">
-    $(document).ready(function(){
-        $('#div_id_image').children('div').addClass('currentPhoto');
-        $('.currentPhoto').children('a').hide();
-        let isTextNode = (_, el) => el.nodeType === Node.TEXT_NODE;
-        $('.currentPhoto').contents().filter(isTextNode).remove();
-        var img = document.createElement("IMG");
-        img.src = '{{ post.image_thumbnail_detail.url }}';
-        img.setAttribute('class', 'post-img-update');
-        $('.currentPhoto').prepend('<br>Change Image'); 
-        $('.currentPhoto').prepend(img);
-    });
-</script>
-
+    </script>
 {% endblock %}
