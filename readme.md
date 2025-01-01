@@ -195,7 +195,7 @@ Git
 ### 5.2 Installation Steps
 1. Clone the repository
 ```bash
-git clone <repository-url>
+git clone https://github.com/venkideshVenu/Seagro---The-Complete-WebApp.git
 cd seagro
 ```
 
