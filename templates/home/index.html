@@ -190,7 +190,11 @@
                   <div class="service-content-inner">
                      <h4 class="mb-4">Live Chat</h4>
                      <p class="mb-4">Real-time communication with your connections.</p>
-                     <a class="btn btn-primary rounded-pill py-2 px-4" href="{% url 'chat:chat_list' %}">Start Chat</a>
+                     {% if user.id is none %}
+                        <a class="btn btn-primary rounded-pill py-2 px-4" href="{% url 'login' %}">Start Chat</a>
+                     {% else %}
+                        <a class="btn btn-primary rounded-pill py-2 px-4" href="{% url 'chat:chat_list' %}">Start Chat</a>
+                     {% endif %}
                   </div>
                </div>
             </div>

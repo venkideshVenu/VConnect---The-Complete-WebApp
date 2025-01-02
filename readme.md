@@ -1,4 +1,4 @@
-# SeaGro Platform Documentation
+# SeaGro - The Complete WebApp
 
 ## Table of Contents
 1. Introduction
@@ -7,7 +7,7 @@
 4. Application Architecture 
 5. Installation and Setup
 6. Security Features
-
+---
 ## 1. Introduction
 
 SeaGro is a comprehensive full-stack web platform that integrates multiple services including job searching, learning management, bike sharing, social networking, and task management. The platform is built using Django framework with a modular architecture consisting of twelve distinct applications.
@@ -19,7 +19,7 @@ This Website is built as part of a Competition called *Build a Website Challenge
 - Ensure secure user authentication and data management
 - Enable real-time communication between users
 - Facilitate community building and content sharing
-
+---
 ## 2. System Overview
 
 ### 2.1 Core Features
@@ -39,7 +39,7 @@ This Website is built as part of a Competition called *Build a Website Challenge
 - Course Instructors
 - Bike Share Operators
 - System Administrators
-
+---
 ## 3. Technology Stack
 
 ### 3.1 Backend
@@ -58,7 +58,7 @@ This Website is built as part of a Competition called *Build a Website Challenge
 - Version Control: Git
 - Cloud Platform: AWS/Azure
 - IDE: VS Code
-
+---
 ## 4. Application Architecture
 
 ### 4.1 Django Apps Structure and Class Diagrams
@@ -181,7 +181,7 @@ Features:
 
 ![My Image](./diagrams/chat/models.png)
 
-
+---
 ## 5. Installation and Setup
 
 ### 5.1 Prerequisites
@@ -231,7 +231,7 @@ python manage.py createsuperuser
 ```bash
 python manage.py runserver
 ```
-
+---
 
 ## 6. Security Features
 
@@ -251,3 +251,16 @@ python manage.py runserver
 - SQL injection prevention
 - XSS protection
 - Secure file uploads
+
+---
+## 7. Test Users
+
+```
+username : john_doe 
+password : password123
+
+username : jane_smith 
+password : password123
+```
+
+---
