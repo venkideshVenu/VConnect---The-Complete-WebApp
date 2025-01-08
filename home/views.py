@@ -11,7 +11,7 @@ def get_home_page(request):
     cached_articles = cache.get('tech_news_articles')
     
     if not cached_articles:
-        NewsAPIService.fetch_tech_news(max_articles=3)
+        NewsAPIService.fetch_tech_news(max_articles=6)
 
         articles = TechArticle.objects.order_by('-published_at')[:3]
         cache.set('tech_news_articles', articles, 3600)

@@ -1,6 +1,7 @@
 # SeaGro - The Complete WebApp
 
 ## Table of Contents
+0. Project WorkFlow
 1. Introduction
 2. System Overview
 3. Technology Stack
@@ -8,6 +9,128 @@
 5. Installation and Setup
 6. Security Features
 ---
+
+##  SeaGro Platform - Basic Workflow
+
+## Test Users
+To explore the features of the platform, you can log in with the following test credentials:
+
+- **Username:** jane_smith  
+  **Password:** password123
+
+- **Username:** john_doe  
+  **Password:** password123
+
+---
+
+## Workflow Overview
+
+### **User Authentication**
+- Users can log in using their credentials or register with the required fields.  
+- After registration, users can access basic features such as:
+  - **SocialHub**
+  - **Tasks**
+  - **LearnHub**
+
+> Note: The **News App** does not require user authentication and can be accessed publicly.
+
+---
+
+### **Homepage**
+After successfully logging in, users are redirected to the homepage, which provides an overview of all services offered by the platform.  
+
+#### Homepage Features:
+- **Home Landing Page**  
+  Highlights the key features and services available on SeaGro.
+- **About Page**  
+  Provides detailed information about the platform.
+- **Contact Page**  
+  Allows users to get in touch with the SeaGro team.
+- **Navigation Bar with Dropdown Profile**  
+  Users can access their profile and manage additional settings.
+
+---
+
+### **Accessing Advanced Features**
+To access services like **CareerConnect** and **BikeShare**, users are required to fill in additional profile fields.
+
+---
+
+## Detailed Features
+
+### **News App**
+- Displays the latest tech news.
+- Provides access to archived news for users interested in older updates.  
+> No login required for this feature.
+
+---
+
+### **RideShare App**
+This app provides bike-sharing and rental services.
+
+#### User Roles:
+1. **Customer**  
+   - View, rent, and return bikes from various locations.
+2. **Operator**  
+   - Manage bike inventory and maintenance.
+3. **Manager**  
+   - Access statistics and analytics related to the bike-sharing business.
+
+Users are prompted to select their role upon accessing the app.
+
+---
+
+### **CareerConnect App**
+This app facilitates job-related services.
+
+#### User Roles:
+1. **Employee**  
+   - View and apply for job positions.
+2. **Employer**  
+   - Post job listings and manage applications.
+
+Users must select their role when redirected to the CareerConnect homepage.
+
+---
+
+### **LearnHub Platform**
+- Offers a variety of courses in different categories.
+- Users can:
+  - View and add courses to their cart.
+  - Check out and enroll in courses.
+  - Access their enrolled courses through the navigation dropdown.
+  - Progress through lessons in the enrolled courses.
+
+---
+
+### **SocialHub Platform**
+This is the community network feature of SeaGro.
+
+#### Key Features:
+- **Posting**  
+  Users can create posts, including multimedia like photos.
+- **Interactions**  
+  Followers can view, like, and comment on posts.
+- **Networking**  
+  Users can follow others and view their profiles.
+- **Messaging**  
+  Users can send messages and receive notifications for interactions.
+- **Profile Section**  
+  Each user has a detailed profile displaying their followers and posts.
+- **Notifications**  
+  Notifications are accessible from the SocialHub navigation bar.
+
+---
+
+### **Global Navigation**
+All services provided by the platform have a floating button located at the bottom left corner of the page. This button allows users to return to the main homepage of SeaGro at any time.
+
+---
+
+This workflow ensures that users have a seamless and integrated experience while navigating through the SeaGro platform. Enjoy exploring the features!
+
+---
+
 ## 1. Introduction
 
 SeaGro is a comprehensive full-stack web platform that integrates multiple services including job searching, learning management, bike sharing, social networking, and task management. The platform is built using Django framework with a modular architecture consisting of twelve distinct applications.
@@ -251,16 +374,5 @@ python manage.py runserver
 - SQL injection prevention
 - XSS protection
 - Secure file uploads
-
----
-## 7. Test Users
-
-```
-username : john_doe 
-password : password123
-
-username : jane_smith 
-password : password123
-```
 
 ---
