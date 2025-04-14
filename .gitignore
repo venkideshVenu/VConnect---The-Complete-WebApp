@@ -31,3 +31,9 @@
 venv/
 env/
 ENV/
+
+# Ignore media uploads
+/media/
+
+# Ignore SQLite database
+db.sqlite3
