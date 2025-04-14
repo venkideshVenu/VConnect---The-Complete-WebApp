@@ -1,7 +1,7 @@
 digraph model_graph {
   // Dotfile by Django-Extensions graph_models
   // Created: 2024-12-31 17:27
-  // Cli Options: chat --output F:\Projects\Django\Seagro\Seagro\diagrams\chat\models.dot
+  // Cli Options: chat --output F:\Projects\Django\VConnect\VConnect\diagrams\chat\models.dot
 
   fontname = "Roboto"
   fontsize = 8

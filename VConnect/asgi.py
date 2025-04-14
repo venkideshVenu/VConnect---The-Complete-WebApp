@@ -5,7 +5,7 @@ from channels.auth import AuthMiddlewareStack
 from channels.security.websocket import AllowedHostsOriginValidator
 import chat.routing
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Seagro.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'VConnect.settings')
 
 django_asgi_app = get_asgi_application()
 

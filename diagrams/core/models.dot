@@ -1,7 +1,7 @@
 digraph model_graph {
   // Dotfile by Django-Extensions graph_models
   // Created: 2024-12-31 17:26
-  // Cli Options: core --output F:\Projects\Django\Seagro\Seagro\diagrams\core\models.dot
+  // Cli Options: core --output F:\Projects\Django\VConnect\VConnect\diagrams\core\models.dot
 
   fontname = "Roboto"
   fontsize = 8

@@ -1,4 +1,4 @@
-# SeaGro - The Complete WebApp
+# VConnect - The Complete WebApp
 
 ## Table of Contents
 0. Project WorkFlow
@@ -10,7 +10,7 @@
 6. Security Features
 ---
 
-##  SeaGro Platform - Basic Workflow
+##  VConnect Platform - Basic Workflow
 
 ## Test Users
 To explore the features of the platform, you can log in with the following test credentials:
@@ -41,11 +41,11 @@ After successfully logging in, users are redirected to the homepage, which provi
 
 #### Homepage Features:
 - **Home Landing Page**  
-  Highlights the key features and services available on SeaGro.
+  Highlights the key features and services available on VConnect.
 - **About Page**  
   Provides detailed information about the platform.
 - **Contact Page**  
-  Allows users to get in touch with the SeaGro team.
+  Allows users to get in touch with the VConnect team.
 - **Navigation Bar with Dropdown Profile**  
   Users can access their profile and manage additional settings.
 
@@ -104,7 +104,7 @@ Users must select their role when redirected to the CareerConnect homepage.
 ---
 
 ### **SocialHub Platform**
-This is the community network feature of SeaGro.
+This is the community network feature of VConnect.
 
 #### Key Features:
 - **Posting**  
@@ -123,17 +123,17 @@ This is the community network feature of SeaGro.
 ---
 
 ### **Global Navigation**
-All services provided by the platform have a floating button located at the bottom left corner of the page. This button allows users to return to the main homepage of SeaGro at any time.
+All services provided by the platform have a floating button located at the bottom left corner of the page. This button allows users to return to the main homepage of VConnect at any time.
 
 ---
 
-This workflow ensures that users have a seamless and integrated experience while navigating through the SeaGro platform. Enjoy exploring the features!
+This workflow ensures that users have a seamless and integrated experience while navigating through the VConnect platform. Enjoy exploring the features!
 
 ---
 
 ## 1. Introduction
 
-SeaGro is a comprehensive full-stack web platform that integrates multiple services including job searching, learning management, bike sharing, social networking, and task management. The platform is built using Django framework with a modular architecture consisting of twelve distinct applications.
+VConnect is a comprehensive full-stack web platform that integrates multiple services including job searching, learning management, bike sharing, social networking, and task management. The platform is built using Django framework with a modular architecture consisting of twelve distinct applications.
 
 This Website is built as part of a Competition called *Build a Website Challenge* hosted by Avanthi engineering college garividi.
 ### 1.1 Project Objectives
@@ -318,8 +318,8 @@ Git
 ### 5.2 Installation Steps
 1. Clone the repository
 ```bash
-git clone https://github.com/venkideshVenu/Seagro---The-Complete-WebApp.git
-cd seagro
+git clone https://github.com/venkideshVenu/VConnect---The-Complete-WebApp.git
+cd VConnect
 ```
 
 2. Create and activate virtual environment

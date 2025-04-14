@@ -3,7 +3,7 @@ import django
 from django.apps import apps
 
 # Set up Django environment
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Seagro.settings')  # Replace with your project name
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'VConnect.settings')  # Replace with your project name
 django.setup()
 
 # Define the base directory for storing diagrams
