@@ -135,7 +135,6 @@ This workflow ensures that users have a seamless and integrated experience while
 
 VConnect is a comprehensive full-stack web platform that integrates multiple services including job searching, learning management, bike sharing, social networking, and task management. The platform is built using Django framework with a modular architecture consisting of twelve distinct applications.
 
-This Website is built as part of a Competition called *Build a Website Challenge* hosted by Avanthi engineering college garividi.
 ### 1.1 Project Objectives
 - Create a centralized platform for multiple user services
 - Provide seamless integration between different modules
